@@ -341,7 +341,22 @@ Next.js omogoča:
 - Boljši SEO
 - Manjši JavaScript bundle
 
-### **2. Image Optimization**
+### **2. Error Boundary z Rock-Themed UI**
+
+```typescript
+// app/error.tsx - Global error handler
+// app/not-found.tsx - 404 page
+// components/ui/ErrorBoundary.tsx - Reusable component
+```
+
+**Features:**
+- 🎨 Custom rock-themed error dizajn
+- 🔧 Retry functionality
+- 📍 Quick links do vsebine
+- 🐛 Development mode z error details
+- ✨ Framer Motion animacije
+
+### **3. Image Optimization**
 
 ```typescript
 images: {
