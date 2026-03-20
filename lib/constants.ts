@@ -104,10 +104,7 @@ export const NAV_ITEMS = [
   { label: 'Koncerti', href: '/tour' },
   { label: 'Trgovina', href: '/merch' },
   { label: 'O nas', href: '/about' },
-  { label: '🍺 Pivski Števec', href: '/beer-counter' },
-  { label: '🍺 Pivska Pesem', href: '/beer-song-generator' },
-  { label: '🍻 Virtualna Pivnica', href: '/virtual-bar' },
-  { label: 'O nas', href: '/about' },
+  { label: '🍺 Bar', href: '/bar', protected: true },
 ];
 
 // Legacy alias

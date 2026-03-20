@@ -46,8 +46,8 @@ export function Header() {
           {/* Desktop Navigation */}
           <div className="hidden md:block">
             <ul className="flex space-x-8">
-              {NAVIGATION.map((item) => (
-                <li key={item.label}>
+              {NAVIGATION.map((item, index) => (
+                <li key={`${item.label}-${index}`}>
                   <Link
                     href={item.href}
                     className="text-white hover:text-crimson font-bold uppercase tracking-wider text-sm transition-colors duration-300 relative group"

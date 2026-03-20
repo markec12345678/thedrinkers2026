@@ -65,8 +65,8 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
               {/* Navigation Links */}
               <nav className="flex-1 overflow-y-auto py-6">
                 <ul className="space-y-2 px-6">
-                  {NAVIGATION.map((item) => (
-                    <li key={item.label}>
+                  {NAVIGATION.map((item, index) => (
+                    <li key={`${item.label}-${index}`}>
                       <Link
                         href={item.href}
                         onClick={onClose}
