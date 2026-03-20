@@ -13,6 +13,12 @@
       ]
     },
     {
+      "source": "aiagentwithdhruv/skills",
+      "skills": [
+        "design-website"
+      ]
+    },
+    {
       "source": "aj-geddes/useful-ai-prompts",
       "skills": [
         "css-architecture",
@@ -48,6 +54,7 @@
       "source": "anthropics/skills",
       "skills": [
         "algorithmic-art",
+        "brand-guidelines",
         "canvas-design",
         "doc-coauthoring",
         "docx",
@@ -55,6 +62,7 @@
         "mcp-builder",
         "pdf",
         "skill-creator",
+        "theme-factory",
         "web-artifacts-builder",
         "webapp-testing",
         "xlsx"
@@ -70,6 +78,12 @@
       "source": "auth0/agent-skills",
       "skills": [
         "auth0-quickstart"
+      ]
+    },
+    {
+      "source": "besoeasy/open-skills",
+      "skills": [
+        "city-tourism-website-builder"
       ]
     },
     {
@@ -180,6 +194,12 @@
       ]
     },
     {
+      "source": "currents-dev/playwright-best-practices-skill",
+      "skills": [
+        "playwright-best-practices"
+      ]
+    },
+    {
       "source": "dammyjay93/interface-design",
       "skills": [
         "interface-design"
@@ -207,6 +227,7 @@
       "source": "expo/skills",
       "skills": [
         "building-native-ui",
+        "expo-cicd-workflows",
         "expo-tailwind-setup",
         "native-data-fetching",
         "upgrading-expo"
@@ -253,7 +274,8 @@
       "skills": [
         "ai-prompt-engineering-safety-review",
         "git-commit",
-        "next-intl-add-language"
+        "next-intl-add-language",
+        "playwright-explore-website"
       ]
     },
     {
@@ -270,6 +292,7 @@
         "enhance-prompt",
         "react-components",
         "remotion",
+        "stitch-design",
         "stitch-loop"
       ]
     },
@@ -283,6 +306,12 @@
       "source": "hairyf/skills",
       "skills": [
         "tailwindcss"
+      ]
+    },
+    {
+      "source": "hyf0/vue-skills",
+      "skills": [
+        "vue-best-practices"
       ]
     },
     {
@@ -353,6 +382,18 @@
       ]
     },
     {
+      "source": "kostja94/marketing-skills",
+      "skills": [
+        "website-structure"
+      ]
+    },
+    {
+      "source": "luko248/css-first-skill",
+      "skills": [
+        "css-first"
+      ]
+    },
+    {
       "source": "majesticlabs-dev/majestic-marketplace",
       "skills": [
         "frontend-css-patterns"
@@ -397,6 +438,12 @@
       ]
     },
     {
+      "source": "microsoft/playwright-cli",
+      "skills": [
+        "playwright-cli"
+      ]
+    },
+    {
       "source": "mindrally/skills",
       "skills": [
         "nextjs-react-typescript",
@@ -421,6 +468,12 @@
       "source": "nextlevelbuilder/ui-ux-pro-max-skill",
       "skills": [
         "ui-ux-pro-max"
+      ]
+    },
+    {
+      "source": "nyhxiaoning/skill_webaudit_henry",
+      "skills": [
+        "website_audit"
       ]
     },
     {
@@ -482,6 +535,7 @@
       "source": "pbakaus/impeccable",
       "skills": [
         "animate",
+        "audit",
         "colorize",
         "critique",
         "optimize"
@@ -508,9 +562,27 @@
       ]
     },
     {
+      "source": "pluginagentmarketplace/custom-plugin-java",
+      "skills": [
+        "java-spring-boot"
+      ]
+    },
+    {
       "source": "prisma/skills",
       "skills": [
         "prisma-database-setup"
+      ]
+    },
+    {
+      "source": "resciencelab/opc-skills",
+      "skills": [
+        "seo-geo"
+      ]
+    },
+    {
+      "source": "rightnow-ai/openfang",
+      "skills": [
+        "css-expert"
       ]
     },
     {
@@ -581,6 +653,7 @@
         "api-documentation",
         "authentication-setup",
         "backend-testing",
+        "bmad-orchestrator",
         "changelog-maintenance",
         "code-refactoring",
         "code-review",
@@ -706,6 +779,18 @@
       ]
     },
     {
+      "source": "vercel-labs/migration-skills",
+      "skills": [
+        "cra-to-next-migration"
+      ]
+    },
+    {
+      "source": "vercel-labs/next-browser",
+      "skills": [
+        "next-browser"
+      ]
+    },
+    {
       "source": "vercel-labs/next-docs-agentic-rag",
       "skills": [
         "ask-next"
@@ -755,6 +840,7 @@
         "auth-implementation-patterns",
         "database-migration",
         "nextjs-app-router-patterns",
+        "python-performance-optimization",
         "tailwind-design-system",
         "typescript-advanced-types"
       ]
