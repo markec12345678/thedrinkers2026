@@ -97,14 +97,17 @@ export const TOUR_DATES_MOCK: TourDate[] = [
   },
 ];
 
-// Navigation
+// Navigation Items (Updated with new features)
 export const NAV_ITEMS = [
   { label: 'Domov', href: '/' },
-  { label: 'Koncerti', href: '/tour' },
   { label: 'Glasba', href: '/music' },
+  { label: 'Koncerti', href: '/tour' },
   { label: 'Trgovina', href: '/merch' },
   { label: 'O nas', href: '/about' },
-  { label: '🍺 Bar', href: '/bar', protected: true },
+  { label: '🍺 Pivski Števec', href: '/beer-counter' },
+  { label: '🍺 Pivska Pesem', href: '/beer-song-generator' },
+  { label: '🍻 Virtualna Pivnica', href: '/virtual-bar' },
+  { label: 'O nas', href: '/about' },
 ];
 
 // Legacy alias

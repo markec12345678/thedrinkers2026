@@ -6,6 +6,7 @@ import { GalleryGrid } from '@/components/sections/GalleryGrid';
 import { MerchCarousel } from '@/components/sections/MerchCarousel';
 import { ContactSection } from '@/components/sections/ContactSection';
 import { NewsletterSection } from '@/components/sections/NewsletterSection';
+import PivskiStavec from '@/app/(bar)/page';
 
 export default function HomePage() {
   return (
@@ -18,6 +19,7 @@ export default function HomePage() {
       <MerchCarousel />
       <ContactSection />
       <NewsletterSection />
+      <PivskiStavec />
     </>
   );
 }

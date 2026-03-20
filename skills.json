@@ -113,9 +113,21 @@
       ]
     },
     {
+      "source": "christian289/dotnet-with-claudecode",
+      "skills": [
+        "converting-html-css-to-wpf-xaml"
+      ]
+    },
+    {
       "source": "cin12211/orca-q",
       "skills": [
         "css-styling-expert"
+      ]
+    },
+    {
+      "source": "clerk/skills",
+      "skills": [
+        "clerk-nextjs-patterns"
       ]
     },
     {
@@ -209,7 +221,8 @@
     {
       "source": "firebase/agent-skills",
       "skills": [
-        "firebase-auth-basics"
+        "firebase-auth-basics",
+        "firebase-basics"
       ]
     },
     {
@@ -239,7 +252,8 @@
       "source": "github/awesome-copilot",
       "skills": [
         "ai-prompt-engineering-safety-review",
-        "git-commit"
+        "git-commit",
+        "next-intl-add-language"
       ]
     },
     {
@@ -257,6 +271,12 @@
         "react-components",
         "remotion",
         "stitch-loop"
+      ]
+    },
+    {
+      "source": "googleworkspace/cli",
+      "skills": [
+        "gws-docs"
       ]
     },
     {
@@ -305,6 +325,7 @@
       "source": "jeffallan/claude-skills",
       "skills": [
         "database-optimizer",
+        "nextjs-developer",
         "react-native-expert"
       ]
     },
@@ -326,6 +347,7 @@
         "tailwindcss-framework-integration",
         "tailwindcss-fundamentals-v4",
         "tailwindcss-mobile-first",
+        "tailwindcss-performance",
         "tailwindcss-plugins",
         "tailwindcss-responsive-darkmode"
       ]
@@ -377,6 +399,7 @@
     {
       "source": "mindrally/skills",
       "skills": [
+        "nextjs-react-typescript",
         "nextjs-typescript-tailwindcss-supabase",
         "postcss-best-practices",
         "scss-best-practices"
@@ -389,9 +412,21 @@
       ]
     },
     {
+      "source": "nextfrontierbuilds/elite-longterm-memory",
+      "skills": [
+        "elite-longterm-memory"
+      ]
+    },
+    {
       "source": "nextlevelbuilder/ui-ux-pro-max-skill",
       "skills": [
         "ui-ux-pro-max"
+      ]
+    },
+    {
+      "source": "oakoss/agent-skills",
+      "skills": [
+        "css-animation-patterns"
       ]
     },
     {
@@ -414,9 +449,27 @@
       ]
     },
     {
+      "source": "oimiragieo/agent-studio",
+      "skills": [
+        "html-tailwind-css-and-javascript-expert-rule"
+      ]
+    },
+    {
+      "source": "onewave-ai/claude-skills",
+      "skills": [
+        "css-animation-creator"
+      ]
+    },
+    {
       "source": "onmax/nuxt-skills",
       "skills": [
         "nuxt-better-auth"
+      ]
+    },
+    {
+      "source": "oocx/tfplan2md",
+      "skills": [
+        "website-devtools"
       ]
     },
     {
@@ -467,6 +520,12 @@
       ]
     },
     {
+      "source": "schalkneethling/webdev-agent-skills",
+      "skills": [
+        "css-coder"
+      ]
+    },
+    {
       "source": "shadcn/ui",
       "skills": [
         "shadcn"
@@ -476,6 +535,7 @@
       "source": "sickn33/antigravity-awesome-skills",
       "skills": [
         "database-design",
+        "nextjs-best-practices",
         "nextjs-supabase-auth"
       ]
     },
@@ -488,13 +548,20 @@
     {
       "source": "softaworks/agent-toolkit",
       "skills": [
-        "database-schema-designer"
+        "database-schema-designer",
+        "ship-learn-next"
       ]
     },
     {
       "source": "squirrelscan/skills",
       "skills": [
         "audit-website"
+      ]
+    },
+    {
+      "source": "steipete/clawdis",
+      "skills": [
+        "summarize"
       ]
     },
     {
@@ -624,7 +691,8 @@
     {
       "source": "vercel-labs/agent-browser",
       "skills": [
-        "dogfood"
+        "dogfood",
+        "electron"
       ]
     },
     {
@@ -638,16 +706,29 @@
       ]
     },
     {
+      "source": "vercel-labs/next-docs-agentic-rag",
+      "skills": [
+        "ask-next"
+      ]
+    },
+    {
       "source": "vercel-labs/next-skills",
       "skills": [
         "next-best-practices",
-        "next-cache-components"
+        "next-cache-components",
+        "next-upgrade"
       ]
     },
     {
       "source": "vercel-labs/skills",
       "skills": [
         "find-skills"
+      ]
+    },
+    {
+      "source": "vercel-labs/vercel-plugin",
+      "skills": [
+        "nextjs"
       ]
     },
     {
@@ -673,8 +754,15 @@
       "skills": [
         "auth-implementation-patterns",
         "database-migration",
+        "nextjs-app-router-patterns",
         "tailwind-design-system",
         "typescript-advanced-types"
+      ]
+    },
+    {
+      "source": "wsimmonds/claude-nextjs-skills",
+      "skills": [
+        "nextjs-app-router-fundamentals"
       ]
     },
     {

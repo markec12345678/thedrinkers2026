@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Play, Ticket, Music, Video, Instagram } from 'lucide-react';
+import { Play, Ticket, Music, Video, Instagram, Beer } from 'lucide-react';
 import VideoPlayer from '@/components/ui/VideoPlayer';
 
 export default function Hero() {
@@ -38,7 +38,7 @@ export default function Hero() {
           transition={{ delay: 0.3 }}
           className="text-xl md:text-2xl text-rock-muted mb-8 max-w-2xl"
         >
-          Rock &apos;n&apos; roll iz srca Slovenije 🇸🇮
+          Pijemo ga radi od 1993! 🍺 Rock &apos;n&apos; roll iz Litije
         </motion.p>
 
         {/* CTAs */}
@@ -49,10 +49,10 @@ export default function Hero() {
           className="flex flex-wrap gap-4 justify-center mb-8"
         >
           <button className="btn-primary flex items-center gap-2">
-            <Play className="w-4 h-4" /> Poslušaj Novo
+            <Play className="w-4 h-4" /> Pijemo ga radi
           </button>
           <button className="btn-secondary flex items-center gap-2">
-            <Ticket className="w-4 h-4" /> Vstopnice
+            <Beer className="w-4 h-4" /> Virtual Bar
           </button>
         </motion.div>
 
