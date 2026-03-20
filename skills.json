@@ -69,6 +69,14 @@
       ]
     },
     {
+      "source": "aradotso/trending-skills",
+      "skills": [
+        "edict-multi-agent-orchestration",
+        "inkos-multi-agent-novel-writing",
+        "ui-ux-pro-max-skill"
+      ]
+    },
+    {
       "source": "asyrafhussin/agent-skills",
       "skills": [
         "react-vite-best-practices"
@@ -563,7 +571,14 @@
     {
       "source": "pexoai/pexo-skills",
       "skills": [
+        "videoagent-image-studio",
         "videoagent-video-studio"
+      ]
+    },
+    {
+      "source": "philschmid/self-learning-skill",
+      "skills": [
+        "self-learning"
       ]
     },
     {
@@ -704,6 +719,7 @@
         "pollinations-ai",
         "prompt-repetition",
         "ralph",
+        "remotion-video-production",
         "responsive-design",
         "security-best-practices",
         "sprint-retrospective",
