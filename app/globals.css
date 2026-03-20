@@ -1,0 +1,169 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Variables */
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 10, 10, 10;
+  --background-end-rgb: 10, 10, 10;
+  --crimson: #dc143c;
+  --crimson-light: #ff3333;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 10, 10, 10;
+    --background-end-rgb: 10, 10, 10;
+  }
+}
+
+/* Base Styles */
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #dc143c;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ff3333;
+}
+
+/* Selection */
+::selection {
+  background: #dc143c;
+  color: #ffffff;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Utility Classes */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .text-gradient {
+    background: linear-gradient(45deg, #dc143c, #ff3333);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .glow-text {
+    text-shadow: 0 0 10px #dc143c, 0 0 20px #dc143c, 0 0 30px #dc143c;
+  }
+  
+  .glow-red {
+    box-shadow: 0 0 10px #dc143c, 0 0 20px #dc143c, 0 0 30px #dc143c;
+  }
+}
+
+/* Component Styles */
+@layer components {
+  .btn-primary {
+    @apply inline-block px-8 py-3 bg-gradient-to-r from-crimson to-crimson-light text-white font-bold uppercase tracking-wider border-2 border-crimson 
+           transition-all duration-300 hover:bg-transparent hover:text-crimson hover:-translate-y-0.5 
+           hover:shadow-[0_10px_20px_rgba(220,20,60,0.3)] active:translate-y-0;
+  }
+  
+  .btn-secondary {
+    @apply inline-block px-8 py-3 bg-transparent text-white font-bold uppercase tracking-wider border-2 border-white 
+           transition-all duration-300 hover:bg-white hover:text-rock-black hover:-translate-y-0.5;
+  }
+  
+  .section-title {
+    @apply text-4xl md:text-5xl font-bold text-center mb-12 relative;
+  }
+  
+  .section-title::after {
+    content: '';
+    @apply absolute bottom-[-10px] left-1/2 -translate-x-1/2 w-24 h-1 
+           bg-gradient-to-r from-crimson to-crimson-light;
+  }
+  
+  .card {
+    @apply bg-rock-gray/50 backdrop-blur-sm border border-crimson/30 rounded-lg 
+           transition-all duration-300 hover:border-crimson/50;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 bg-white/10 border border-white/30 rounded 
+           text-white placeholder-text-gray 
+           focus:outline-none focus:border-crimson focus:bg-crimson/10 
+           transition-all duration-300;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus styles for accessibility */
+*:focus-visible {
+  @apply outline-2 outline-crimson outline-offset-2;
+}

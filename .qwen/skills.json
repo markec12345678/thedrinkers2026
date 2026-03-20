@@ -1,0 +1,85 @@
+{
+  "name": "The Drinkers - Skills Index",
+  "version": "1.0.0",
+  "description": "Centralized skills configuration for The Drinkers website project",
+  "skillsDirectories": [
+    {
+      "name": "claude-skills",
+      "path": "./skills",
+      "source": "F:\\ffff\\agentflow-pro\\.claude\\skills",
+      "count": 21
+    },
+    {
+      "name": "codex_skills",
+      "path": "./codex-skills",
+      "source": "F:\\ffff\\agentflow-pro\\.codex\\skills",
+      "count": 21
+    },
+    {
+      "name": "cursor_skills",
+      "path": "./cursor-skills",
+      "source": "F:\\ffff\\agentflow-pro\\.cursor\\skills",
+      "count": 21
+    },
+    {
+      "name": "gemini_skills",
+      "path": "./gemini-skills",
+      "source": "F:\\ffff\\agentflow-pro\\.gemini\\skills",
+      "count": 21
+    },
+    {
+      "name": "copilot_skills",
+      "path": "./copilot-skills",
+      "source": "F:\\ffff\\agentflow-pro\\.github\\copilot\\skills",
+      "count": 21
+    }
+  ],
+  "mcpConfig": {
+    "path": "./mcp.json",
+    "source": "F:\\ffff\\agentflow-pro\\.vscode\\mcp.json",
+    "serverCount": 60
+  },
+  "totalSkills": 105,
+  "totalIntegrations": 165,
+  "usage": {
+    "rule": "ALWAYS invoke relevant skills before ANY action",
+    "threshold": "1% chance skill might apply",
+    "command": "skill: \"skill-name\""
+  },
+  "relevantSkills": {
+    "frontend": [
+      "frontend-design",
+      "tailwind-css",
+      "react-vite-best-practices",
+      "css-animations",
+      "responsive-design",
+      "web-accessibility"
+    ],
+    "backend": [
+      "api-design",
+      "database-design",
+      "backend-testing",
+      "authentication-setup"
+    ],
+    "devops": [
+      "git-workflow",
+      "deployment-automation",
+      "monitoring-observability",
+      "performance-optimization"
+    ],
+    "ai": [
+      "ai-image-generation",
+      "ai-video-generation",
+      "ai-music-generation",
+      "web-search",
+      "prompt-engineering"
+    ],
+    "process": [
+      "brainstorming",
+      "debugging",
+      "code-review",
+      "task-planning",
+      "test-driven-development"
+    ]
+  }
+}
