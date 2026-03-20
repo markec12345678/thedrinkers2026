@@ -33,7 +33,7 @@ export default function Loading() {
           transition={{ delay: 0.3 }}
           className="text-text-gray"
         >
-          Pripravljam rock'n'roll izkušnjo
+          Pripravljam rock&apos;n&apos;roll izkušnjo
         </motion.p>
       </div>
     </div>

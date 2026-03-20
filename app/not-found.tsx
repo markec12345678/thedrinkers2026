@@ -130,7 +130,7 @@ export default function NotFound() {
           transition={{ delay: 0.8, duration: 1 }}
           className="mt-16 text-xs text-text-gray/50"
         >
-          "This could be the greatest band in the world... if we could find this page"
+          &quot;This could be the greatest band in the world... if we could find this page&quot;
         </motion.p>
       </motion.div>
     </div>

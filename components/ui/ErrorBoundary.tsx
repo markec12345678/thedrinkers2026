@@ -85,7 +85,7 @@ export default function ErrorBoundary({ error, reset }: ErrorBoundaryProps) {
           transition={{ delay: 0.5 }}
           className="text-lg text-text-gray mb-8 max-w-xl mx-auto"
         >
-          Tudi rock'n'roll včasih zatreščimo. Nič hudega, smo tu da popravimo stvar!
+          Tudi rock&apos;n&apos;roll včasih zatreščimo. Nič hudega, smo tu da popravimo stvar!
         </motion.p>
 
         {/* Error Details (Development only) */}
@@ -174,7 +174,7 @@ export default function ErrorBoundary({ error, reset }: ErrorBoundaryProps) {
           transition={{ delay: 1, duration: 1 }}
           className="mt-16 text-xs text-text-gray/50"
         >
-          "It's better to burn out than to fade away" - Neil Young
+          &quot;It&apos;s better to burn out than to fade away&quot; - Neil Young
         </motion.p>
       </motion.div>
     </div>

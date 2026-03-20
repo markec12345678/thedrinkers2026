@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  output: 'standalone',
+  output: 'standalone', // For PM2 deployment
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'i.scdn.co' }, // Spotify
@@ -22,13 +22,10 @@ const nextConfig = {
     ];
   },
   experimental: {
-    // Next.js 15 Server Components
-    serverComponents: true,
-    
     // Cache strategija za 2026
     staleTimes: {
       dynamic: 30,      // 30s za dinamične vsebine (koncerti, newsletter)
-      static: 3600,     // 1h za statične vsebine (about, glassy)
+      static: 3600,     // 1h za statične vsebine (about, gallery)
     },
     
     // Server Actions configuration

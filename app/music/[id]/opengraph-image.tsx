@@ -1,16 +1,6 @@
 import { ImageResponse } from 'next/og';
 import { albums } from '@/lib/constants';
 
-// Route segment config
-export const runtime = 'edge';
-
-// Generate static params for all albums
-export async function generateStaticParams() {
-  return albums.map((album) => ({
-    id: album.id,
-  }));
-}
-
 // Image metadata
 export const alt = 'Album';
 export const size = {
@@ -23,11 +13,6 @@ export const contentType = 'image/png';
 // Image generation
 export default async function Image({ params }: { params: { id: string } }) {
   const album = albums.find((a) => a.id === params.id) || albums[0];
-
-  // Load custom font
-  const fontData = await fetch(
-    new URL('@/public/fonts/Inter-Bold.ttf', import.meta.url)
-  ).then((res) => res.arrayBuffer());
 
   return new ImageResponse(
     (
@@ -154,14 +139,6 @@ export default async function Image({ params }: { params: { id: string } }) {
     ),
     {
       ...size,
-      fonts: [
-        {
-          name: 'Inter',
-          data: fontData,
-          style: 'normal',
-          weight: 700,
-        },
-      ],
     }
   );
 }

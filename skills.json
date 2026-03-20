@@ -49,6 +49,7 @@
       "skills": [
         "algorithmic-art",
         "canvas-design",
+        "doc-coauthoring",
         "docx",
         "frontend-design",
         "mcp-builder",
@@ -215,9 +216,11 @@
       "source": "firecrawl/cli",
       "skills": [
         "firecrawl",
+        "firecrawl-agent",
         "firecrawl-browser",
         "firecrawl-crawl",
         "firecrawl-download",
+        "firecrawl-map",
         "firecrawl-scrape",
         "firecrawl-search"
       ]
@@ -252,6 +255,7 @@
         "design-md",
         "enhance-prompt",
         "react-components",
+        "remotion",
         "stitch-loop"
       ]
     },
@@ -336,6 +340,7 @@
       "source": "mattpocock/skills",
       "skills": [
         "improve-codebase-architecture",
+        "prd-to-issues",
         "tdd",
         "write-a-prd"
       ]
@@ -614,6 +619,12 @@
       "source": "useai-pro/openclaw-skills-security",
       "skills": [
         "skill-vetter"
+      ]
+    },
+    {
+      "source": "vercel-labs/agent-browser",
+      "skills": [
+        "dogfood"
       ]
     },
     {

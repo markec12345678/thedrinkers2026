@@ -1,16 +1,6 @@
 import { ImageResponse } from 'next/og';
 import { TOUR_DATES_MOCK } from '@/lib/constants';
 
-// Route segment config
-export const runtime = 'edge';
-
-// Generate static params for all tour dates
-export async function generateStaticParams() {
-  return TOUR_DATES_MOCK.map((date) => ({
-    id: date.id,
-  }));
-}
-
 // Image metadata
 export const alt = 'Koncert';
 export const size = {
@@ -35,11 +25,6 @@ function formatDate(dateString: string) {
 // Image generation
 export default async function Image({ params }: { params: { id: string } }) {
   const tourDate = TOUR_DATES_MOCK.find((d) => d.id === params.id) || TOUR_DATES_MOCK[0];
-
-  // Load custom font
-  const fontData = await fetch(
-    new URL('@/public/fonts/Inter-Bold.ttf', import.meta.url)
-  ).then((res) => res.arrayBuffer());
 
   return new ImageResponse(
     (
@@ -187,14 +172,6 @@ export default async function Image({ params }: { params: { id: string } }) {
     ),
     {
       ...size,
-      fonts: [
-        {
-          name: 'Inter',
-          data: fontData,
-          style: 'normal',
-          weight: 700,
-        },
-      ],
     }
   );
 }

@@ -15,11 +15,6 @@ export const contentType = 'image/png';
 
 // Image generation
 export default async function Image() {
-  // Load custom font
-  const fontData = await fetch(
-    new URL('@/public/fonts/Inter-Bold.ttf', import.meta.url)
-  ).then((res) => res.arrayBuffer());
-
   return new ImageResponse(
     (
       <div
@@ -128,14 +123,6 @@ export default async function Image() {
     ),
     {
       ...size,
-      fonts: [
-        {
-          name: 'Inter',
-          data: fontData,
-          style: 'normal',
-          weight: 700,
-        },
-      ],
     }
   );
 }
