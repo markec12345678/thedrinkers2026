@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
+// Edge Runtime za hitrejše odzive iz edge lokacij
+// https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#runtime
+export const runtime = 'edge';
+
 // Validation schema
 const newsletterSchema = z.object({
   email: z.string().email('Neveljaven email naslov'),

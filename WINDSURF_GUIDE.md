@@ -1,5 +1,29 @@
 # 🌊 Windsurf AI Development Guide
 
+## 🚀 2026 Updates - Edge Functions
+
+### ✅ Implementirane Izboljšave
+
+#### **Edge Runtime za API Endointe**
+
+Vsi API endpointi zdaj uporabljajo Edge Runtime za hitrejše odzive:
+
+```typescript
+// app/api/newsletter/route.ts
+export const runtime = 'edge' // Edge Function
+
+// app/api/tickets/route.ts  
+export const runtime = 'edge' // Edge Function
+```
+
+**Prednosti:**
+- ⚡ Cold start: ~10ms (namesto ~500ms)
+- 🌍 Globalna distribucija
+- 📉 Nižji stroški
+- 🔄 Avtomatsko scaling
+
+---
+
 ## 🎯 NASLEDNJI KORAKI ZA TEBE:
 
 ### 1. Kopiraj ta prompt v Windsurf AI chat:

@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
+// Edge Runtime za hitrejše odzive iz edge lokacij
+export const runtime = 'edge';
+
 // Validation schema
 const ticketSchema = z.object({
   tourDateId: z.string(),

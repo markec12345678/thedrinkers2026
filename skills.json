@@ -381,6 +381,12 @@
       ]
     },
     {
+      "source": "pbakaus/impeccable",
+      "skills": [
+        "animate"
+      ]
+    },
+    {
       "source": "pexoai/pexo-skills",
       "skills": [
         "videoagent-video-studio"
