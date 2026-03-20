@@ -22,6 +22,16 @@ const nextConfig = {
     ];
   },
   experimental: {
+    // Next.js 15 Server Components
+    serverComponents: true,
+    
+    // Cache strategija za 2026
+    staleTimes: {
+      dynamic: 30,      // 30s za dinamične vsebine (koncerti, newsletter)
+      static: 3600,     // 1h za statične vsebine (about, glassy)
+    },
+    
+    // Server Actions configuration
     serverActions: {
       bodySizeLimit: '2mb',
     },

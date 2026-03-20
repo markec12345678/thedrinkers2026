@@ -4,6 +4,10 @@ import { z } from 'zod';
 // Edge Runtime za hitrejše odzive iz edge lokacij
 export const runtime = 'edge';
 
+// Cache strategija - tickets so dinamični
+export const dynamic = 'force-dynamic';
+export const revalidate = 30; // 30s revalidacija za razpoložljivost
+
 // Validation schema
 const ticketSchema = z.object({
   tourDateId: z.string(),
@@ -81,8 +85,8 @@ export async function GET(request: NextRequest) {
     }
 
     // TODO: Fetch from ticketing service
-    // Simulated response
-    return NextResponse.json(
+    // Simulated response with cache headers
+    const response = NextResponse.json(
       {
         success: true,
         available: true,
@@ -92,6 +96,10 @@ export async function GET(request: NextRequest) {
       },
       { status: 200 }
     );
+
+    // Cache headers za CDN
+    response.headers.set('Cache-Control', 'public, s-maxage=30, stale-while-revalidate=300');
+    return response;
   } catch (error) {
     console.error('Ticket availability error:', error);
     return NextResponse.json(

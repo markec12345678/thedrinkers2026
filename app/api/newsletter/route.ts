@@ -2,8 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 // Edge Runtime za hitrejše odzive iz edge lokacij
-// https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#runtime
 export const runtime = 'edge';
+
+// Cache strategija
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 // Validation schema
 const newsletterSchema = z.object({

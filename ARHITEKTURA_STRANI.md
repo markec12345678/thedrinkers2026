@@ -288,24 +288,38 @@ npm run monit        # PM2 monitoring UI
 ### **Newsletter (`app/api/newsletter/route.ts`)**
 
 ```typescript
-export const runtime = 'edge' // Edge Function za hitrejše odzive
+export const runtime = 'edge'        // Edge Function
+export const dynamic = 'force-dynamic' // No caching
+export const revalidate = 0
 
 - POST endpoint za zbiranje emailov
 - Validacija z Zod
 - Edge runtime za globalno distribucijo
 - Response time: <50ms iz edge lokacij
+- No caching za real-time signup
 ```
 
 ### **Vstopnice (`app/api/tickets/route.ts`)**
 
 ```typescript
-export const runtime = 'edge' // Edge Function
+export const runtime = 'edge'        // Edge Function
+export const dynamic = 'force-dynamic'
+export const revalidate = 30         // 30s revalidacija
 
-- GET: Preveri razpoložljivost vstopnic
-- POST: Rezervacija vstopnic
+- GET: Preveri razpoložljivost (cache 30s)
+- POST: Rezervacija vstopnic (no cache)
+- Cache-Control: s-maxage=30, stale-while-revalidate=300
 - Integracija z Eventim/Ticketmaster
-- Edge caching za hitre odgovore
 ```
+
+### **Cache Strategija**
+
+| Endpoint | Cache | Revalidacija | Stale-while-revalidate |
+|----------|-------|--------------|------------------------|
+| Newsletter POST | ❌ None | 0s | - |
+| Tickets GET | ✅ CDN | 30s | 300s (5min) |
+| Static Pages | ✅ ISR | 3600s | 7200s |
+| Dynamic Pages | ✅ ISR | 30s | 60s |
 
 ### **Prednosti Edge Runtime**
 

@@ -104,6 +104,12 @@
       ]
     },
     {
+      "source": "charon-fan/agent-playbook",
+      "skills": [
+        "self-improving-agent"
+      ]
+    },
+    {
       "source": "cin12211/orca-q",
       "skills": [
         "css-styling-expert"
@@ -383,7 +389,10 @@
     {
       "source": "pbakaus/impeccable",
       "skills": [
-        "animate"
+        "animate",
+        "colorize",
+        "critique",
+        "optimize"
       ]
     },
     {
@@ -511,6 +520,12 @@
       ]
     },
     {
+      "source": "tavily-ai/skills",
+      "skills": [
+        "tavily-search"
+      ]
+    },
+    {
       "source": "tencentcloudbase/skills",
       "skills": [
         "auth-wechat-miniprogram",
@@ -564,8 +579,15 @@
       ]
     },
     {
+      "source": "useai-pro/openclaw-skills-security",
+      "skills": [
+        "skill-vetter"
+      ]
+    },
+    {
       "source": "vercel-labs/agent-skills",
       "skills": [
+        "deploy-to-vercel",
         "vercel-composition-patterns",
         "vercel-react-best-practices",
         "vercel-react-native-skills",
