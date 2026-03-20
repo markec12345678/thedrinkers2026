@@ -40,7 +40,8 @@
     {
       "source": "antfu/skills",
       "skills": [
-        "unocss"
+        "unocss",
+        "vue"
       ]
     },
     {
@@ -156,6 +157,7 @@
         "product-marketing-context",
         "programmatic-seo",
         "referral-program",
+        "revops",
         "sales-enablement",
         "schema-markup",
         "seo-audit",
@@ -207,6 +209,17 @@
       "source": "firebase/agent-skills",
       "skills": [
         "firebase-auth-basics"
+      ]
+    },
+    {
+      "source": "firecrawl/cli",
+      "skills": [
+        "firecrawl",
+        "firecrawl-browser",
+        "firecrawl-crawl",
+        "firecrawl-download",
+        "firecrawl-scrape",
+        "firecrawl-search"
       ]
     },
     {

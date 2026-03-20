@@ -393,6 +393,34 @@ images: {
 - `app/gallery/loading.tsx` - Gallery grid skeleton
 - `app/about/loading.tsx` - Bio & members skeleton
 
+### **5. Dinamične Open Graph Slike**
+
+```typescript
+// app/opengraph-image.tsx - Domača stran
+// app/music/[id]/opengraph-image.tsx - Albumi
+// app/tour/[id]/opengraph-image.tsx - Koncerti
+// app/twitter-image.tsx - Twitter Card
+```
+
+**Features:**
+- 🖼️ Avtomatsko generiranje OG slik
+- 📊 Next.js ImageResponse API
+- 🎨 Dinamični podatki za vsak album/koncert
+- 🐦 Twitter Card optimizirano
+- ⚡ Edge Runtime za hitro generiranje
+
+**Generated Images:**
+- **Home**: Band logo + description + origin
+- **Albums**: Album title + year + track count + artwork placeholder
+- **Concerts**: City + venue + date + price + "Razprodano" badge
+- **Twitter**: Twitter-branded card with band info
+
+**Benefits:**
+- Ni potrebe po ročnem dizajniranju
+- Vedno ažurni podatki
+- Konsistenten branding
+- Izboljšan CTR na socialnih omrežjih
+
 ### **3. Security Headers**
 
 ```typescript
