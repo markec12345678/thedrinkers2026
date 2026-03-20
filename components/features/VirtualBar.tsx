@@ -271,7 +271,7 @@ export default function VirtualBar() {
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="text-lg font-semibold">Welcome, {userName}!</h3>
-                      <p className="text-rock-muted">You're at stool {userStool}</p>
+                      <p className="text-rock-muted">You&apos;re at stool {userStool}</p>
                     </div>
                     <button
                       onClick={leaveBar}

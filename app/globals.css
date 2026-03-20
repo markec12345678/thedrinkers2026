@@ -67,20 +67,67 @@ h1, h2, h3, h4, h5, h6 {
   .text-balance {
     text-wrap: balance;
   }
-  
+
   .text-gradient {
     background: linear-gradient(45deg, #dc143c, #ff3333);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  
+
   .glow-text {
     text-shadow: 0 0 10px #dc143c, 0 0 20px #dc143c, 0 0 30px #dc143c;
   }
-  
+
   .glow-red {
     box-shadow: 0 0 10px #dc143c, 0 0 20px #dc143c, 0 0 30px #dc143c;
+  }
+
+  /* Glassmorphism */
+  .glass {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+
+  .glass-dark {
+    @apply bg-black/40 backdrop-blur-md border border-white/10;
+  }
+
+  .glass-crimson {
+    @apply bg-crimson/20 backdrop-blur-md border border-crimson/30;
+  }
+
+  /* Glass Card Hover Effects */
+  .glass-card {
+    @apply glass rounded-lg p-6 
+           transition-all duration-300 
+           hover:bg-white/15 
+           hover:-translate-y-1 
+           hover:shadow-[0_20px_40px_rgba(220,20,60,0.3)];
+  }
+
+  /* Skeleton Loader */
+  .skeleton {
+    @apply animate-pulse 
+           bg-gradient-to-r 
+           from-rock-gray 
+           via-rock-dark 
+           to-rock-gray 
+           bg-[length:200%_100%];
+    animation: skeleton-loading 1.5s infinite;
+  }
+
+  @keyframes skeleton-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* Floating Animation */
+  .floating {
+    @apply animate-float;
+  }
+
+  .floating-delayed {
+    @apply animate-float-delayed;
   }
 }
 

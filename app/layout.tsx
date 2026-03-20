@@ -15,16 +15,18 @@ export const metadata: Metadata = {
   },
   description: SITE_CONFIG.description,
   keywords: [
-    "rock band",
-    "music",
     "The Drinkers",
-    "Slovenia",
+    "slovenska rock glasba",
+    "rock band Slovenia",
+    "koncerti Slovenija",
+    "glasbena skupina Litija",
     "rock music",
     "concerts",
-    "metal",
+    "Slovenian rock",
   ],
   authors: [{ name: "The Drinkers" }],
   creator: "The Drinkers",
+  publisher: "The Drinkers",
   openGraph: {
     type: "website",
     locale: SITE_CONFIG.locale,
@@ -37,7 +39,7 @@ export const metadata: Metadata = {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: `${SITE_CONFIG.name} - Rock Band`,
+        alt: `${SITE_CONFIG.name} - Slovenian Rock Band`,
       },
     ],
   },
@@ -46,18 +48,40 @@ export const metadata: Metadata = {
     title: SITE_CONFIG.name,
     description: SITE_CONFIG.description,
     images: ["/og-image.jpg"],
+    creator: "@thedrinkers_si",
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
   icons: {
     icon: "/favicon.ico",
+    shortcut: "/favicon-16x16.png",
     apple: "/apple-touch-icon.png",
   },
   manifest: "/manifest.json",
-  themeColor: "#dc143c",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=5",
+  alternates: {
+    canonical: SITE_CONFIG.url,
+  },
+  verification: {
+    google: 'your-google-verification-code',
+    yandex: 'your-yandex-verification-code',
+  },
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: '#dc143c',
 };
 
 export default function RootLayout({
@@ -73,6 +97,41 @@ export default function RootLayout({
         <Header />
         <main className="min-h-screen">{children}</main>
         <Footer />
+
+        {/* JSON-LD Structured Data */}
+        <Script
+          id="structured-data"
+          type="application/ld+json"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'MusicGroup',
+              name: SITE_CONFIG.name,
+              description: SITE_CONFIG.description,
+              url: SITE_CONFIG.url,
+              sameAs: [
+                SITE_CONFIG.social.spotify,
+                SITE_CONFIG.social.youtube,
+                SITE_CONFIG.social.instagram,
+                SITE_CONFIG.social.facebook,
+                SITE_CONFIG.social.twitter,
+                SITE_CONFIG.social.tiktok,
+              ],
+              foundingDate: SITE_CONFIG.inception.toString(),
+              foundingLocation: SITE_CONFIG.origin,
+              genre: SITE_CONFIG.genre,
+              logo: `${SITE_CONFIG.url}${SITE_CONFIG.logo}`,
+              image: `${SITE_CONFIG.url}/og-image.jpg`,
+              contactPoint: {
+                '@type': 'ContactPoint',
+                email: SITE_CONFIG.contact.email,
+                telephone: SITE_CONFIG.contact.phone,
+                contactType: 'booking',
+              },
+            }),
+          }}
+        />
 
         {/* WUUNU SNIPPET - DON'T CHANGE THIS (START) */}
         {process.env.NODE_ENV !== "production" && (

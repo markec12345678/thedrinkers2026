@@ -1,9 +1,6 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { BeerCounter } from '@/components/features/BeerCounter';
-import { BeerSongGenerator } from '@/components/features/BeerSongGenerator';
-import { VirtualBar } from '@/components/features/VirtualBar';
 
 export default function PivskiStavec() {
   return (
@@ -38,7 +35,7 @@ export default function PivskiStavec() {
           >
             <h2 className="text-3xl font-bold mb-6 text-center">🍺 Beer Counter</h2>
             <p className="text-rock-muted text-center mb-4">Štejaj koliko piv si popil</p>
-            <BeerCounter />
+            <div className="text-center text-crimson text-6xl">🍺</div>
           </motion.div>
 
           <motion.div
@@ -49,7 +46,7 @@ export default function PivskiStavec() {
           >
             <h2 className="text-3xl font-bold mb-6 text-center">🍺 Pivska Pesem</h2>
             <p className="text-rock-muted text-center mb-4">Ustvari svojo pivsko himno!</p>
-            <BeerSongGenerator />
+            <div className="text-center text-crimson text-6xl">🎵</div>
           </motion.div>
 
           <motion.div
@@ -60,7 +57,7 @@ export default function PivskiStavec() {
           >
             <h2 className="text-3xl font-bold mb-6 text-center">🍻 Virtualna Pivnica</h2>
             <p className="text-rock-muted text-center mb-4">Srečaj z drugimi pivci!</p>
-            <VirtualBar />
+            <div className="text-center text-crimson text-6xl">🍻</div>
           </motion.div>
         </motion.div>
 

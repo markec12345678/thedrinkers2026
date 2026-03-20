@@ -270,6 +270,12 @@
       ]
     },
     {
+      "source": "gilbertopsantosjr/fullstacknextjs",
+      "skills": [
+        "gs-tanstack-react-query"
+      ]
+    },
+    {
       "source": "github/awesome-copilot",
       "skills": [
         "ai-prompt-engineering-safety-review",
@@ -400,6 +406,12 @@
       ]
     },
     {
+      "source": "masanao-ohba/claude-manifests",
+      "skills": [
+        "react-query-patterns"
+      ]
+    },
+    {
       "source": "mattpocock/skills",
       "skills": [
         "improve-codebase-architecture",
@@ -412,6 +424,12 @@
       "source": "maxnorm/magento2-agent-skills",
       "skills": [
         "magento-css-specialist"
+      ]
+    },
+    {
+      "source": "mhdcodes/react-query-skill",
+      "skills": [
+        "practical-react-query"
       ]
     },
     {
@@ -538,7 +556,8 @@
         "audit",
         "colorize",
         "critique",
-        "optimize"
+        "optimize",
+        "polish"
       ]
     },
     {
@@ -634,6 +653,12 @@
       "source": "steipete/clawdis",
       "skills": [
         "summarize"
+      ]
+    },
+    {
+      "source": "stripe/ai",
+      "skills": [
+        "stripe-best-practices"
       ]
     },
     {
