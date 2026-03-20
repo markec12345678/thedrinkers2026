@@ -71,9 +71,10 @@ Write-Host ""
 Write-Host "🚀 Pushing to GitHub..." -ForegroundColor Cyan
 Write-Host "⚠️  You'll be prompted for GitHub credentials..." -ForegroundColor Gray
 Write-Host "   Use your GitHub username and password/token" -ForegroundColor Gray
+Write-Host "⚠️  Force pushing to overwrite remote README..." -ForegroundColor Yellow
 Write-Host ""
 
-& $gitExe push -u origin main
+& $gitExe push -u origin main --force
 
 if ($LASTEXITCODE -eq 0) {
     Write-Host ""

@@ -1,0 +1,622 @@
+{
+  "skills": [
+    {
+      "source": "aaron-he-zhu/seo-geo-claude-skills",
+      "skills": [
+        "domain-authority-auditor"
+      ]
+    },
+    {
+      "source": "affaan-m/everything-claude-code",
+      "skills": [
+        "database-migrations"
+      ]
+    },
+    {
+      "source": "aj-geddes/useful-ai-prompts",
+      "skills": [
+        "css-architecture",
+        "database-migration-management"
+      ]
+    },
+    {
+      "source": "am-will/codex-skills",
+      "skills": [
+        "context7",
+        "gemini-computer-use",
+        "llm-council",
+        "markdown-url",
+        "openai-docs-skill",
+        "parallel-task",
+        "parallel-task-spark",
+        "plan-harder",
+        "planner",
+        "read-github",
+        "role-creator",
+        "super-swarm-spark",
+        "swarm-planner"
+      ]
+    },
+    {
+      "source": "antfu/skills",
+      "skills": [
+        "unocss"
+      ]
+    },
+    {
+      "source": "anthropics/skills",
+      "skills": [
+        "canvas-design",
+        "docx",
+        "frontend-design",
+        "mcp-builder",
+        "pdf",
+        "skill-creator",
+        "web-artifacts-builder",
+        "webapp-testing",
+        "xlsx"
+      ]
+    },
+    {
+      "source": "asyrafhussin/agent-skills",
+      "skills": [
+        "react-vite-best-practices"
+      ]
+    },
+    {
+      "source": "auth0/agent-skills",
+      "skills": [
+        "auth0-quickstart"
+      ]
+    },
+    {
+      "source": "better-auth/better-icons",
+      "skills": [
+        "better-icons"
+      ]
+    },
+    {
+      "source": "better-auth/skills",
+      "skills": [
+        "better-auth-best-practices",
+        "better-auth-security-best-practices",
+        "create-auth-skill",
+        "email-and-password-best-practices",
+        "organization-best-practices"
+      ]
+    },
+    {
+      "source": "bobmatnyc/claude-mpm-skills",
+      "skills": [
+        "tailwind-css"
+      ]
+    },
+    {
+      "source": "browser-use/browser-use",
+      "skills": [
+        "browser-use"
+      ]
+    },
+    {
+      "source": "busirocket/agents-skills",
+      "skills": [
+        "busirocket-tailwindcss-v4"
+      ]
+    },
+    {
+      "source": "cin12211/orca-q",
+      "skills": [
+        "css-styling-expert"
+      ]
+    },
+    {
+      "source": "coinbase/agentic-wallet-skills",
+      "skills": [
+        "authenticate-wallet"
+      ]
+    },
+    {
+      "source": "coollabsio/coolify",
+      "skills": [
+        "tailwindcss-development"
+      ]
+    },
+    {
+      "source": "coreyhaines31/marketingskills",
+      "skills": [
+        "ab-test-setup",
+        "ad-creative",
+        "ai-seo",
+        "analytics-tracking",
+        "churn-prevention",
+        "cold-email",
+        "competitor-alternatives",
+        "content-strategy",
+        "copy-editing",
+        "copywriting",
+        "email-sequence",
+        "form-cro",
+        "free-tool-strategy",
+        "launch-strategy",
+        "marketing-ideas",
+        "marketing-psychology",
+        "onboarding-cro",
+        "page-cro",
+        "paid-ads",
+        "paywall-upgrade-cro",
+        "popup-cro",
+        "pricing-strategy",
+        "product-marketing-context",
+        "programmatic-seo",
+        "referral-program",
+        "schema-markup",
+        "seo-audit",
+        "signup-flow-cro",
+        "social-content"
+      ]
+    },
+    {
+      "source": "dammyjay93/interface-design",
+      "skills": [
+        "interface-design"
+      ]
+    },
+    {
+      "source": "davila7/claude-code-templates",
+      "skills": [
+        "railway-database"
+      ]
+    },
+    {
+      "source": "develite98/angular-best-practices",
+      "skills": [
+        "angular-css-bem-best-practices"
+      ]
+    },
+    {
+      "source": "dylantarre/animation-principles",
+      "skills": [
+        "css-native"
+      ]
+    },
+    {
+      "source": "expo/skills",
+      "skills": [
+        "building-native-ui",
+        "expo-tailwind-setup",
+        "native-data-fetching",
+        "upgrading-expo"
+      ]
+    },
+    {
+      "source": "facebook/react",
+      "skills": [
+        "feature-flags"
+      ]
+    },
+    {
+      "source": "firebase/agent-skills",
+      "skills": [
+        "firebase-auth-basics"
+      ]
+    },
+    {
+      "source": "github/awesome-copilot",
+      "skills": [
+        "ai-prompt-engineering-safety-review",
+        "git-commit"
+      ]
+    },
+    {
+      "source": "giuseppe-trisciuoglio/developer-kit",
+      "skills": [
+        "shadcn-ui",
+        "tailwind-css-patterns"
+      ]
+    },
+    {
+      "source": "google-labs-code/stitch-skills",
+      "skills": [
+        "design-md",
+        "enhance-prompt",
+        "react-components",
+        "stitch-loop"
+      ]
+    },
+    {
+      "source": "hairyf/skills",
+      "skills": [
+        "tailwindcss"
+      ]
+    },
+    {
+      "source": "hyva-themes/hyva-ai-tools",
+      "skills": [
+        "hyva-compile-tailwind-css"
+      ]
+    },
+    {
+      "source": "imbue-ai/vet",
+      "skills": [
+        "vet"
+      ]
+    },
+    {
+      "source": "inference-sh-9/skills",
+      "skills": [
+        "agent-browser",
+        "agent-tools",
+        "ai-image-generation",
+        "ai-video-generation",
+        "book-cover-design",
+        "nano-banana",
+        "nano-banana-2",
+        "og-image-design",
+        "python-executor",
+        "python-sdk",
+        "remotion-render",
+        "twitter-automation",
+        "web-search"
+      ]
+    },
+    {
+      "source": "jaredlander/freshbooks-speed",
+      "skills": [
+        "css"
+      ]
+    },
+    {
+      "source": "jeffallan/claude-skills",
+      "skills": [
+        "database-optimizer",
+        "react-native-expert"
+      ]
+    },
+    {
+      "source": "jeremylongshore/claude-code-plugins-plus-skills",
+      "skills": [
+        "css-module-generator"
+      ]
+    },
+    {
+      "source": "josiahsiegel/claude-plugin-marketplace",
+      "skills": [
+        "tailwindcss-accessibility",
+        "tailwindcss-advanced-components",
+        "tailwindcss-advanced-design-systems",
+        "tailwindcss-advanced-layouts",
+        "tailwindcss-animations",
+        "tailwindcss-debugging",
+        "tailwindcss-framework-integration",
+        "tailwindcss-fundamentals-v4",
+        "tailwindcss-mobile-first",
+        "tailwindcss-plugins",
+        "tailwindcss-responsive-darkmode"
+      ]
+    },
+    {
+      "source": "majesticlabs-dev/majestic-marketplace",
+      "skills": [
+        "frontend-css-patterns"
+      ]
+    },
+    {
+      "source": "maxnorm/magento2-agent-skills",
+      "skills": [
+        "magento-css-specialist"
+      ]
+    },
+    {
+      "source": "microsoft/GitHub-Copilot-for-Azure",
+      "skills": [
+        "appinsights-instrumentation",
+        "azure-ai",
+        "azure-aigateway",
+        "azure-compliance",
+        "azure-cost-optimization",
+        "azure-deploy",
+        "azure-kusto",
+        "azure-messaging",
+        "azure-observability",
+        "azure-postgres",
+        "azure-prepare",
+        "azure-rbac",
+        "azure-resource-lookup",
+        "azure-resource-visualizer",
+        "azure-storage",
+        "azure-validate",
+        "entra-app-registration",
+        "microsoft-foundry"
+      ]
+    },
+    {
+      "source": "mindrally/skills",
+      "skills": [
+        "nextjs-typescript-tailwindcss-supabase",
+        "postcss-best-practices",
+        "scss-best-practices"
+      ]
+    },
+    {
+      "source": "neondatabase/agent-skills",
+      "skills": [
+        "neon-postgres"
+      ]
+    },
+    {
+      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "skills": [
+        "ui-ux-pro-max"
+      ]
+    },
+    {
+      "source": "obra/superpowers",
+      "skills": [
+        "brainstorming",
+        "dispatching-parallel-agents",
+        "executing-plans",
+        "finishing-a-development-branch",
+        "receiving-code-review",
+        "requesting-code-review",
+        "subagent-driven-development",
+        "systematic-debugging",
+        "test-driven-development",
+        "using-git-worktrees",
+        "using-superpowers",
+        "verification-before-completion",
+        "writing-plans",
+        "writing-skills"
+      ]
+    },
+    {
+      "source": "onmax/nuxt-skills",
+      "skills": [
+        "nuxt-better-auth"
+      ]
+    },
+    {
+      "source": "paulirish/dotfiles",
+      "skills": [
+        "modern-css"
+      ]
+    },
+    {
+      "source": "pexoai/pexo-skills",
+      "skills": [
+        "videoagent-video-studio"
+      ]
+    },
+    {
+      "source": "planetscale/database-skills",
+      "skills": [
+        "mysql",
+        "postgres"
+      ]
+    },
+    {
+      "source": "pluginagentmarketplace/custom-plugin-css",
+      "skills": [
+        "css-animations",
+        "css-flexbox-grid"
+      ]
+    },
+    {
+      "source": "prisma/skills",
+      "skills": [
+        "prisma-database-setup"
+      ]
+    },
+    {
+      "source": "roin-orca/skills",
+      "skills": [
+        "fun-brainstorming"
+      ]
+    },
+    {
+      "source": "shadcn/ui",
+      "skills": [
+        "shadcn"
+      ]
+    },
+    {
+      "source": "sickn33/antigravity-awesome-skills",
+      "skills": [
+        "database-design",
+        "nextjs-supabase-auth"
+      ]
+    },
+    {
+      "source": "sleekdotdesign/agent-skills",
+      "skills": [
+        "sleek-design-mobile-apps"
+      ]
+    },
+    {
+      "source": "softaworks/agent-toolkit",
+      "skills": [
+        "database-schema-designer"
+      ]
+    },
+    {
+      "source": "squirrelscan/skills",
+      "skills": [
+        "audit-website"
+      ]
+    },
+    {
+      "source": "supabase/agent-skills",
+      "skills": [
+        "supabase-postgres-best-practices"
+      ]
+    },
+    {
+      "source": "supercent-io/skills-template",
+      "skills": [
+        "agent-configuration",
+        "agent-evaluation",
+        "agentic-development-principles",
+        "agentic-workflow",
+        "api-design",
+        "api-documentation",
+        "authentication-setup",
+        "backend-testing",
+        "bmad-orchestrator",
+        "changelog-maintenance",
+        "code-refactoring",
+        "code-review",
+        "codebase-search",
+        "copilot-coding-agent",
+        "data-analysis",
+        "database-schema-design",
+        "debugging",
+        "deployment-automation",
+        "environment-setup",
+        "file-organization",
+        "git-submodule",
+        "git-workflow",
+        "looker-studio-bigquery",
+        "monitoring-observability",
+        "npm-git-install",
+        "oh-my-codex",
+        "ohmg",
+        "opencontext",
+        "pattern-detection",
+        "performance-optimization",
+        "plannotator",
+        "pollinations-ai",
+        "prompt-repetition",
+        "ralph",
+        "responsive-design",
+        "security-best-practices",
+        "skill-standardization",
+        "sprint-retrospective",
+        "standup-meeting",
+        "system-environment-setup",
+        "task-estimation",
+        "task-planning",
+        "technical-writing",
+        "testing-strategies",
+        "ui-component-patterns",
+        "user-guide-writing",
+        "vercel-deploy",
+        "vibe-kanban",
+        "web-accessibility",
+        "workflow-automation"
+      ]
+    },
+    {
+      "source": "tencentcloudbase/skills",
+      "skills": [
+        "auth-wechat-miniprogram",
+        "cloudbase-document-database-in-wechat-miniprogram",
+        "relational-database-mcp-cloudbase"
+      ]
+    },
+    {
+      "source": "toolshell/skills",
+      "skills": [
+        "agent-ui",
+        "ai-avatar-video",
+        "ai-music-generation",
+        "ai-rag-pipeline",
+        "ai-social-media-content",
+        "case-study-writing",
+        "character-design-sheet",
+        "chat-ui",
+        "dialogue-audio",
+        "flux-image",
+        "image-to-video",
+        "javascript-sdk",
+        "linkedin-content",
+        "llm-models",
+        "pitch-deck-visuals",
+        "press-release-writing",
+        "product-changelog",
+        "product-hunt-launch",
+        "prompt-engineering",
+        "seo-content-brief",
+        "speech-to-text",
+        "storyboard-creation",
+        "text-to-speech",
+        "tools-ui",
+        "widgets-ui",
+        "youtube-thumbnail-design"
+      ]
+    },
+    {
+      "source": "tursodatabase/turso",
+      "skills": [
+        "async-io-model",
+        "code-quality",
+        "differential-fuzzer",
+        "index-knowledge",
+        "mvcc",
+        "pr-workflow",
+        "storage-format",
+        "testing",
+        "transaction-correctness"
+      ]
+    },
+    {
+      "source": "vercel-labs/agent-skills",
+      "skills": [
+        "vercel-composition-patterns",
+        "vercel-react-best-practices",
+        "vercel-react-native-skills",
+        "web-design-guidelines"
+      ]
+    },
+    {
+      "source": "vercel-labs/next-skills",
+      "skills": [
+        "next-best-practices",
+        "next-cache-components"
+      ]
+    },
+    {
+      "source": "vercel-labs/skills",
+      "skills": [
+        "find-skills"
+      ]
+    },
+    {
+      "source": "vercel/ai",
+      "skills": [
+        "ai-sdk"
+      ]
+    },
+    {
+      "source": "vm0-ai/vm0-skills",
+      "skills": [
+        "htmlcsstoimage"
+      ]
+    },
+    {
+      "source": "waynesutton/convexskills",
+      "skills": [
+        "convex-component-authoring"
+      ]
+    },
+    {
+      "source": "wshobson/agents",
+      "skills": [
+        "auth-implementation-patterns",
+        "database-migration",
+        "tailwind-design-system",
+        "typescript-advanced-types"
+      ]
+    },
+    {
+      "source": "xiaolai/vmark",
+      "skills": [
+        "css-design-tdd"
+      ]
+    },
+    {
+      "source": "zaddy6/agent-email-skill",
+      "skills": [
+        "agent-email-cli"
+      ]
+    }
+  ]
+}
