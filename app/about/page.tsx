@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { Section } from '@/components/ui/Section';
 import { Button } from '@/components/ui/Button';
 import { bandMembers, STATS } from '@/lib/constants';
+import { AIGallery } from '@/components/sections/AIGallery';
 
 export const metadata: Metadata = {
   title: 'O Nas',
@@ -100,6 +101,9 @@ export default function AboutPage() {
           </Button>
         </div>
       </Section>
+
+      {/* AI Generated Gallery */}
+      <AIGallery />
     </>
   );
 }

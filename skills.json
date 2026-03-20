@@ -7,6 +7,12 @@
       ]
     },
     {
+      "source": "adobe/skills",
+      "skills": [
+        "scrape-webpage"
+      ]
+    },
+    {
       "source": "affaan-m/everything-claude-code",
       "skills": [
         "database-migrations"
@@ -291,6 +297,7 @@
         "ai-prompt-engineering-safety-review",
         "git-commit",
         "image-manipulation-image-magick",
+        "migrating-oracle-to-postgres-stored-procedures",
         "next-intl-add-language",
         "playwright-explore-website"
       ]
@@ -410,6 +417,12 @@
       "source": "kostja94/marketing-skills",
       "skills": [
         "website-structure"
+      ]
+    },
+    {
+      "source": "lobehub/lobehub",
+      "skills": [
+        "store-data-structures"
       ]
     },
     {
@@ -635,6 +648,12 @@
       "source": "rightnow-ai/openfang",
       "skills": [
         "css-expert"
+      ]
+    },
+    {
+      "source": "rkreddyp/investrecipes",
+      "skills": [
+        "webpage-screenshotter"
       ]
     },
     {
