@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { Section } from '@/components/ui/Section';
 import { SpotifyEmbed } from '@/components/ui/SpotifyEmbed';
 import { VideoPlayer } from '@/components/ui/VideoPlayer';
+import { VideoGallery } from '@/components/sections/VideoGallery';
 import { albums } from '@/lib/constants';
 
 export const metadata: Metadata = {
@@ -123,6 +124,9 @@ export default function MusicPage() {
           </div>
         </div>
       </Section>
+
+      {/* Video Gallery */}
+      <VideoGallery />
     </>
   );
 }

@@ -216,7 +216,9 @@
     {
       "source": "davila7/claude-code-templates",
       "skills": [
-        "railway-database"
+        "generate-image",
+        "railway-database",
+        "video-downloader"
       ]
     },
     {
@@ -288,6 +290,7 @@
       "skills": [
         "ai-prompt-engineering-safety-review",
         "git-commit",
+        "image-manipulation-image-magick",
         "next-intl-add-language",
         "playwright-explore-website"
       ]
@@ -338,6 +341,14 @@
       "source": "imbue-ai/vet",
       "skills": [
         "vet"
+      ]
+    },
+    {
+      "source": "inferen-sh/skills",
+      "skills": [
+        "ai-marketing-videos",
+        "p-image",
+        "qwen-image-2"
       ]
     },
     {
@@ -432,6 +443,12 @@
       "source": "maxnorm/magento2-agent-skills",
       "skills": [
         "magento-css-specialist"
+      ]
+    },
+    {
+      "source": "medusajs/medusa-agent-skills",
+      "skills": [
+        "building-storefronts"
       ]
     },
     {
@@ -571,6 +588,7 @@
     {
       "source": "pexoai/pexo-skills",
       "skills": [
+        "videoagent-audio-studio",
         "videoagent-image-studio",
         "videoagent-video-studio"
       ]
@@ -733,6 +751,7 @@
         "user-guide-writing",
         "vercel-deploy",
         "vibe-kanban",
+        "video-production",
         "web-accessibility",
         "workflow-automation"
       ]

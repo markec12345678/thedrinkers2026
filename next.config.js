@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  output: 'standalone', // For PM2 deployment
+  // output: 'standalone', // Disabled for deployment
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'i.scdn.co' }, // Spotify
