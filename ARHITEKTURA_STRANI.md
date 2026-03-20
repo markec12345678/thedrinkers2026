@@ -369,6 +369,30 @@ images: {
 }
 ```
 
+### **4. Loading States & Skeleton Screens**
+
+```typescript
+// app/loading.tsx - Global loading state
+// app/*/loading.tsx - Per-route loading states
+// components/ui/Skeleton.tsx - Base skeleton
+// components/ui/SkeletonCard.tsx - Content-specific skeletons
+```
+
+**Features:**
+- 🎨 Skeleton screens za vse vsebine
+- ⚡ Per-route loading komponente
+- 🔄 Pulse animacije
+- 📱 Responsive dizajn
+- ✨ Framer Motion za globalni loading
+
+**Loading States:**
+- `app/loading.tsx` - Globalni loading
+- `app/tour/loading.tsx` - Tour dates skeleton
+- `app/music/loading.tsx` - Albums grid skeleton
+- `app/merch/loading.tsx` - Products skeleton
+- `app/gallery/loading.tsx` - Gallery grid skeleton
+- `app/about/loading.tsx` - Bio & members skeleton
+
 ### **3. Security Headers**
 
 ```typescript

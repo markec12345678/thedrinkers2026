@@ -156,9 +156,11 @@
         "product-marketing-context",
         "programmatic-seo",
         "referral-program",
+        "sales-enablement",
         "schema-markup",
         "seo-audit",
         "signup-flow-cro",
+        "site-architecture",
         "social-content"
       ]
     },
@@ -210,6 +212,7 @@
     {
       "source": "get-convex/agent-skills",
       "skills": [
+        "convex-create-component",
         "convex-migration-helper",
         "convex-performance-audit",
         "convex-quickstart",
@@ -319,6 +322,8 @@
     {
       "source": "mattpocock/skills",
       "skills": [
+        "improve-codebase-architecture",
+        "tdd",
         "write-a-prd"
       ]
     },
@@ -491,7 +496,6 @@
         "api-documentation",
         "authentication-setup",
         "backend-testing",
-        "bmad-orchestrator",
         "changelog-maintenance",
         "code-refactoring",
         "code-review",
@@ -519,7 +523,6 @@
         "ralph",
         "responsive-design",
         "security-best-practices",
-        "skill-standardization",
         "sprint-retrospective",
         "standup-meeting",
         "system-environment-setup",
