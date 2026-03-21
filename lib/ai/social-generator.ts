@@ -313,17 +313,17 @@ export async function generateSocialPost(
  * Generate multiple post variations
  */
 export async function generateMultiplePosts(
-  types: Array<{ type: AISocialPostRequest['type']; platform: string }>
+  types: Array<{ type: AISocialPostRequest['type']; platform: 'instagram' | 'twitter' | 'facebook' | 'tiktok' }>
 ): Promise<AISocialPostResponse[]> {
   const results: AISocialPostResponse[] = [];
-  
+
   for (const { type, platform } of types) {
     const result = await generateSocialPost({ type, platform });
     results.push(result);
-    
+
     // Small delay
     await new Promise(resolve => setTimeout(resolve, 300));
   }
-  
+
   return results;
 }

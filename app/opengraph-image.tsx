@@ -243,8 +243,6 @@ export default async function Image() {
     ),
     {
       ...size,
-      // Use higher quality encoding
-      quality: 90,
     }
   );
 }
