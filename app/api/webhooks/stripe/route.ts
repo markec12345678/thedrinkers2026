@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { headers } from 'next/headers';
+import { checkAndUpgradeMembership } from '@/lib/membership';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-12-18.acacia',
@@ -41,6 +42,17 @@ export async function POST(request: NextRequest) {
       console.log('Order sent to Printful successfully');
     } catch (error) {
       console.error('Failed to send order to Printful:', error);
+    }
+
+    // Check and upgrade membership based on total spent
+    if (session.client_reference_id) {
+      try {
+        const amountInEur = (session.amount_total || 0) / 100;
+        await checkAndUpgradeMembership(session.client_reference_id, amountInEur);
+        console.log('Membership upgrade check completed');
+      } catch (error) {
+        console.error('Failed to check membership upgrade:', error);
+      }
     }
   }
 
