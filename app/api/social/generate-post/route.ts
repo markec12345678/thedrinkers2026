@@ -8,37 +8,6 @@ export const dynamic = 'force-dynamic';
 /**
  * POST /api/social/generate-post
  * Generate AI-powered social media content
- * 
- * Request:
- * {
- *   type: 'concert' | 'album' | 'merch' | 'tour' | 'announcement',
- *   platform: 'instagram' | 'twitter' | 'facebook' | 'tiktok',
- *   content?: {
- *     title?: string,
- *     description?: string,
- *     imageUrl?: string,
- *     eventDate?: string,
- *     venue?: string
- *   },
- *   tone?: 'energetic' | 'professional' | 'fun' | 'nostalgic'
- * }
- * 
- * Response:
- * {
- *   success: boolean,
- *   post: {
- *     caption: string,
- *     hashtags: string[],
- *     imagePrompt?: string,
- *     platform: string,
- *     type: string
- *   },
- *   alternatives?: Array<{
- *     caption: string,
- *     hashtags: string[]
- *   }>,
- *   error?: string
- * }
  */
 export async function POST(request: NextRequest) {
   try {
@@ -47,10 +16,7 @@ export async function POST(request: NextRequest) {
     // Validate required fields
     if (!body.type || !body.platform) {
       return NextResponse.json(
-        {
-          success: false,
-          error: 'Type and platform are required',
-        },
+        { success: false, error: 'Type and platform are required' },
         { status: 400 }
       );
     }
@@ -59,22 +25,16 @@ export async function POST(request: NextRequest) {
     const validTypes = ['concert', 'album', 'merch', 'tour', 'announcement'];
     if (!validTypes.includes(body.type)) {
       return NextResponse.json(
-        {
-          success: false,
-          error: `Invalid type. Must be one of: ${validTypes.join(', ')}`,
-        },
+        { success: false, error: `Invalid type. Must be one of: ${validTypes.join(', ')}` },
         { status: 400 }
       );
     }
 
     // Validate platform
-    const validPlatforms = ['instagram', 'twitter', 'facebook', 'tiktok'];
+    const validPlatforms = ['instagram', 'twitter', 'facebook', 'tiktok', 'linkedin'];
     if (!validPlatforms.includes(body.platform)) {
       return NextResponse.json(
-        {
-          success: false,
-          error: `Invalid platform. Must be one of: ${validPlatforms.join(', ')}`,
-        },
+        { success: false, error: `Invalid platform. Must be one of: ${validPlatforms.join(', ')}` },
         { status: 400 }
       );
     }
@@ -149,6 +109,13 @@ export async function GET() {
         maxCaptionLength: 2200,
         optimalHashtags: 5,
       },
+      { 
+        id: 'linkedin', 
+        name: 'LinkedIn', 
+        icon: '💼',
+        maxCaptionLength: 3000,
+        optimalHashtags: 5,
+      },
     ],
     tones: [
       { id: 'energetic', name: 'Energetic', icon: '⚡', description: "Rock'n'roll enthusiasm" },
@@ -160,6 +127,18 @@ export async function GET() {
       colors: ['Crimson Red', 'Black', 'Silver'],
       elements: ['Beer', 'Guitars', 'Rock', 'Slovenian pride'],
       phrases: ['Na zdravje!', 'Pijemo ga radi!', 'Življenje je prekratko!'],
+    },
+    templates: {
+      concert: {
+        instagram: '🤘 PRIPRAVLJENI NA NORO NOČ? 🤘\n\n{band} prihaja v {venue}! {date}\n\nPričakuje vas:\n🔥 Najboljši slovenski rock\n🍺 Mrzlo pivo\n⚡ Energija do jutra\n\nVstopnice že v prodaji! {cta}\n\n{hashtags}',
+        twitter: '🎸 {band} LIVE in {venue}!\n{date}\n\nTickets: {cta}\n\n{hashtags}',
+      },
+      album: {
+        instagram: '🔥 NOV ALBUM JE TU! 🔥\n\n\'{album}\' - zdaj na vseh streaming platformah!\n\nPoslušaj zdaj! {cta}\n\n{hashtags}',
+      },
+      merch: {
+        instagram: '👕 NOVA MERCH KOLEKCIJA! 👕\n\nPokaži svojo zvestobo!\n\n🔥 Omejena serija\n🔥 Ekskluzivni dizajni\n🔥 Samo za fane!\n\nNaroči zdaj! {cta}\n\n{hashtags}',
+      },
     },
   });
 }

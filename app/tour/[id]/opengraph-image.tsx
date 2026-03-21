@@ -1,8 +1,10 @@
 import { ImageResponse } from 'next/og';
-import { TOUR_DATES_MOCK } from '@/lib/constants';
+import { SITE_CONFIG } from '@/lib/constants';
+
+// Route segment config
+export const runtime = 'edge';
 
 // Image metadata
-export const alt = 'Koncert';
 export const size = {
   width: 1200,
   height: 630,
@@ -10,21 +12,14 @@ export const size = {
 
 export const contentType = 'image/png';
 
-// Format date in Slovenian
-function formatDate(dateString: string) {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('sl-SI', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-}
-
-// Image generation
+// Dynamic OG image generation for tour pages
 export default async function Image({ params }: { params: { id: string } }) {
-  const tourDate = TOUR_DATES_MOCK.find((d) => d.id === params.id) || TOUR_DATES_MOCK[0];
+  // Mock tour data (in production, fetch from database)
+  const tourData = {
+    city: 'Ljubljana',
+    venue: 'Orto Bar',
+    date: '15.4.2026',
+  };
 
   return new ImageResponse(
     (
@@ -38,7 +33,6 @@ export default async function Image({ params }: { params: { id: string } }) {
           justifyContent: 'center',
           background: 'linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 50%, #0a0a0a 100%)',
           position: 'relative',
-          padding: '80px',
         }}
       >
         {/* Background Pattern */}
@@ -49,124 +43,157 @@ export default async function Image({ params }: { params: { id: string } }) {
             left: 0,
             right: 0,
             bottom: 0,
-            background: 'radial-gradient(circle at 50% 50%, rgba(220, 20, 60, 0.3) 0%, transparent 60%)',
+            background: 'radial-gradient(circle at 30% 50%, rgba(220, 20, 60, 0.3) 0%, transparent 50%)',
           }}
         />
 
-        {/* Sold Out Badge */}
-        {tourDate.soldOut && (
-          <div
-            style={{
-              position: 'absolute',
-              top: '60px',
-              right: '60px',
-              background: '#dc143c',
-              color: '#ffffff',
-              padding: '20px 40px',
-              fontSize: '32px',
-              fontWeight: 'bold',
-              textTransform: 'uppercase',
-              letterSpacing: '2px',
-              transform: 'rotate(10deg)',
-              boxShadow: '0 10px 30px rgba(220, 20, 60, 0.5)',
-              zIndex: 10,
-            }}
-          >
-            RAZPRODANO
-          </div>
-        )}
-
-        {/* Band Name */}
-        <div
-          style={{
-            fontSize: '56px',
-            color: '#dc143c',
-            marginBottom: '20px',
-            fontWeight: 'bold',
-            textTransform: 'uppercase',
-            zIndex: 1,
-          }}
-        >
-          THE DRINKERS
-        </div>
-
-        {/* Live Icon */}
-        <div
-          style={{
-            fontSize: '80px',
-            marginBottom: '30px',
-            zIndex: 1,
-          }}
-        >
-          🎤 LIVE
-        </div>
-
-        {/* City & Venue */}
-        <div
-          style={{
-            fontSize: '72px',
-            fontWeight: 'bold',
-            color: '#ffffff',
-            textAlign: 'center',
-            marginBottom: '20px',
-            textShadow: '0 0 40px rgba(220, 20, 60, 0.5)',
-            zIndex: 1,
-          }}
-        >
-          {tourDate.city}
-        </div>
-
-        <div
-          style={{
-            fontSize: '48px',
-            color: '#c0c0c0',
-            marginBottom: '40px',
-            zIndex: 1,
-          }}
-        >
-          📍 {tourDate.venue}
-        </div>
-
-        {/* Date & Time */}
-        <div
-          style={{
-            fontSize: '40px',
-            color: '#ffffff',
-            background: 'rgba(220, 20, 60, 0.2)',
-            padding: '20px 60px',
-            borderRadius: '50px',
-            border: '2px solid #dc143c',
-            marginBottom: '30px',
-            zIndex: 1,
-          }}
-        >
-          📅 {formatDate(tourDate.date)}
-        </div>
-
-        {/* Price */}
-        {tourDate.price && (
-          <div
-            style={{
-              fontSize: '36px',
-              color: '#c0c0c0',
-              zIndex: 1,
-            }}
-          >
-            Vstopnica: {tourDate.price}
-          </div>
-        )}
-
-        {/* Footer */}
+        {/* Glow Effects */}
         <div
           style={{
             position: 'absolute',
-            bottom: '40px',
-            fontSize: '28px',
-            color: '#666666',
+            top: '10%',
+            right: '10%',
+            width: '400px',
+            height: '400px',
+            background: 'radial-gradient(circle, rgba(220, 20, 60, 0.4) 0%, transparent 70%)',
+            borderRadius: '50%',
+            filter: 'blur(60px)',
+          }}
+        />
+
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '10%',
+            left: '10%',
+            width: '300px',
+            height: '300px',
+            background: 'radial-gradient(circle, rgba(220, 20, 60, 0.3) 0%, transparent 70%)',
+            borderRadius: '50%',
+            filter: 'blur(50px)',
+          }}
+        />
+
+        {/* Main Content */}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
             zIndex: 1,
+            padding: '40px',
           }}
         >
-          thedrinkers.si/tour
+          {/* Music Note Icon */}
+          <div
+            style={{
+              fontSize: '80px',
+              marginBottom: '20px',
+              filter: 'drop-shadow(0 0 20px rgba(220, 20, 60, 0.6))',
+            }}
+          >
+            🎸
+          </div>
+
+          {/* Band Name */}
+          <div
+            style={{
+              fontSize: '70px',
+              fontWeight: 'bold',
+              color: '#ffffff',
+              marginBottom: '10px',
+              textTransform: 'uppercase',
+              letterSpacing: '-2px',
+              textShadow: '0 0 40px rgba(220, 20, 60, 0.5)',
+            }}
+          >
+            {SITE_CONFIG.name}
+          </div>
+
+          {/* Tour Info */}
+          <div
+            style={{
+              fontSize: '40px',
+              color: '#dc143c',
+              marginBottom: '20px',
+              fontWeight: 'bold',
+            }}
+          >
+            LIVE in {tourData.city}
+          </div>
+
+          {/* Venue & Date */}
+          <div
+            style={{
+              fontSize: '32px',
+              color: '#c0c0c0',
+              textAlign: 'center',
+            }}
+          >
+            {tourData.venue} • {tourData.date}
+          </div>
+
+          {/* CTA */}
+          <div
+            style={{
+              marginTop: '30px',
+              fontSize: '28px',
+              color: '#ffffff',
+              background: 'linear-gradient(90deg, #dc143c, #ff1493)',
+              padding: '15px 40px',
+              borderRadius: '30px',
+              fontWeight: 'bold',
+            }}
+          >
+            GET TICKETS
+          </div>
+        </div>
+
+        {/* Corner Decorations */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '30px',
+            left: '30px',
+            fontSize: '40px',
+            opacity: 0.4,
+          }}
+        >
+          ✦
+        </div>
+        <div
+          style={{
+            position: 'absolute',
+            top: '30px',
+            right: '30px',
+            fontSize: '40px',
+            opacity: 0.4,
+          }}
+        >
+          ✦
+        </div>
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '30px',
+            left: '30px',
+            fontSize: '40px',
+            opacity: 0.4,
+          }}
+        >
+          ✦
+        </div>
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '30px',
+            right: '30px',
+            fontSize: '40px',
+            opacity: 0.4,
+          }}
+        >
+          ✦
         </div>
       </div>
     ),
