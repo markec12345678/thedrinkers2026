@@ -71,7 +71,7 @@ export function VideoGallery() {
             URADNI VIDEI
           </h2>
           <p className="text-xl text-text-gray">
-            The Drinkers - Rock'n'roll iz srca Slovenije
+            The Drinkers - Rock&apos;n&apos;roll iz srca Slovenije
           </p>
         </motion.div>
 

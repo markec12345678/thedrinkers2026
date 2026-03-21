@@ -63,7 +63,7 @@ export function DrinkersBar() {
       <Section className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="text-6xl mb-4 animate-spin">🍺</div>
-          <p className="text-text-gray">Loading Drinkers' Bar...</p>
+          <p className="text-text-gray">Loading Drinkers&apos; Bar...</p>
         </div>
       </Section>
     );

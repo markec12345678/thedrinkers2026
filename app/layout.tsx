@@ -7,7 +7,9 @@ import { Footer } from "@/components/layout/Footer";
 import { CartProvider } from "@/lib/cart";
 import Script from "next/script";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { Suspense } from "react";
 import { VercelAnalytics } from './VercelAnalytics';
+import { PlausibleAnalytics } from './PlausibleAnalytics';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -103,8 +105,25 @@ export default function RootLayout({
           <Footer />
         </CartProvider>
 
+        {/* Plausible Analytics (Privacy-Friendly) */}
+        {process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN && (
+          <>
+            <Script
+              defer
+              data-domain={process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN}
+              src="https://plausible.io/js/script.js"
+              strategy="afterInteractive"
+            />
+            <Suspense fallback={null}>
+              <PlausibleAnalytics />
+            </Suspense>
+          </>
+        )}
+
         {/* Vercel Analytics + Web Vitals */}
-        <VercelAnalytics />
+        <Suspense fallback={null}>
+          <VercelAnalytics />
+        </Suspense>
 
         {/* Google Analytics - replace GA_MEASUREMENT_ID with actual ID */}
         {process.env.NEXT_PUBLIC_GA_ID && (

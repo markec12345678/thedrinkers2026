@@ -1,16 +1,17 @@
-import { Metadata } from 'next';
+'use client';
+
 import { Section } from '@/components/ui/Section';
 import { Button } from '@/components/ui/Button';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { merchItems } from '@/lib/constants';
 import { formatPrice } from '@/lib/utils';
-
-export const metadata: Metadata = {
-  title: 'Trgovina',
-  description: 'Nakupi uradne merchandise skupine The Drinkers - majice, hoodieji, vinilke in več.',
-};
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function MerchPage() {
+  const router = useRouter();
+  const [notifyEmails, setNotifyEmails] = useState<Record<string, string>>({});
+  
   // Filter only t-shirts for MVP
   const mvpProducts = merchItems.filter(item => 
     item.name.toLowerCase().includes('t-shirt') || 
@@ -105,10 +106,10 @@ export default function MerchPage() {
                   )}
 
                   {/* Add to Cart Button */}
-                  <Button 
-                    className="w-full mb-2" 
+                  <Button
+                    className="w-full mb-2"
                     disabled={!item.inStock}
-                    onClick={() => window.location.href = '#checkout'}
+                    onClick={() => router.push('#checkout')}
                   >
                     {item.inStock ? 'DODAJ V KOŠARICO' : 'OBVESTI ME'}
                   </Button>
@@ -185,6 +186,7 @@ export default function MerchPage() {
                   {/* Notify Me Form */}
                   <form className="space-y-2" onSubmit={(e) => {
                     e.preventDefault();
+                    console.log('Notify me submitted');
                     alert('Hvala! Obvestili te bomo ko bo na voljo.');
                   }}>
                     <input
@@ -216,6 +218,7 @@ export default function MerchPage() {
             </p>
             <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto" onSubmit={(e) => {
               e.preventDefault();
+              console.log('Newsletter signup submitted');
               alert('Hvala za prijavo! 🤘');
             }}>
               <input

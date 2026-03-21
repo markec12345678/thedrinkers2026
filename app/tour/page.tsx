@@ -3,8 +3,31 @@
 import dynamic from 'next/dynamic';
 import { Section } from '@/components/ui/Section';
 
-const TourCalendar = dynamic(() => import('@/components/sections/TourCalendar').then(mod => mod.TourCalendar), { ssr: false });
-const SloveniaMap = dynamic(() => import('@/components/features/SloveniaMap').then(mod => mod.SloveniaMap), { ssr: false });
+// Lazy load heavy components
+const TourCalendar = dynamic(
+  () => import('@/components/sections/TourCalendar').then(mod => mod.TourCalendar), 
+  { 
+    ssr: false,
+    loading: () => (
+      <Section className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4 animate-pulse">📅</div>
+          <p className="text-text-gray">Loading tour dates...</p>
+        </div>
+      </Section>
+    )
+  }
+);
+
+const SloveniaMap = dynamic(
+  () => import('@/components/features/SloveniaMap').then(mod => mod.SloveniaMap), 
+  { 
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-[500px] bg-rock-gray rounded-lg animate-pulse" />
+    )
+  }
+);
 
 export default function TourPage() {
   return (

@@ -1,4 +1,5 @@
-import { JsonLd, MusicGroup, Event, Product, AggregateOffer } from '@/lib/seo';
+import { JsonLd } from '@/lib/seo';
+import { generateCombinedSchema, generateEventSchema, generateProductSchema, generateMusicGroupSchema } from '@/lib/schema';
 import { SITE_CONFIG, bandMembers, tourDates, merchItems, albums } from '@/lib/constants';
 
 interface SchemaProps {
@@ -7,117 +8,20 @@ interface SchemaProps {
 }
 
 export function SchemaOrg({ type = 'webSite', data }: SchemaProps) {
+  // Use new schema generator for musicGroup
   if (type === 'musicGroup') {
-    return (
-      <JsonLd
-        schema={{
-          '@context': 'https://schema.org',
-          '@type': 'MusicGroup',
-          name: 'The Drinkers',
-          description: SITE_CONFIG.description,
-          url: SITE_CONFIG.url,
-          sameAs: Object.values(SITE_CONFIG.social).filter(Boolean),
-          image: {
-            '@type': 'ImageObject',
-            url: `${SITE_CONFIG.url}/og-image.jpg`,
-            width: 1200,
-            height: 630,
-          },
-          genre: ['Rock', 'Alternative Rock', 'Hard Rock'],
-          members: bandMembers.map((member) => ({
-            '@type': 'Person',
-            name: member.name,
-            jobTitle: member.role,
-          })),
-          address: {
-            '@type': 'PostalAddress',
-            addressLocality: 'Ljubljana',
-            addressCountry: 'Slovenia',
-          },
-          contactPoint: {
-            '@type': 'ContactPoint',
-            email: SITE_CONFIG.contact.email,
-            telephone: SITE_CONFIG.contact.phone,
-            contactType: 'booking',
-          },
-        }}
-      />
-    );
+    const schema = generateMusicGroupSchema();
+    return <JsonLd schema={schema} />;
   }
 
   if (type === 'event' && data) {
-    return (
-      <JsonLd
-        schema={{
-          '@context': 'https://schema.org',
-          '@type': 'Event',
-          name: `The Drinkers - ${data.venue}`,
-          description: `Koncert skupine The Drinkers v ${data.venue}, ${data.city}`,
-          url: `${SITE_CONFIG.url}/tour`,
-          startDate: data.date,
-          endDate: data.date,
-          eventStatus: 'https://schema.org/EventScheduled',
-          eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-          location: {
-            '@type': 'MusicVenue',
-            name: data.venue,
-            address: {
-              '@type': 'PostalAddress',
-              streetAddress: data.address || '',
-              addressLocality: data.city,
-              addressCountry: 'SI',
-            },
-          },
-          image: {
-            '@type': 'ImageObject',
-            url: `${SITE_CONFIG.url}/og-image.jpg`,
-            width: 1200,
-            height: 630,
-          },
-          offers: {
-            '@type': 'Offer',
-            url: data.ticketUrl || `${SITE_CONFIG.url}/tour`,
-            price: data.price?.replace('€', '') || '0',
-            priceCurrency: 'EUR',
-            availability: data.soldOut
-              ? 'https://schema.org/SoldOut'
-              : 'https://schema.org/InStock',
-            validFrom: new Date().toISOString(),
-          },
-          performer: {
-            '@type': 'MusicGroup',
-            name: 'The Drinkers',
-          },
-        }}
-      />
-    );
+    const schema = generateEventSchema(data);
+    return <JsonLd schema={schema} />;
   }
 
   if (type === 'product' && data) {
-    return (
-      <JsonLd
-        schema={{
-          '@context': 'https://schema.org',
-          '@type': 'Product',
-          name: data.name,
-          description: `${data.name} - Uradni merchandise skupine The Drinkers`,
-          image: `${SITE_CONFIG.url}${data.image}`,
-          brand: {
-            '@type': 'Brand',
-            name: 'The Drinkers',
-          },
-          offers: {
-            '@type': 'Offer',
-            price: data.price,
-            priceCurrency: 'EUR',
-            availability: data.inStock
-              ? 'https://schema.org/InStock'
-              : 'https://schema.org/OutOfStock',
-            url: `${SITE_CONFIG.url}/merch`,
-          },
-        }}
-      />
-    );
+    const schema = generateProductSchema(data);
+    return <JsonLd schema={schema} />;
   }
 
   // Default WebSite schema

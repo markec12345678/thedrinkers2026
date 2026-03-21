@@ -1,10 +1,137 @@
+# ====================================
+# The Drinkers - Robots.txt
+# ====================================
+# Allow all bots to crawl the site
+# Block API routes and admin pages
+
+# Sitemap location
+Sitemap: https://thedrinkers.si/sitemap.xml
+
+# Allow all bots
 User-agent: *
 Allow: /
 
-# Sitemap
-Sitemap: https://thedrinkers.si/sitemap.xml
-
-# Disallow admin/private areas
+# Block API routes
 Disallow: /api/
-Disallow: /_next/
-Disallow: /static/
+
+# Block admin pages (but allow analytics)
+Disallow: /admin/
+Allow: /admin/analytics
+
+# Block authentication routes
+Disallow: /api/auth/
+
+# Block dashboard (private area)
+Disallow: /dashboard/
+
+# Block VIP lounge (members only)
+Disallow: /vip-lounge/
+
+# Allow AI bots (GEO Optimization)
+# These bots should be allowed for AI search visibility
+
+# Googlebot (Google Search)
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+Disallow: /dashboard/
+
+# Bingbot (Microsoft Copilot)
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+Disallow: /dashboard/
+
+# PerplexityBot (Perplexity AI)
+User-agent: PerplexityBot
+Allow: /
+Disallow: /api/
+Disallow: /dashboard/
+
+# ChatGPT-User (ChatGPT with browsing)
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /api/
+Disallow: /dashboard/
+
+# GPTBot (OpenAI crawler)
+User-agent: GPTBot
+Allow: /
+Disallow: /api/
+Disallow: /dashboard/
+
+# ClaudeBot / anthropic-ai (Claude AI)
+User-agent: ClaudeBot
+Allow: /
+Disallow: /api/
+Disallow: /dashboard/
+
+# anthropic-ai
+User-agent: anthropic-ai
+Allow: /
+Disallow: /api/
+Disallow: /dashboard/
+
+# CCBot (Common Crawl)
+User-agent: CCBot
+Allow: /
+Disallow: /api/
+Disallow: /dashboard/
+
+# Facebook External Hit (for social sharing)
+User-agent: facebookexternalhit
+Allow: /
+Disallow: /api/
+Disallow: /dashboard/
+
+# Twitterbot (for Twitter cards)
+User-agent: Twitterbot
+Allow: /
+Disallow: /api/
+Disallow: /dashboard/
+
+# LinkedInBot (for LinkedIn sharing)
+User-agent: LinkedInBot
+Allow: /
+Disallow: /api/
+Disallow: /dashboard/
+
+# WhatsApp (for link previews)
+User-agent: WhatsApp
+Allow: /
+Disallow: /api/
+Disallow: /dashboard/
+
+# Block bad bots (scrapers, spam bots)
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: PetalBot
+Disallow: /
+
+# Block AI training bots (optional - uncomment if you want to block)
+# User-agent: Timpibot
+# Disallow: /
+
+# User-agent: Omgilibot
+# Disallow: /
+
+# Crawl Delay (optional - be nice to server)
+Crawl-delay: 1
+
+# ====================================
+# Notes:
+# - All major search engines allowed
+# - AI bots allowed for GEO optimization
+# - API and private areas blocked
+# - Social media bots allowed for sharing
+# ====================================
