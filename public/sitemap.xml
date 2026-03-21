@@ -95,12 +95,36 @@
     <priority>0.7</priority>
   </url>
 
-  <!-- Admin Analytics -->
+  <!-- Blog Pages -->
   <url>
-    <loc>https://thedrinkers.si/admin/analytics</loc>
+    <loc>https://thedrinkers.si/blog</loc>
+    <lastmod>2026-03-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Press Pages -->
+  <url>
+    <loc>https://thedrinkers.si/press</loc>
+    <lastmod>2026-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Media Pages -->
+  <url>
+    <loc>https://thedrinkers.si/media</loc>
+    <lastmod>2026-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- AI Setlist -->
+  <url>
+    <loc>https://thedrinkers.si/ai-setlist</loc>
     <lastmod>2026-03-21</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.8</priority>
   </url>
 
   <!-- Bar Pages -->
