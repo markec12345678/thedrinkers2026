@@ -12,6 +12,7 @@ import MusicScreen from './screens/MusicScreen';
 import MerchScreen from './screens/MerchScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import ARScreen from './screens/ARScreen';
+import DashboardScreen from './screens/DashboardScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -90,6 +91,16 @@ export default function App() {
             title: 'AR',
             tabBarIcon: ({ focused, color, size }) => (
               <Ionicons name="scan" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen 
+          name="Dashboard" 
+          component={DashboardScreen}
+          options={{ 
+            title: 'Stats',
+            tabBarIcon: ({ focused, color, size }) => (
+              <Ionicons name="stats-chart" size={size} color={color} />
             ),
           }}
         />
