@@ -11,6 +11,7 @@ import TourScreen from './screens/TourScreen';
 import MusicScreen from './screens/MusicScreen';
 import MerchScreen from './screens/MerchScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import ARScreen from './screens/ARScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -81,6 +82,16 @@ export default function App() {
           name="Profile" 
           component={ProfileScreen}
           options={{ title: 'Profil' }}
+        />
+        <Tab.Screen 
+          name="AR" 
+          component={ARScreen}
+          options={{ 
+            title: 'AR',
+            tabBarIcon: ({ focused, color, size }) => (
+              <Ionicons name="scan" size={size} color={color} />
+            ),
+          }}
         />
       </Tab.Navigator>
     </NavigationContainer>
