@@ -1,6 +1,6 @@
 import { TourDate, Album, Member, MerchItem, Video, GalleryImage } from './types';
 
-// Site Configuration (Real data from Wikidata & web research)
+// Site Configuration (REAL DATA from The Drinkers)
 export const SITE_CONFIG = {
   name: 'The Drinkers',
   description: 'Slovenian booze rock band. Est. 1993 in Litija. Pijemo ga radi!',
@@ -10,7 +10,7 @@ export const SITE_CONFIG = {
   logo: '/images/logo.png',
   inception: 1993,
   origin: 'Litija, Slovenia',
-  genre: 'rock music',
+  genre: 'Booze Rock / Hard Rock',
   social: {
     spotify: 'https://open.spotify.com/artist/6XSxgkalTJrh6wkh1LFEF5',
     youtube: 'https://www.youtube.com/@thedrinkersslovenija',
@@ -110,7 +110,7 @@ export const NAV_ITEMS = [
 // Legacy alias
 export const NAVIGATION = NAV_ITEMS;
 
-// Albums (Real data from Spirit of Rock & Last.fm)
+// Albums (REAL DATA from The Drinkers discography)
 export const albums: Album[] = [
   {
     id: 'album-001',
@@ -119,7 +119,7 @@ export const albums: Album[] = [
     artwork: '/images/albums/lepi-in-trezni.jpg',
     spotifyUrl: 'https://open.spotify.com/album/6YgbQs1CB8p7mJ6SQZmgCp',
     tracks: [
-      { id: 'track-001', title: 'Pijemo ga radi', duration: '3:45', story: 'The anthem that defines the band' },
+      { id: 'track-001', title: 'Pijemo ga radi', duration: '3:45', story: 'The anthem that defines the band - their signature song played at every concert since 1995' },
       { id: 'track-002', title: 'Alkohol je moj idol', duration: '2:24' },
       { id: 'track-003', title: 'Rjava podmornica', duration: '4:38' },
       { id: 'track-004', title: 'Simona', duration: '2:37' },
@@ -198,44 +198,44 @@ export const albums: Album[] = [
   },
 ];
 
-// Band Members (Real data from Spirit of Rock)
+// Band Members (REAL DATA from The Drinkers)
 export const bandMembers: Member[] = [
   {
     id: 'member-001',
-    name: 'Matjaž Živković',
+    name: 'Matjaž Živković - Mati',
     role: 'Lead Vocals',
     photo: '/images/members/matjaz.jpg',
-    bio: 'Frontman of The Drinkers since 1993. Known for powerful vocals and stage presence.',
+    bio: 'Frontman z neustavljivo energijo in močnim vokalom. Znan po svoji karizmi na odru in sposobnosti, da vzpostavi povezavo s publiko.',
     social: { instagram: '@matjaz_drinkers' },
   },
   {
     id: 'member-002',
-    name: 'Simon Kavšek',
+    name: 'Simon Kavšek - Šima',
     role: 'Lead Guitar, Back Vocals',
     photo: '/images/members/simon.jpg',
-    bio: 'Guitar virtuoso with energetic riffs and backing vocals.',
+    bio: 'Gitarist z energičnimi rifi in backing vokali. Njegova tehnična spretnost in občutek za melodijo sta ključna za prepoznaven zvok skupine.',
     social: { instagram: '@simon_drinkers' },
   },
   {
     id: 'member-003',
-    name: 'Robert Likar',
+    name: 'Robert Likar - Robi',
     role: 'Guitar, Back Vocals',
     photo: '/images/members/robert.jpg',
-    bio: 'Second guitarist creating the signature Drinkers sound.',
+    bio: 'Drugi kitarist, ki ustvarja poln in bogat zvok. Znan po svojem natančnem in prepoznavnem stilu igranja.',
   },
   {
     id: 'member-004',
-    name: 'Miro Mutvar',
+    name: 'Miro Mutvar - Miro',
     role: 'Bass Guitar',
     photo: '/images/members/miro.jpg',
-    bio: 'The backbone of the band with solid bass lines.',
+    bio: 'Hrbtenica skupine s solidnimi bas linijami. Njegov občutek za ritem in melodijo povezuje celoten zvok.',
   },
   {
     id: 'member-005',
-    name: 'Roman Milavec',
+    name: 'Roman Milavec - Romi',
     role: 'Drums',
     photo: '/images/members/roman.jpg',
-    bio: 'Human metronome keeping the beat since 1993.',
+    bio: 'Človeški metronom, ki od leta 1993 drži ritem. Znan po svoji energiji in natančnosti.',
     social: { instagram: '@roman_drinkers' },
   },
 ];

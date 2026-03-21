@@ -14,6 +14,7 @@ import { PlausibleAnalytics } from './PlausibleAnalytics';
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
   title: {
     default: SITE_CONFIG.name,
     template: `%s | ${SITE_CONFIG.name}`,
@@ -32,6 +33,10 @@ export const metadata: Metadata = {
   authors: [{ name: "The Drinkers" }],
   creator: "The Drinkers",
   publisher: "The Drinkers",
+  // Google Search Console verification
+  other: {
+    'google-site-verification': process.env.NEXT_PUBLIC_GSC_VERIFICATION || '',
+  },
   openGraph: {
     type: "website",
     locale: SITE_CONFIG.locale,
