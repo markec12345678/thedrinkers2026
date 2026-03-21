@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import Stripe from 'stripe';
+
+// Initialize Stripe
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2024-12-18.acacia',
+});
 
 // Edge Runtime for fast checkout
 export const runtime = 'edge';
@@ -33,34 +39,50 @@ export async function POST(request: NextRequest) {
     const shipping = subtotal > 50 ? 0 : 5; // Free shipping over €50
     const total = subtotal + shipping;
 
-    console.log('Checkout request:', {
-      items,
-      customer: { email, name, address },
-      subtotal,
-      shipping,
-      total,
+    // Create Stripe Checkout Session
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card', 'paypal'],
+      line_items: items.map(item => ({
+        price_data: {
+          currency: 'eur',
+          product_data: {
+            name: `${item.name}${item.size ? ` - Size: ${item.size}` : ''}`,
+            images: item.image ? [item.image] : undefined,
+          },
+          unit_amount: Math.round(item.price * 100), // Convert to cents
+        },
+        quantity: item.quantity,
+      })),
+      mode: 'payment',
+      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/merch?success=true&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/merch?canceled=true`,
+      customer_email: email,
+      shipping_address_collection: {
+        allowed_countries: ['SI', 'HR', 'AT', 'IT', 'DE', 'FR', 'NL', 'BE', 'ES', 'PT', 'PL', 'CZ', 'SK', 'HU'],
+      },
+      shipping_options: [
+        {
+          shipping_rate_data: {
+            type: 'fixed_amount',
+            fixed_amount: {
+              amount: shipping * 100,
+              currency: 'eur',
+            },
+            display_name: 'Standard Shipping (5-7 days)',
+          },
+        },
+      ],
+      metadata: {
+        customer_name: name,
+        printful_order: 'true',
+        items_count: items.length.toString(),
+      },
     });
 
-    // TODO: Integrate with Stripe
-    // For now, simulate successful checkout
-    
-    // In production, you would:
-    // 1. Create Stripe Checkout Session
-    // 2. Send session URL to client
-    // 3. Stripe handles payment
-    // 4. Webhook confirms payment
-    // 5. Send order to Printful API
-
-    return NextResponse.json({
-      success: true,
-      message: 'Naročilo ustvarjeno!',
-      orderId: `TD-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      subtotal,
-      shipping,
-      total,
-      nextSteps: 'Preusmerili vas bomo na Stripe Checkout...',
-      // For MVP: Redirect to Stripe Checkout URL
-      // stripeUrl: 'https://checkout.stripe.com/...'
+    return NextResponse.json({ 
+      success: true, 
+      stripeUrl: session.url,
+      sessionId: session.id,
     });
   } catch (error) {
     if (error instanceof z.ZodError) {

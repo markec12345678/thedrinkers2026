@@ -4,6 +4,7 @@ import "./globals.css";
 import { SITE_CONFIG } from "@/lib/constants";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { CartProvider } from "@/lib/cart";
 import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -94,9 +95,11 @@ export default function RootLayout({
       <body
         className={`${inter.className} bg-rock-black text-white antialiased`}
       >
-        <Header />
-        <main className="min-h-screen">{children}</main>
-        <Footer />
+        <CartProvider>
+          <Header />
+          <main className="min-h-screen">{children}</main>
+          <Footer />
+        </CartProvider>
 
         {/* JSON-LD Structured Data */}
         <Script

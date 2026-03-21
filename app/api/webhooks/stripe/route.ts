@@ -1,0 +1,139 @@
+import { NextRequest, NextResponse } from 'next/server';
+import Stripe from 'stripe';
+import { headers } from 'next/headers';
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2024-12-18.acacia',
+});
+
+const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+
+export async function POST(request: NextRequest) {
+  const body = await request.text();
+  const signature = (await headers()).get('stripe-signature')!;
+
+  let event: Stripe.Event;
+
+  try {
+    event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+  } catch (err) {
+    console.error('Webhook signature verification failed:', err);
+    return NextResponse.json(
+      { error: 'Webhook signature verification failed' },
+      { status: 400 }
+    );
+  }
+
+  // Handle successful payment
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object as Stripe.Checkout.Session;
+    
+    console.log('Payment completed:', {
+      sessionId: session.id,
+      customerEmail: session.customer_email,
+      amountTotal: session.amount_total,
+      metadata: session.metadata,
+    });
+
+    // Send order to Printful
+    try {
+      await sendToPrintful(session);
+      console.log('Order sent to Printful successfully');
+    } catch (error) {
+      console.error('Failed to send order to Printful:', error);
+    }
+  }
+
+  // Handle payment failure
+  if (event.type === 'payment_intent.payment_failed') {
+    const paymentIntent = event.data.object as Stripe.PaymentIntent;
+    console.log('Payment failed:', paymentIntent.id);
+  }
+
+  return NextResponse.json({ received: true });
+}
+
+async function sendToPrintful(session: Stripe.Checkout.Session) {
+  // Get line items from session
+  const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
+  
+  // Get customer info
+  const { shipping, metadata } = session;
+  
+  // Create Printful order
+  const printfulOrder = {
+    recipient: {
+      name: metadata?.customer_name || 'Customer',
+      email: session.customer_email || '',
+      address1: shipping?.address?.line1 || '',
+      address2: shipping?.address?.line2 || '',
+      city: shipping?.address?.city || '',
+      zip: shipping?.address?.postal_code || '',
+      country_code: shipping?.address?.country || 'SI',
+      phone: shipping?.phone || '',
+    },
+    items: lineItems.data.map(item => ({
+      variant_id: getPrintfulVariantId(item.price_data?.product_data?.name || ''),
+      quantity: item.quantity || 1,
+    })),
+    external_id: session.id,
+  };
+
+  // Send to Printful API
+  const response = await fetch('https://api.printful.com/orders', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${process.env.PRINTFUL_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(printfulOrder),
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Printful API error: ${error}`);
+  }
+
+  const orderData = await response.json();
+  console.log('Printful order created:', orderData);
+  
+  return orderData;
+}
+
+function getPrintfulVariantId(productName: string): number {
+  // Map product names to Printful variant IDs
+  // These are example IDs - you'll need to get actual IDs from Printful
+  const variantMap: Record<string, number> = {
+    // T-Shirts (Gildan 64000)
+    'T-Shirt - S': 4011,
+    'T-Shirt - M': 4012,
+    'T-Shirt - L': 4013,
+    'T-Shirt - XL': 4014,
+    'T-Shirt - XXL': 4015,
+    
+    // Hoodies (Gildan 18500)
+    'Hoodie - S': 5011,
+    'Hoodie - M': 5012,
+    'Hoodie - L': 5013,
+    'Hoodie - XL': 5014,
+    'Hoodie - XXL': 5015,
+    
+    // Default to T-Shirt M if not found
+    'default': 4012,
+  };
+  
+  // Try to find exact match
+  if (variantMap[productName]) {
+    return variantMap[productName];
+  }
+  
+  // Try to find partial match
+  for (const [key, value] of Object.entries(variantMap)) {
+    if (productName.toLowerCase().includes(key.toLowerCase())) {
+      return value;
+    }
+  }
+  
+  // Return default
+  return variantMap.default;
+}
