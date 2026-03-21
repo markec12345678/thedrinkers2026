@@ -1,187 +1,153 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Beer, Clock, Users, Music, MapPin, Star, Calendar, Volume2 } from 'lucide-react';
-
-interface BarStool {
-  id: number;
-  occupied: boolean;
-  occupant: string;
-  joinedAt: string;
-}
+import { GlassCard } from '@/components/ui/GlassCard';
+import { 
+  Beer, 
+  Music, 
+  MessageCircle, 
+  Volume2, 
+  VolumeX,
+  Send,
+  Users,
+  Sparkles,
+  ExternalLink,
+  Disc
+} from 'lucide-react';
+import { getDiscordAuthUrl } from '@/lib/discord-api';
 
 interface ChatMessage {
   id: string;
-  user: string;
+  userId: string;
+  username: string;
+  avatar?: string;
   message: string;
-  timestamp: string;
-  avatar: string;
+  timestamp: Date;
+  tier?: 'free' | 'fan' | 'vip' | 'og';
 }
 
-const avatars = ['🍺', '🍻', '🥃', '🍷', '🍸', '🍾'];
-const names = ['Pivni Prijatelj', 'Rock Fan', 'Glasbenik', 'Barman', 'Pivovar', 'Koncertnik'];
+interface VirtualBarUser {
+  id: string;
+  username: string;
+  avatar: string;
+  x: number;
+  y: number;
+  status: 'online' | 'away' | 'busy';
+}
 
 export default function VirtualBar() {
-  const [stools, setStools] = useState<BarStool[]>([]);
+  const [isConnected, setIsConnected] = useState(false);
+  const [discordUser, setDiscordUser] = useState<any>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState('');
-  const [userName, setUserName] = useState('');
-  const [isJoined, setIsJoined] = useState(false);
-  const [userStool, setUserStool] = useState<number | null>(null);
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const [isMuted, setIsMuted] = useState(false);
+  const [currentTrack, setCurrentTrack] = useState('Pijemo ga radi');
+  const [users, setUsers] = useState<VirtualBarUser[]>([]);
+  const [selectedDrink, setSelectedDrink] = useState<string | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const DRINKS = [
+    { id: 'beer', name: 'Pivo', icon: '🍺', price: 5 },
+    { id: 'wine', name: 'Vino', icon: '🍷', price: 6 },
+    { id: 'cocktail', name: 'Koktajl', icon: '🍹', price: 8 },
+    { id: 'whiskey', name: 'Whiskey', icon: '🥃', price: 7 },
+  ];
+
+  // Mock users in bar
   useEffect(() => {
-    // Initialize bar stools
-    const initialStools: BarStool[] = Array.from({ length: 12 }, (_, i) => ({
-      id: i + 1,
-      occupied: false,
-      occupant: '',
-      joinedAt: ''
-    }));
-    setStools(initialStools);
+    const mockUsers: VirtualBarUser[] = [
+      { id: '1', username: 'RockFan99', avatar: '😎', x: 20, y: 30, status: 'online' },
+      { id: '2', username: 'MusicLover', avatar: '🎸', x: 50, y: 40, status: 'online' },
+      { id: '3', username: 'DrinkersOG', avatar: '👑', x: 70, y: 25, status: 'away' },
+      { id: '4', username: 'PartyGirl', avatar: '💃', x: 35, y: 60, status: 'online' },
+      { id: '5', username: 'BarRegular', avatar: '🍺', x: 60, y: 70, status: 'busy' },
+    ];
+    setUsers(mockUsers);
 
-    // Add some AI patrons
-    setTimeout(() => addAIPatrons(), 1000);
+    // Mock messages
+    const mockMessages: ChatMessage[] = [
+      { id: '1', userId: '1', username: 'RockFan99', message: 'Živjo! Kdo je za poslušanje novega albuma?', timestamp: new Date(Date.now() - 300000), tier: 'fan' },
+      { id: '2', userId: '2', username: 'MusicLover', message: 'Jaz sem! 🎵', timestamp: new Date(Date.now() - 240000), tier: 'free' },
+      { id: '3', userId: '3', username: 'DrinkersOG', message: 'OG member reporting! 👑', timestamp: new Date(Date.now() - 180000), tier: 'og' },
+      { id: '4', userId: '4', username: 'PartyGirl', message: 'Kje dobim virtualno pivo? 🍺', timestamp: new Date(Date.now() - 120000), tier: 'vip' },
+    ];
+    setMessages(mockMessages);
 
-    // Update time
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
-    return () => clearInterval(timer);
+    // Simulate incoming messages
+    const interval = setInterval(() => {
+      const randomMessages = [
+        'Odličen koncert včeraj!',
+        'Kdo gre na naslednji koncert?',
+        'Nova pesmi je fire! 🔥',
+        'Pozdrav iz Maribora!',
+        'The Drinkers so najboljši! 🎸',
+      ];
+      const randomUser = mockUsers[Math.floor(Math.random() * mockUsers.length)];
+      const randomMessage = randomMessages[Math.floor(Math.random() * randomMessages.length)];
+
+      setMessages(prev => [...prev, {
+        id: Date.now().toString(),
+        userId: randomUser.id,
+        username: randomUser.username,
+        message: randomMessage,
+        timestamp: new Date(),
+        tier: 'fan',
+      }]);
+    }, 30000);
+
+    return () => clearInterval(interval);
   }, []);
 
-  const addAIPatrons = () => {
-    const aiPatrons = [
-      { name: 'Matjaž Živković', stool: 1 },
-      { name: 'Simon Kavšek', stool: 3 },
-      { name: 'Robert Likar', stool: 5 },
-      { name: 'Miro Mutvar', stool: 7 },
-      { name: 'Roman Milavec', stool: 9 },
-    ];
+  // Auto-scroll to bottom of chat
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
-    aiPatrons.forEach(patron => {
-      setStools(prev => prev.map(stool => 
-        stool.id === patron.stool 
-          ? { ...stool, occupied: true, occupant: patron.name, joinedAt: new Date().toISOString() }
-          : stool
-      ));
-
-      // Add welcome message
-      setTimeout(() => {
-        const message: ChatMessage = {
-          id: Date.now().toString(),
-          user: patron.name,
-          message: `Pijemo ga radi! 🍺 Na srečno v The Drinkers baru!`,
-          timestamp: new Date().toISOString(),
-          avatar: '🎸'
-        };
-        setMessages(prev => [...prev, message]);
-      }, Math.random() * 3000 + 1000);
-    });
+  const handleConnectDiscord = () => {
+    const authUrl = getDiscordAuthUrl(Date.now().toString());
+    window.open(authUrl, '_blank');
   };
 
-  const joinBar = () => {
-    if (!userName.trim()) return;
+  const handleSendMessage = () => {
+    if (!newMessage.trim() || !isConnected) return;
 
-    // Find empty stool
-    const emptyStool = stools.find(stool => !stool.occupied);
-    if (!emptyStool) {
-      alert('Bar je poln! Počakaj, da se kdo odpravi.');
-      return;
-    }
-
-    // Occupy stool
-    setStools(prev => prev.map(stool => 
-      stool.id === emptyStool.id 
-        ? { ...stool, occupied: true, occupant: userName, joinedAt: new Date().toISOString() }
-        : stool
-    ));
-
-    setUserStool(emptyStool.id);
-    setIsJoined(true);
-
-    // Add join message
-    const message: ChatMessage = {
+    setMessages(prev => [...prev, {
       id: Date.now().toString(),
-      user: userName,
-      message: `Prispel/a sem v bar! 🍺 Pijemo ga radi!`,
-      timestamp: new Date().toISOString(),
-      avatar: avatars[Math.floor(Math.random() * avatars.length)]
-    };
-    setMessages(prev => [...prev, message]);
-  };
-
-  const leaveBar = () => {
-    if (userStool === null) return;
-
-    // Free stool
-    setStools(prev => prev.map(stool => 
-      stool.id === userStool 
-        ? { ...stool, occupied: false, occupant: '', joinedAt: '' }
-        : stool
-    ));
-
-    // Add leave message
-    const message: ChatMessage = {
-      id: Date.now().toString(),
-      user: userName,
-      message: `Odhajam! Nasvidenje! 🍻`,
-      timestamp: new Date().toISOString(),
-      avatar: avatars[Math.floor(Math.random() * avatars.length)]
-    };
-    setMessages(prev => [...prev, message]);
-
-    setUserStool(null);
-    setIsJoined(false);
-    setUserName('');
-  };
-
-  const sendMessage = () => {
-    if (!newMessage.trim() || !isJoined) return;
-
-    const message: ChatMessage = {
-      id: Date.now().toString(),
-      user: userName,
+      userId: 'current',
+      username: discordUser?.username || 'You',
       message: newMessage,
-      timestamp: new Date().toISOString(),
-      avatar: avatars[Math.floor(Math.random() * avatars.length)]
-    };
+      timestamp: new Date(),
+      tier: 'fan',
+    }]);
 
-    setMessages(prev => [...prev, message]);
     setNewMessage('');
-
-    // Simulate AI responses
-    if (Math.random() > 0.5) {
-      setTimeout(() => {
-        const aiResponses = [
-          'Slovensko pivo je najbolje! 🍺',
-          'Pijemo ga radi od 1993! 🎸',
-          'Kdo piva, tudi ziva! 🍻',
-          'The Drinkers rule! 🤘',
-          'Na zdravje! 🥃',
-        ];
-        
-        const randomPatron = stools.find(s => s.occupied && s.occupant !== userName);
-        if (randomPatron) {
-          const response: ChatMessage = {
-            id: (Date.now() + 1).toString(),
-            user: randomPatron.occupant,
-            message: aiResponses[Math.floor(Math.random() * aiResponses.length)],
-            timestamp: new Date().toISOString(),
-            avatar: '🎸'
-          };
-          setMessages(prev => [...prev, response]);
-        }
-      }, Math.random() * 2000 + 1000);
-    }
   };
 
-  const formatTime = (timestamp: string) => {
-    const date = new Date(timestamp);
-    return date.toLocaleTimeString('sl-SI', { hour: '2-digit', minute: '2-digit' });
+  const handleOrderDrink = (drinkId: string) => {
+    setSelectedDrink(drinkId);
+    const drink = DRINKS.find(d => d.id === drinkId);
+    
+    // Add system message
+    setMessages(prev => [...prev, {
+      id: Date.now().toString(),
+      userId: 'system',
+      username: '🤖 Bartender',
+      message: `🍺 ${drink?.name} served! Na zdravje!`,
+      timestamp: new Date(),
+      tier: 'free',
+    }]);
+  };
+
+  const tierColors = {
+    free: 'text-gray-400',
+    fan: 'text-blue-400',
+    vip: 'text-purple-400',
+    og: 'text-amber-400',
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-900/30 via-rock-black to-rock-bg p-8">
+    <div className="min-h-screen bg-gradient-to-br from-amber-900/20 via-rock-black to-rock-bg p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
@@ -189,186 +155,285 @@ export default function VirtualBar() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <Beer className="w-12 h-12 text-crimson" />
-            <h1 className="text-5xl font-bold text-gradient">The Drinkers Virtual Bar</h1>
-            <MapPin className="w-12 h-12 text-crimson" />
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <Beer className="w-10 h-10 text-amber-500" />
+            <h1 className="text-4xl md:text-6xl font-bold text-gradient">
+              Virtual Bar
+            </h1>
+            <Music className="w-10 h-10 text-amber-500 animate-pulse" />
           </div>
-          <p className="text-xl text-rock-muted">Pridruži se pivnici! {currentTime.toLocaleTimeString('sl-SI')}</p>
+          <p className="text-xl text-rock-muted mb-2">
+            Druži se z drugimi fani v virtualnem baru
+          </p>
+          <p className="text-sm text-rock-muted">
+            🎵 Playing: {currentTrack} {isMuted ? '(Muted)' : ''}
+          </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Bar Area */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="lg:col-span-2"
-          >
-            <div className="bg-rock-surface/80 backdrop-blur-lg rounded-3xl p-8 border border-crimson/30">
-              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                <Users className="w-6 h-6 text-crimson" />
-                Bar Stools ({stools.filter(s => s.occupied).length}/12)
-              </h2>
+        <div className="grid lg:grid-cols-3 gap-6">
+          {/* Main Bar Area */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Bar Visualization */}
+            <GlassCard variant="dark" className="p-6 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-b from-amber-900/10 to-transparent" />
               
-              {/* Stools Grid */}
-              <div className="grid grid-cols-4 gap-4 mb-8">
-                {stools.map((stool) => (
+              {/* Bar Counter */}
+              <div className="relative h-64 bg-amber-900/20 rounded-lg border-2 border-amber-700/30 mb-4">
+                {/* Users in bar */}
+                {users.map((user) => (
                   <motion.div
-                    key={stool.id}
-                    whileHover={{ scale: 1.05 }}
-                    className={`relative p-4 rounded-2xl border-2 transition-all ${
-                      stool.occupied 
-                        ? 'bg-crimson/20 border-crimson' 
-                        : 'bg-rock-gray/30 border-rock-border'
-                    } ${userStool === stool.id ? 'ring-2 ring-yellow-400' : ''}`}
+                    key={user.id}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="absolute cursor-pointer hover:scale-110 transition-transform"
+                    style={{ left: `${user.x}%`, top: `${user.y}%` }}
+                    title={user.username}
                   >
-                    <div className="text-center">
-                      <div className="text-2xl mb-2">
-                        {stool.occupied ? '🪑' : '🪑'}
-                      </div>
-                      <div className="text-xs font-medium">
-                        {stool.occupied ? (
-                          <div>
-                            <p className="truncate">{stool.occupant}</p>
-                            <p className="text-rock-muted">{formatTime(stool.joinedAt)}</p>
-                          </div>
-                        ) : (
-                          <p className="text-rock-muted">Stool {stool.id}</p>
-                        )}
-                      </div>
-                      {userStool === stool.id && (
-                        <div className="absolute -top-2 -right-2 bg-yellow-400 text-black text-xs px-2 py-1 rounded-full">
-                          YOU
-                        </div>
-                      )}
+                    <div className="text-4xl relative">
+                      {user.avatar}
+                      <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-amber-900 ${
+                        user.status === 'online' ? 'bg-green-500' :
+                        user.status === 'away' ? 'bg-yellow-500' : 'bg-red-500'
+                      }`} />
+                    </div>
+                    <div className="text-xs text-white text-center mt-1 whitespace-nowrap bg-black/50 px-2 rounded">
+                      {user.username}
                     </div>
                   </motion.div>
                 ))}
+
+                {/* Bartender */}
+                <div className="absolute bottom-4 right-4 text-4xl" title="Bartender">
+                  🤖
+                  <div className="text-xs text-white text-center mt-1 bg-black/50 px-2 rounded">
+                    Bartender
+                  </div>
+                </div>
               </div>
 
-              {/* Join/Leave Controls */}
-              {!isJoined ? (
-                <div className="bg-rock-gray/30 rounded-2xl p-6">
-                  <h3 className="text-lg font-semibold mb-4">Join the Bar</h3>
-                  <div className="flex gap-4">
-                    <input
-                      type="text"
-                      placeholder="Your name..."
-                      value={userName}
-                      onChange={(e) => setUserName(e.target.value)}
-                      className="flex-1 px-4 py-2 bg-rock-surface border border-rock-border rounded-lg text-white placeholder-rock-muted"
-                    />
-                    <button
-                      onClick={joinBar}
-                      className="btn-primary"
-                    >
-                      Join Bar
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <div className="bg-crimson/20 rounded-2xl p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="text-lg font-semibold">Welcome, {userName}!</h3>
-                      <p className="text-rock-muted">You&apos;re at stool {userStool}</p>
-                    </div>
-                    <button
-                      onClick={leaveBar}
-                      className="btn-secondary"
-                    >
-                      Leave Bar
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </motion.div>
-
-          {/* Chat Area */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-          >
-            <div className="bg-rock-surface/80 backdrop-blur-lg rounded-3xl p-6 border border-crimson/30 h-full flex flex-col">
-              <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                <Music className="w-6 h-6 text-crimson" />
-                Bar Chat
-              </h2>
-              
-              {/* Messages */}
-              <div className="flex-1 overflow-y-auto mb-4 space-y-3 max-h-96">
-                {messages.map((message) => (
-                  <motion.div
-                    key={message.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className={`flex gap-3 ${
-                      message.user === userName ? 'flex-row-reverse' : ''
+              {/* Drink Menu */}
+              <div className="grid grid-cols-4 gap-3">
+                {DRINKS.map((drink) => (
+                  <button
+                    key={drink.id}
+                    onClick={() => handleOrderDrink(drink.id)}
+                    className={`p-3 rounded-lg border transition-all ${
+                      selectedDrink === drink.id
+                        ? 'bg-amber-500/20 border-amber-500'
+                        : 'bg-rock-gray/50 border-amber-700/30 hover:border-amber-500'
                     }`}
                   >
-                    <div className="text-2xl">{message.avatar}</div>
-                    <div className={`max-w-[80%] ${
-                      message.user === userName 
-                        ? 'bg-crimson text-white' 
-                        : 'bg-rock-gray text-white'
-                    } rounded-2xl px-4 py-2`}>
-                      <div className="font-medium text-sm">{message.user}</div>
-                      <div>{message.message}</div>
-                      <div className="text-xs opacity-70 mt-1">
-                        {formatTime(message.timestamp)}
+                    <div className="text-3xl mb-1">{drink.icon}</div>
+                    <div className="text-xs font-medium text-white">{drink.name}</div>
+                    <div className="text-xs text-amber-500">{drink.price}€</div>
+                  </button>
+                ))}
+              </div>
+            </GlassCard>
+
+            {/* Chat */}
+            <GlassCard variant="dark" className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                  <MessageCircle className="w-6 h-6 text-amber-500" />
+                  Chat
+                </h2>
+                <div className="flex items-center gap-2 text-sm text-rock-muted">
+                  <Users className="w-4 h-4" />
+                  {users.length} online
+                </div>
+              </div>
+
+              {/* Messages */}
+              <div className="h-80 overflow-y-auto mb-4 space-y-3 pr-2">
+                {messages.map((msg) => (
+                  <motion.div
+                    key={msg.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className={`flex items-start gap-3 ${
+                      msg.userId === 'current' ? 'flex-row-reverse' : ''
+                    }`}
+                  >
+                    <div className="text-2xl">
+                      {msg.userId === 'system' ? '🤖' : '😎'}
+                    </div>
+                    <div className={`flex-1 ${
+                      msg.userId === 'current' ? 'text-right' : ''
+                    }`}>
+                      <div className="flex items-center gap-2 mb-1">
+                        {msg.userId !== 'current' && (
+                          <span className={`text-sm font-bold ${tierColors[msg.tier || 'free']}`}>
+                            {msg.username}
+                          </span>
+                        )}
+                        {msg.userId === 'current' && (
+                          <span className="text-sm font-bold text-crimson">
+                            {msg.username}
+                          </span>
+                        )}
+                        {msg.userId !== 'current' && msg.userId !== 'system' && (
+                          <span className="text-xs text-rock-muted">
+                            {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                          </span>
+                        )}
+                      </div>
+                      <div className={`inline-block px-3 py-2 rounded-lg text-sm ${
+                        msg.userId === 'current'
+                          ? 'bg-crimson/20 text-white'
+                          : msg.userId === 'system'
+                            ? 'bg-amber-500/20 text-amber-200'
+                            : 'bg-rock-gray/50 text-white'
+                      }`}>
+                        {msg.message}
                       </div>
                     </div>
                   </motion.div>
                 ))}
+                <div ref={messagesEndRef} />
               </div>
 
-              {/* Message Input */}
-              {isJoined && (
+              {/* Chat Input */}
+              {!isConnected ? (
+                <div className="text-center py-8">
+                  <p className="text-rock-muted mb-4">
+                    Poveži Discord za sodelovanje v chatu
+                  </p>
+                  <button
+                    onClick={handleConnectDiscord}
+                    className="btn-primary flex items-center gap-2 mx-auto"
+                  >
+                    <ExternalLink className="w-5 h-5" />
+                    Poveži Discord
+                  </button>
+                </div>
+              ) : (
                 <div className="flex gap-2">
                   <input
                     type="text"
-                    placeholder="Type a message..."
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-                    className="flex-1 px-4 py-2 bg-rock-gray border border-rock-border rounded-lg text-white placeholder-rock-muted"
+                    onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                    placeholder="Type your message..."
+                    className="flex-1 px-4 py-2 bg-rock-gray/50 border border-amber-700/30 rounded-lg text-white placeholder-rock-muted focus:outline-none focus:ring-2 focus:ring-amber-500"
                   />
                   <button
-                    onClick={sendMessage}
-                    className="btn-primary"
+                    onClick={handleSendMessage}
+                    className="btn-primary px-6 flex items-center gap-2"
                   >
-                    <Volume2 className="w-5 h-5" />
+                    <Send className="w-5 h-5" />
                   </button>
                 </div>
               )}
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Bar Info */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mt-8"
-        >
-          <div className="bg-crimson/10 border border-crimson/30 rounded-2xl p-6 text-center">
-            <div className="flex items-center justify-center gap-8">
-              <div className="flex items-center gap-2">
-                <Star className="w-5 h-5 text-crimson" />
-                <span>Open 24/7</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Calendar className="w-5 h-5 text-crimson" />
-                <span>Since 1993</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Beer className="w-5 h-5 text-crimson" />
-                <span>Pijemo ga radi!</span>
-              </div>
-            </div>
+            </GlassCard>
           </div>
-        </motion.div>
+
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Music Player */}
+            <GlassCard variant="dark" className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                  <Disc className="w-5 h-5 text-amber-500 animate-spin-slow" />
+                  Glasba
+                </h3>
+                <button
+                  onClick={() => setIsMuted(!isMuted)}
+                  className="p-2 hover:bg-rock-gray rounded-lg transition-colors"
+                >
+                  {isMuted ? (
+                    <VolumeX className="w-5 h-5 text-rock-muted" />
+                  ) : (
+                    <Volume2 className="w-5 h-5 text-amber-500" />
+                  )}
+                </button>
+              </div>
+
+              <div className="bg-rock-gray/50 rounded-lg p-4 mb-4">
+                <div className="text-sm text-rock-muted mb-1">Now Playing</div>
+                <div className="text-white font-medium">{currentTrack}</div>
+                <div className="text-xs text-rock-muted mt-1">The Drinkers</div>
+              </div>
+
+              {/* Visualizer */}
+              <div className="flex items-end justify-center gap-1 h-16">
+                {[...Array(8)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    animate={{
+                      height: isMuted ? 4 : [8, 24, 12, 32, 16][i % 5],
+                    }}
+                    transition={{
+                      duration: 0.5,
+                      repeat: Infinity,
+                      repeatType: 'reverse',
+                      delay: i * 0.1,
+                    }}
+                    className="w-2 bg-gradient-to-t from-amber-500 to-amber-300 rounded-full"
+                  />
+                ))}
+              </div>
+            </GlassCard>
+
+            {/* Online Users */}
+            <GlassCard variant="dark" className="p-6">
+              <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                <Users className="w-5 h-5 text-amber-500" />
+                V Baru ({users.length})
+              </h3>
+              <div className="space-y-2">
+                {users.map((user) => (
+                  <div
+                    key={user.id}
+                    className="flex items-center gap-3 p-2 bg-rock-gray/50 rounded-lg"
+                  >
+                    <div className="text-2xl">{user.avatar}</div>
+                    <div className="flex-1">
+                      <div className="text-sm font-medium text-white">
+                        {user.username}
+                      </div>
+                      <div className="text-xs text-rock-muted capitalize">
+                        {user.status}
+                      </div>
+                    </div>
+                    <div className={`w-2 h-2 rounded-full ${
+                      user.status === 'online' ? 'bg-green-500' :
+                      user.status === 'away' ? 'bg-yellow-500' : 'bg-red-500'
+                    }`} />
+                  </div>
+                ))}
+              </div>
+            </GlassCard>
+
+            {/* Info */}
+            <GlassCard variant="dark" className="p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Sparkles className="w-6 h-6 text-amber-500" />
+                <h3 className="text-lg font-bold text-white">Dogodki</h3>
+              </div>
+              <div className="space-y-3 text-sm">
+                <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg">
+                  <div className="font-medium text-amber-400 mb-1">
+                    🎧 Listening Party
+                  </div>
+                  <div className="text-rock-muted">Petek, 21:00</div>
+                  <div className="text-xs text-rock-muted mt-1">
+                    Skupno poslušanje novega albuma
+                  </div>
+                </div>
+                <div className="p-3 bg-purple-500/10 border border-purple-500/30 rounded-lg">
+                  <div className="font-medium text-purple-400 mb-1">
+                    ❓ Q&A Session
+                  </div>
+                  <div className="text-rock-muted">Monthly (VIP+)</div>
+                  <div className="text-xs text-rock-muted mt-1">
+                    Vprašaj band karkoli
+                  </div>
+                </div>
+              </div>
+            </GlassCard>
+          </div>
+        </div>
       </div>
     </div>
   );

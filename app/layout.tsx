@@ -6,6 +6,8 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CartProvider } from "@/lib/cart";
 import Script from "next/script";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import { VercelAnalytics } from './VercelAnalytics';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -100,6 +102,14 @@ export default function RootLayout({
           <main className="min-h-screen">{children}</main>
           <Footer />
         </CartProvider>
+
+        {/* Vercel Analytics + Web Vitals */}
+        <VercelAnalytics />
+
+        {/* Google Analytics - replace GA_MEASUREMENT_ID with actual ID */}
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+        )}
 
         {/* JSON-LD Structured Data */}
         <Script

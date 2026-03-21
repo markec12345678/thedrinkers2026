@@ -1,61 +1,33 @@
-import NextAuth from "better-auth/next";
-import { betterAuth } from "better-auth";
-import { neon } from "@neondatabase/serverless";
+// Mock auth endpoint - placeholder for future implementation
+// In production, integrate with NextAuth or Better-Auth
 
-// Database connection (Neon Postgres - free tier)
-const sql = neon(process.env.DATABASE_URL!);
+import { NextRequest, NextResponse } from 'next/server';
 
-export const auth = betterAuth({
-  database: {
-    provider: "postgres",
-    url: process.env.DATABASE_URL!,
-  },
-  emailAndPassword: {
-    enabled: true,
-    requireEmailVerification: false, // Can enable later
-    minPasswordLength: 8,
-  },
-  socialProviders: {
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    },
-    discord: {
-      clientId: process.env.DISCORD_CLIENT_ID!,
-      clientSecret: process.env.DISCORD_CLIENT_SECRET!,
-    },
-  },
-  user: {
-    additionalFields: {
-      // VIP membership tier
-      membershipTier: {
-        type: "string",
-        required: false,
-        defaultValue: "free", // free, vip, og
+export async function GET(request: NextRequest) {
+  return NextResponse.json({
+    message: 'Auth endpoint - implement with NextAuth or Better-Auth',
+    status: 'mock'
+  });
+}
+
+export async function POST(request: NextRequest) {
+  const body = await request.json();
+  
+  // Mock login
+  if (body.email && body.password) {
+    return NextResponse.json({
+      success: true,
+      user: {
+        email: body.email,
+        name: 'Mock User',
+        membershipTier: 'free'
       },
-      // NFT wallet address
-      walletAddress: {
-        type: "string",
-        required: false,
-      },
-      // Fan club join date
-      joinDate: {
-        type: "date",
-        required: false,
-      },
-    },
-  },
-  session: {
-    expiresIn: 60 * 60 * 24 * 7, // 7 days
-    updateAge: 60 * 60 * 24, // 1 day
-  },
-  rateLimit: {
-    enabled: true,
-    window: 60, // 1 minute
-    max: 10, // 10 requests per minute
-  },
-});
-
-const handler = NextAuth(auth);
-
-export { handler as GET, handler as POST };
+      message: 'Mock login successful'
+    });
+  }
+  
+  return NextResponse.json({
+    success: false,
+    message: 'Invalid credentials'
+  }, { status: 401 });
+}

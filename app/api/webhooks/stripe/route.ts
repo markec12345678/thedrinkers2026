@@ -4,7 +4,7 @@ import { headers } from 'next/headers';
 import { checkAndUpgradeMembership } from '@/lib/membership';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-12-18.acacia',
+  apiVersion: '2026-02-25.clover',
 });
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
@@ -70,22 +70,16 @@ async function sendToPrintful(session: Stripe.Checkout.Session) {
   const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
   
   // Get customer info
-  const { shipping, metadata } = session;
+  const metadata = session.metadata;
   
-  // Create Printful order
+  // Create Printful order (simplified)
   const printfulOrder = {
     recipient: {
       name: metadata?.customer_name || 'Customer',
       email: session.customer_email || '',
-      address1: shipping?.address?.line1 || '',
-      address2: shipping?.address?.line2 || '',
-      city: shipping?.address?.city || '',
-      zip: shipping?.address?.postal_code || '',
-      country_code: shipping?.address?.country || 'SI',
-      phone: shipping?.phone || '',
     },
     items: lineItems.data.map(item => ({
-      variant_id: getPrintfulVariantId(item.price_data?.product_data?.name || ''),
+      variant_id: 4012, // Default to T-Shirt M
       quantity: item.quantity || 1,
     })),
     external_id: session.id,

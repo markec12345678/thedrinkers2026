@@ -41,7 +41,7 @@ export function GatedContent({
         <p className="text-text-gray mb-6">
           {description || 'Prijavi se za dostop do ekskluzivnih vsebin'}
         </p>
-        <Button href="/bar">
+        <Button onClick={() => window.location.href = '/bar'}>
           PRIJAVI SE
         </Button>
       </GlassCard>
@@ -49,8 +49,9 @@ export function GatedContent({
   }
 
   // Check tier
-  const userTier = (session.user as any).membershipTier || 'free';
-  const hasAccess = tierLevels[userTier] >= tierLevels[requiredTier];
+  const userTier = ((session.user as any).membershipTier || 'free') as keyof typeof tierLevels;
+  const requiredTierCasted = requiredTier as keyof typeof tierLevels;
+  const hasAccess = tierLevels[userTier] >= tierLevels[requiredTierCasted];
 
   if (!hasAccess) {
     return (
@@ -92,7 +93,7 @@ export function GatedContent({
             </ul>
           </div>
           
-          <Button href="/merch">
+          <Button onClick={() => window.location.href = '/merch'}>
             ODKRIJ MERCHANDISE
           </Button>
         </div>

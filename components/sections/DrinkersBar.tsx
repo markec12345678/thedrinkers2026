@@ -31,7 +31,7 @@ export function DrinkersBar() {
         });
 
         if (result.error) {
-          setError(result.error.message || 'Login failed');
+          setError('Login failed');
         }
       } else {
         // Register
@@ -43,7 +43,7 @@ export function DrinkersBar() {
         });
 
         if (result.error) {
-          setError(result.error.message || 'Registration failed');
+          setError('Registration failed');
         }
       }
     } catch (err) {

@@ -111,7 +111,7 @@ export default function MemberDashboard() {
           <div className="w-full bg-rock-gray rounded-full h-4 mb-4">
             <div
               className="bg-gradient-to-r from-crimson to-crimson-light h-4 rounded-full transition-all duration-500"
-              style={{ width: `${Math.min(progressToNextTier, 100)}%` }}
+              style={{ width: `${Math.min(parseFloat(progressToNextTier), 100)}%` }}
             />
           </div>
           
@@ -178,7 +178,7 @@ export default function MemberDashboard() {
               <div className="text-center py-8">
                 <div className="text-6xl mb-4">🛍️</div>
                 <p className="text-text-gray mb-4">Še nimaš nobenega naročila</p>
-                <Button href="/merch">
+                <Button onClick={() => window.location.href = '/merch'}>
                   OBISČI TRGOVINO
                 </Button>
               </div>

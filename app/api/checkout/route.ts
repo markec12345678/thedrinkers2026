@@ -4,7 +4,7 @@ import Stripe from 'stripe';
 
 // Initialize Stripe
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-12-18.acacia',
+  apiVersion: '2026-02-25.clover',
 });
 
 // Edge Runtime for fast checkout
@@ -47,7 +47,6 @@ export async function POST(request: NextRequest) {
           currency: 'eur',
           product_data: {
             name: `${item.name}${item.size ? ` - Size: ${item.size}` : ''}`,
-            images: item.image ? [item.image] : undefined,
           },
           unit_amount: Math.round(item.price * 100), // Convert to cents
         },
