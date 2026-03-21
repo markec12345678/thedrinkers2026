@@ -1,5 +1,8 @@
 // Core Data Types for The Drinkers Website
 
+// Export AI types
+export * from './types/ai';
+
 export interface TourDate {
   id: string;
   date: string; // ISO string

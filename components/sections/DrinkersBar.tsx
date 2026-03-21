@@ -69,7 +69,7 @@ export function DrinkersBar() {
     );
   }
 
-  // Not authenticated - Show login form
+  // Authenticated View
   if (!session) {
     return (
       <Section className="min-h-screen flex items-center justify-center">
@@ -239,6 +239,9 @@ export function DrinkersBar() {
       </Section>
     );
   }
+
+  // Get user tier
+  const userTier = (session.user as any)?.membershipTier || 'free';
 
   // Authenticated View
   return (
