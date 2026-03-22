@@ -7,6 +7,9 @@ import { Button } from '@/components/ui/Button';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { signIn, signUp, signOut, useSession } from '@/lib/auth-client';
 
+// ⚠️ TEMPORARY: Bar closed during launch
+const BAR_TEMPORARILY_CLOSED = true;
+
 export function DrinkersBar() {
   const { data: session, isPending } = useSession();
   const [isLogin, setIsLogin] = useState(true);
@@ -64,6 +67,61 @@ export function DrinkersBar() {
         <div className="text-center">
           <div className="text-6xl mb-4 animate-spin">🍺</div>
           <p className="text-text-gray">Loading Drinkers&apos; Bar...</p>
+        </div>
+      </Section>
+    );
+  }
+
+  // ⚠️ TEMPORARY: Bar closed message
+  if (BAR_TEMPORARILY_CLOSED) {
+    return (
+      <Section className="min-h-screen flex items-center justify-center">
+        <div className="max-w-2xl w-full">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="card p-12 text-center"
+          >
+            <div className="text-8xl mb-6">🍺</div>
+            <h1 className="text-5xl font-bold text-crimson mb-6">
+              DRINKERS&apos; BAR
+            </h1>
+            <div className="space-y-6">
+              <p className="text-2xl text-white font-bold">
+                TRENUTNO ZAPRTO
+              </p>
+              <p className="text-xl text-text-gray">
+                VIP Bar je trenutno zaprt zaradi priprave na velik launch!
+              </p>
+              <div className="bg-crimson/10 border border-crimson/20 rounded-lg p-6 my-6">
+                <p className="text-white mb-4">
+                  🚀 <strong>PRIPRAVLJAMO NEKAJ POSEBNEGA!</strong>
+                </p>
+                <p className="text-text-gray">
+                  Kmalu odpiramo vrata našega ekskluzivnega VIP bara z:
+                </p>
+                <ul className="text-left text-text-gray mt-4 space-y-2">
+                  <li>✅ Ekskluzivne vsebine za fane</li>
+                  <li>✅ Backstage dostop</li>
+                  <li>✅ Meet & Greet priložnosti</li>
+                  <li>✅ Posebne ponudbe in popusti</li>
+                </ul>
+              </div>
+              <p className="text-lg text-text-gray">
+                📧 <strong>Prijavi se na newsletter</strong> in obvestili te bomo ko odpremo!
+              </p>
+              <Button 
+                onClick={() => window.location.href = '/#newsletter'}
+                size="lg" 
+                className="mt-6"
+              >
+                OBAVESTI ME OB ODPRTJU
+              </Button>
+              <p className="text-sm text-text-gray mt-8">
+                Hvala za razumevanje! 🙏
+              </p>
+            </div>
+          </motion.div>
         </div>
       </Section>
     );

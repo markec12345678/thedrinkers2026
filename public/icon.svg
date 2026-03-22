@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+  <rect width="192" height="192" fill="#0a0a0a"/>
+  <text x="96" y="80" font-family="Arial, sans-serif" font-size="60" fill="#dc143c" text-anchor="middle" font-weight="bold">TD</text>
+  <text x="96" y="140" font-family="Arial, sans-serif" font-size="24" fill="#ffffff" text-anchor="middle">DRINKERS</text>
+  <circle cx="96" cy="160" r="20" fill="#dc143c" opacity="0.8"/>
+  <text x="96" y="168" font-family="Arial, sans-serif" font-size="20" fill="#ffffff" text-anchor="middle">🍺</text>
+</svg>

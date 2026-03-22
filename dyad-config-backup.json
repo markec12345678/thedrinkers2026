@@ -1,0 +1,31 @@
+{ 
+  "mcpServers": { 
+    "desktop-commander": { 
+      "command": "npx", 
+      "args": ["-y", "@wonderwhy-er/desktop-commander"], 
+      "env": {} 
+    }, 
+    "filesystem": { 
+      "command": "npx", 
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "F:\\\\d"], 
+      "env": {} 
+    }, 
+    "git": { 
+      "command": "npx", 
+      "args": ["-y", "@modelcontextprotocol/server-git"], 
+      "env": {} 
+    }, 
+    "ollama": { 
+      "command": "npx", 
+      "args": ["-y", "ollama-mcp-server"], 
+      "env": { 
+        "OLLAMA_HOST": "http://localhost:11434" 
+      } 
+    }, 
+    "ollama-skills-bridge": { 
+      "command": "node", 
+      "args": ["F:\\\\ollama_mcp\\\\index.js"], 
+      "env": {} 
+    } 
+  } 
+} 

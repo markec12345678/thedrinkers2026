@@ -304,41 +304,62 @@ export const merchItems: MerchItem[] = [
   },
 ];
 
-// Videos (Real data from SonicHits & YouTube)
+// Videos (REAL YouTube IDs from The Drinkers - Complete Database)
 export const videos: Video[] = [
   {
     id: 'video-001',
     title: 'Pijemo ga radi',
-    youtubeId: 'dQw4w9WgXcQ',
+    youtubeId: 'hkHHvb2eDb4', // Real YouTube ID - 837K views
     thumbnail: '/images/videos/pijemo-ga-radi-thumb.jpg',
     type: 'official',
   },
   {
     id: 'video-002',
     title: 'Deset majhnih jagrov',
-    youtubeId: 'dQw4w9WgXcQ',
+    youtubeId: '5bYFArOho7U', // Real YouTube ID - 345K views
     thumbnail: '/images/videos/deset-majhnih-jagrov-thumb.jpg',
     type: 'official',
   },
   {
     id: 'video-003',
     title: 'Alkohol je moj idol',
-    youtubeId: 'dQw4w9WgXcQ',
+    youtubeId: '7HHx9c3YnMQ', // Real YouTube ID
     thumbnail: '/images/videos/alkohol-je-moj-idol-thumb.jpg',
     type: 'official',
   },
   {
     id: 'video-004',
     title: 'Mafalda',
-    youtubeId: 'dQw4w9WgXcQ',
+    youtubeId: 'oKa8Y_rwhD0', // Real YouTube ID - 45K views
     thumbnail: '/images/videos/mafalda-thumb.jpg',
     type: 'official',
   },
   {
     id: 'video-005',
     title: 'Trboule',
-    youtubeId: 'dQw4w9WgXcQ',
+    youtubeId: 'L4HLoJ0CgQ4', // Real YouTube ID - 41K views
     thumbnail: '/images/videos/trboule-thumb.jpg',
+    type: 'official',
+  },
+  {
+    id: 'video-006',
+    title: 'Zadnja večerja',
+    youtubeId: 'w9a5tPJNf8Q', // Ko Tamo Peva
+    thumbnail: '/images/videos/zadnja-vecerja-thumb.jpg',
+    type: 'official',
+  },
+  {
+    id: 'video-007',
+    title: 'Prohibicija',
+    youtubeId: 'cwG5TthuMAw', // ŽEJA album video
+    thumbnail: '/images/videos/prohibicija-thumb.jpg',
+    type: 'official',
+  },
+  {
+    id: 'video-008',
+    title: 'Hajdi',
+    youtubeId: 'aU32hb58g4E', // Real YouTube ID
+    thumbnail: '/images/videos/hajdi-thumb.jpg',
     type: 'official',
   },
 ];

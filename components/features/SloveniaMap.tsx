@@ -9,6 +9,7 @@ import L from 'leaflet';
 export function SloveniaMap() {
   const [isClient, setIsClient] = useState(false);
   const [crimsonIcon, setCrimsonIcon] = useState<L.Icon | null>(null);
+  const [mapKey, setMapKey] = useState(0);
 
   useEffect(() => {
     // Fix for default marker icon in Next.js
@@ -32,6 +33,13 @@ export function SloveniaMap() {
     setIsClient(true);
   }, []);
 
+  // Force re-mount map on navigation
+  useEffect(() => {
+    if (isClient) {
+      setMapKey(prev => prev + 1);
+    }
+  }, [isClient]);
+
   if (!isClient || !crimsonIcon) {
     return (
       <div className="w-full h-[500px] bg-rock-gray rounded-lg animate-pulse" />
@@ -44,11 +52,14 @@ export function SloveniaMap() {
   return (
     <div className="w-full h-[500px] rounded-lg overflow-hidden border-2 border-crimson/30">
       <MapContainer
+        key={`map-${mapKey}`}
         center={center}
         zoom={8}
         scrollWheelZoom={false}
         className="w-full h-full"
         style={{ background: '#1a1a1a' }}
+        fadeAnimation={false}
+        zoomAnimation={false}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

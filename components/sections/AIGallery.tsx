@@ -172,8 +172,9 @@ export function AIGallery() {
                     alt={image.name}
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      // Fallback if image not found
-                      (e.target as HTMLImageElement).src = '/images/placeholder.jpg';
+                      // Fallback if image not found - use SVG placeholder
+                      (e.target as HTMLImageElement).src = '/images/placeholder.svg';
+                      (e.target as HTMLImageElement).style.objectFit = 'contain';
                     }}
                   />
 

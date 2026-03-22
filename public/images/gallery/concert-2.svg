@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <rect fill="#1a1a1a" width="800" height="600"/>
+  <text fill="#dc143c" font-family="Arial, sans-serif" font-size="48" font-weight="bold" text-anchor="middle" x="400" y="280">
+    THE DRINKERS
+  </text>
+  <text fill="#888" font-family="Arial, sans-serif" font-size="24" text-anchor="middle" x="400" y="330">
+    Live in Concert
+  </text>
+  <text fill="#666" font-family="Arial, sans-serif" font-size="18" text-anchor="middle" x="400" y="370">
+    Photo Gallery Coming Soon
+  </text>
+  <rect fill="none" stroke="#dc143c" stroke-width="4" x="50" y="50" width="700" height="500"/>
+</svg>

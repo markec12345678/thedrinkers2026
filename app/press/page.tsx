@@ -1,264 +1,279 @@
-import { Metadata } from 'next';
+'use client';
+
 import { Section } from '@/components/ui/Section';
+import { Button } from '@/components/ui/Button';
 import { GlassCard } from '@/components/ui/GlassCard';
-import { generatePressReleaseSchema } from '@/lib/blog-schema';
-import { JsonLd } from '@/lib/seo';
-import Link from 'next/link';
-import { Mail, Phone, Download } from 'lucide-react';
-
-export const metadata: Metadata = {
-  title: 'Press Kit | The Drinkers',
-  description: 'Uradni press materiali za medije - sporočila za javnost, fotografije, kontakti',
-};
-
-const pressReleases = [
-  {
-    id: 'tour-2026-announcement',
-    title: 'The Drinkers Napovedujejo Povratniško Turnejo 2026',
-    summary: 'Po dveh letih premora se legendarna slovenska rock skupina vrača z veliko turnejo.',
-    date: '2026-03-21',
-    category: 'Tour Announcement',
-    downloadUrl: '/press/tour-2026.pdf',
-  },
-  {
-    id: 'new-album-2026',
-    title: 'Nov Album "Pivolucija" Na Voljo Aprila 2026',
-    summary: 'The Drinkers snemajo nov studijski album z 12 novimi pesmimi.',
-    date: '2026-03-15',
-    category: 'Album Release',
-    downloadUrl: '/press/album-2026.pdf',
-  },
-  {
-    id: 'vip-lounge-launch',
-    title: 'The Drinkers Odpirajo VIP Lounge za Fane',
-    summary: 'Ekskluzivni fan club z dostopom do backstagea, vstopnic in mercha.',
-    date: '2026-03-10',
-    category: 'Fan Club',
-    downloadUrl: '/press/vip-lounge.pdf',
-  },
-];
-
-const mediaAssets = [
-  {
-    type: 'Photos',
-    items: [
-      { name: 'Band Photo 2026', url: '/images/press/band-2026.jpg', size: '5.2 MB' },
-      { name: 'Live Photo Orto Bar', url: '/images/press/live-orto.jpg', size: '4.8 MB' },
-      { name: 'Album Cover Pivolucija', url: '/images/press/album-cover.jpg', size: '3.1 MB' },
-    ],
-  },
-  {
-    type: 'Logos',
-    items: [
-      { name: 'The Drinkers Logo (PNG)', url: '/images/press/logo.png', size: '1.2 MB' },
-      { name: 'The Drinkers Logo (SVG)', url: '/images/press/logo.svg', size: '0.3 MB' },
-      { name: 'The Drinkers Logo (Black)', url: '/images/press/logo-black.png', size: '1.1 MB' },
-    ],
-  },
-  {
-    type: 'Videos',
-    items: [
-      { name: 'Official Music Video 2026', url: '/videos/press/video-2026.mp4', size: '125 MB' },
-      { name: 'Behind The Scenes', url: '/videos/press/bts-2026.mp4', size: '89 MB' },
-      { name: 'Interview 2026', url: '/videos/press/interview-2026.mp4', size: '156 MB' },
-    ],
-  },
-];
 
 export default function PressPage() {
+  const resources = [
+    {
+      icon: '📰',
+      title: 'Press Release',
+      description: 'Official press release in Slovenian and English',
+      items: ['Slovenian version', 'English version', 'Email templates'],
+    },
+    {
+      icon: '📷',
+      title: 'High-Res Photos',
+      description: 'Professional photos for publication',
+      items: ['Band photos (300 DPI)', 'Logo pack (SVG, PNG)', 'Concert photos', 'Behind the scenes'],
+    },
+    {
+      icon: '🎬',
+      title: 'Video Assets',
+      description: 'B-roll and video content',
+      items: ['Concert footage', 'Interview clips', 'Behind the scenes', 'Music videos'],
+    },
+    {
+      icon: '📊',
+      title: 'Media Kit',
+      description: 'Complete brand assets',
+      items: ['Band biography', 'Fact sheet', 'Logo guidelines', 'Brand colors'],
+    },
+  ];
+
+  const contacts = [
+    {
+      id: 'media-relations',
+      name: '[IME PRIIMEK]',
+      role: 'Media Relations',
+      email: 'media@thedrinkers.si',
+      phone: '+386 40 123 456',
+    },
+    {
+      id: 'band-management',
+      name: '[IME PRIIMEK]',
+      role: 'Band Management',
+      email: 'management@thedrinkers.si',
+      phone: '+386 40 234 567',
+    },
+  ];
+
+  const stats = [
+    { value: '30+', label: 'Years of Career' },
+    { value: '7', label: 'Studio Albums' },
+    { value: '500+', label: 'Concerts' },
+    { value: '100K+', label: 'Expected Annual Visits' },
+  ];
+
   return (
-    <>
-      {/* Hero */}
-      <section className="relative h-[60vh] flex items-center justify-center bg-rock-black">
-        <div className="absolute inset-0">
-          <img
-            src="/images/press-hero.jpg"
-            alt="Press"
-            className="w-full h-full object-cover opacity-30"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-rock-black/50 to-rock-black" />
-        </div>
-        <div className="relative z-10 text-center">
-          <h1 className="text-5xl md:text-7xl font-bold text-gradient mb-4">PRESS KIT</h1>
-          <p className="text-xl text-text-gray">Uradni materiali za medije</p>
-        </div>
-      </section>
-
-      {/* Contact Info */}
-      <Section background="gradient">
-        <div className="max-w-7xl mx-auto">
-          <GlassCard variant="crimson" className="p-8 mb-12">
-            <h2 className="text-3xl font-bold text-white mb-6 text-center">
-              Kontakt za Medije
-            </h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="text-center">
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <Mail className="w-6 h-6 text-white" />
-                  <h3 className="text-xl font-bold text-white">Email</h3>
-                </div>
-                <a href="mailto:press@thedrinkers.si" className="text-2xl text-crimson hover:text-crimson-light">
-                  press@thedrinkers.si
-                </a>
-              </div>
-              <div className="text-center">
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <Phone className="w-6 h-6 text-white" />
-                  <h3 className="text-xl font-bold text-white">Telefon</h3>
-                </div>
-                <a href="tel:+38640123456" className="text-2xl text-crimson hover:text-crimson-light">
-                  +386 40 123 456
-                </a>
-              </div>
-            </div>
-          </GlassCard>
-
-          {/* Press Releases */}
-          <div className="mb-16">
-            <h2 className="text-3xl font-bold text-white mb-8">
-              Sporočila za Javnost
-            </h2>
-            <div className="space-y-6">
-              {pressReleases.map((release) => (
-                <GlassCard key={release.id} variant="dark" className="p-6">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <span className="px-3 py-1 bg-crimson/20 text-crimson text-xs font-bold rounded uppercase">
-                          {release.category}
-                        </span>
-                        <span className="text-sm text-text-gray">
-                          {release.date}
-                        </span>
-                      </div>
-                      <h3 className="text-2xl font-bold text-white mb-2">
-                        {release.title}
-                      </h3>
-                      <p className="text-text-gray mb-4">
-                        {release.summary}
-                      </p>
-                      <Link
-                        href={`/press/${release.id}`}
-                        className="text-crimson hover:text-crimson-light font-medium"
-                      >
-                        Preberi več →
-                      </Link>
-                    </div>
-                    <a
-                      href={release.downloadUrl}
-                      className="flex items-center gap-2 px-4 py-2 bg-crimson text-white rounded-lg hover:bg-crimson-light transition-colors"
-                    >
-                      <Download className="w-4 h-4" />
-                      PDF
-                    </a>
-                  </div>
-                </GlassCard>
-              ))}
-            </div>
-          </div>
-
-          {/* Media Assets */}
-          <div className="mb-16">
-            <h2 className="text-3xl font-bold text-white mb-8">
-              Medijski Materiali
-            </h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              {mediaAssets.map((asset) => (
-                <GlassCard key={asset.type} variant="dark" className="p-6">
-                  <h3 className="text-xl font-bold text-white mb-4">
-                    {asset.type}
-                  </h3>
-                  <ul className="space-y-3">
-                    {asset.items.map((item) => (
-                      <li key={item.name}>
-                        <a
-                          href={item.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center justify-between text-text-gray hover:text-white transition-colors"
-                        >
-                          <span className="text-sm">{item.name}</span>
-                          <span className="text-xs text-crimson">{item.size}</span>
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </GlassCard>
-              ))}
-            </div>
-          </div>
-
-          {/* Band Bio */}
-          <GlassCard variant="dark" className="p-8 mb-12">
-            <h2 className="text-3xl font-bold text-white mb-6">
-              O Bandu
-            </h2>
-            <div className="prose prose-invert max-w-none">
-              <p className="text-lg text-text-gray">
-                The Drinkers so slovenska rock skupina iz Litije, ustanovljena leta 1993. 
-                V več kot 30 letih delovanja so izdali 10 studijskih albumov in postali 
-                ena najbolj prepoznavnih rock skupin v Sloveniji.
-              </p>
-              <p className="text-lg text-text-gray">
-                Znani so po energičnih koncertih, iskrenih besedilih in prepoznavnem 
-                zvoku, ki združuje klasični rock z modernimi elementi. Njihovi največji 
-                hiti vključujejo "Pijemo ga radi", "Lepi in trezni", "Pivolucija" in 
-                številne druge.
-              </p>
-              <p className="text-lg text-text-gray">
-                Skupina še vedno redno nastopa po Sloveniji in regiji, ter vsako leto 
-                izda nov album. Leta 2026 pripravljajo veliko povratniško turnejo po 
-                dveh letih premora.
-              </p>
-            </div>
-          </GlassCard>
-
-          {/* FAQ for Media */}
-          <div>
-            <h2 className="text-3xl font-bold text-white mb-8">
-              Pogosta Vprašanja za Medije
-            </h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              <GlassCard variant="dark" className="p-6">
-                <h3 className="text-lg font-bold text-white mb-3">
-                  Kdaj je na voljo nov album?
-                </h3>
-                <p className="text-text-gray">
-                  Nov album "Pivolucija" bo na voljo aprila 2026 na vseh streaming 
-                  platformah in v fizični obliki.
-                </p>
-              </GlassCard>
-              <GlassCard variant="dark" className="p-6">
-                <h3 className="text-lg font-bold text-white mb-3">
-                  Kako rezervirati intervju?
-                </h3>
-                <p className="text-text-gray">
-                  Za intervjuje in medijska vprašanja pišite na press@thedrinkers.si. 
-                  Odgovorimo v 24-48 urah.
-                </p>
-              </GlassCard>
-              <GlassCard variant="dark" className="p-6">
-                <h3 className="text-lg font-bold text-white mb-3">
-                  Kje so na voljo fotografije?
-                </h3>
-                <p className="text-text-gray">
-                  Vse uradne fotografije so na voljo v zgornjem razdelku "Medijski 
-                  Materiali". Uporaba je dovoljena za medijske namene.
-                </p>
-              </GlassCard>
-              <GlassCard variant="dark" className="p-6">
-                <h3 className="text-lg font-bold text-white mb-3">
-                  Kako pridobim akreditacijo za koncert?
-                </h3>
-                <p className="text-text-gray">
-                  Akreditacije za medije so na voljo za vse koncerte. Pišite na 
-                  press@thedrinkers.si z informacijami o mediju in namenom.
-                </p>
-              </GlassCard>
+    <div className="min-h-screen bg-black">
+      {/* Hero Section */}
+      <Section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
+              📰 Press & Media
+            </h1>
+            <p className="text-xl text-gray-400 max-w-3xl mx-auto mb-8">
+              Resources for journalists, bloggers, and media professionals
+            </p>
+            <div className="flex flex-wrap gap-4 justify-center">
+              <Button className="bg-crimson-600 hover:bg-crimson-700 text-white px-8 py-4">
+                📥 Download Press Release
+              </Button>
+              <Button variant="outline" className="border-crimson-600 text-crimson-400 hover:bg-crimson-950 px-8 py-4">
+                📷 Download Media Kit
+              </Button>
             </div>
           </div>
         </div>
       </Section>
-    </>
+
+      {/* Stats */}
+      <Section className="py-16 bg-gray-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {stats.map((stat) => (
+              <div key={stat.label} className="text-center">
+                <div className="text-4xl md:text-5xl font-bold text-crimson-500 mb-2">
+                  {stat.value}
+                </div>
+                <div className="text-gray-400">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      {/* Resources */}
+      <Section className="py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12">
+            📦 Media Resources
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {resources.map((resource) => (
+              <GlassCard key={resource.title} className="p-6">
+                <div className="text-4xl mb-4">{resource.icon}</div>
+                <h3 className="text-xl font-bold text-white mb-2">
+                  {resource.title}
+                </h3>
+                <p className="text-gray-400 text-sm mb-4">
+                  {resource.description}
+                </p>
+                <ul className="space-y-1">
+                  {resource.items.map((item) => (
+                    <li key={item} className="text-gray-300 text-sm flex items-center">
+                      <span className="text-crimson-500 mr-2">✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <Button className="w-full mt-4 bg-crimson-600 hover:bg-crimson-700 text-white">
+                  Download
+                </Button>
+              </GlassCard>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      {/* Press Release Preview */}
+      <Section className="py-16 bg-gray-900">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-8">
+            📰 Latest Press Release
+          </h2>
+
+          <div className="bg-black rounded-lg p-8 border border-gray-800">
+            <div className="text-crimson-500 text-sm font-bold mb-4">
+              FOR IMMEDIATE RELEASE
+            </div>
+            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+              🎸 THE DRINKERS LAUNCH REVOLUTIONARY WEBSITE
+            </h3>
+            <p className="text-gray-400 mb-6">
+              First Slovenian Rock Band with AI-Powered Fan Experience
+            </p>
+
+            <div className="prose prose-invert max-w-none">
+              <p className="text-gray-300">
+                <strong>LITIJA, SLOVENIA</strong> – Legendary Slovenian rock band 
+                The Drinkers today launches the completely redesigned website{' '}
+                <strong>thedrinkers.si</strong>, setting new standards for music 
+                websites in the region with AI-powered fan experiences, VIP areas, 
+                and interactive concert history.
+              </p>
+
+              <blockquote className="border-l-4 border-crimson-600 pl-4 my-6 italic text-gray-300">
+                "We wanted to create something that's not just a website, but a 
+                true digital experience for our fans."
+              </blockquote>
+
+              <p className="text-gray-300">
+                The website features include VIP "Drinkers Bar" with AI bots, 
+                AI Studio for fan artwork generation, interactive map of all 
+                concerts from 1993-2026, and fully integrated merch store.
+              </p>
+            </div>
+
+            <div className="mt-8 flex flex-wrap gap-4">
+              <Button className="bg-crimson-600 hover:bg-crimson-700 text-white">
+                📥 Download Full Release (SLO)
+              </Button>
+              <Button className="bg-crimson-600 hover:bg-crimson-700 text-white">
+                📥 Download Full Release (ENG)
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* Contact Section */}
+      <Section className="py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-8">
+            📞 Media Contacts
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {contacts.map((contact) => (
+              <GlassCard key={contact.id} className="p-6">
+                <h3 className="text-xl font-bold text-white mb-2">
+                  {contact.name}
+                </h3>
+                <p className="text-crimson-400 mb-4">{contact.role}</p>
+                <div className="space-y-2">
+                  <div className="flex items-center text-gray-300">
+                    <span className="mr-2">📧</span>
+                    <a href={`mailto:${contact.email}`} className="hover:text-crimson-400">
+                      {contact.email}
+                    </a>
+                  </div>
+                  <div className="flex items-center text-gray-300">
+                    <span className="mr-2">📱</span>
+                    <a href={`tel:${contact.phone}`} className="hover:text-crimson-400">
+                      {contact.phone}
+                    </a>
+                  </div>
+                </div>
+                <Button className="w-full mt-4" variant="outline">
+                  Schedule Interview
+                </Button>
+              </GlassCard>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      {/* FAQ */}
+      <Section className="py-16 bg-gray-900">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12">
+            ❓ FAQ for Media
+          </h2>
+
+          <div className="space-y-6">
+            {[
+              {
+                q: 'Can I use The Drinkers logo in my article?',
+                a: 'Yes! Download our media kit which includes logo files in various formats (SVG, PNG) with usage guidelines.',
+              },
+              {
+                q: 'Are interview opportunities available?',
+                a: 'Yes! Contact our media relations team at media@thedrinkers.si to schedule interviews with band members.',
+              },
+              {
+                q: 'Can I get high-resolution photos?',
+                a: 'Absolutely! All press photos are available for download in our media resources section (300 DPI, print-ready).',
+              },
+              {
+                q: 'Is there video content available?',
+                a: 'Yes, we have B-roll footage, concert recordings, and behind-the-scenes content available for media use.',
+              },
+            ].map((faq, index) => (
+              <GlassCard key={index} className="p-6">
+                <h3 className="text-lg font-bold text-white mb-2">{faq.q}</h3>
+                <p className="text-gray-400">{faq.a}</p>
+              </GlassCard>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      {/* CTA */}
+      <Section className="py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <GlassCard className="p-12">
+            <h2 className="text-3xl font-bold text-white mb-4">
+              Need More Information?
+            </h2>
+            <p className="text-gray-400 mb-8">
+              Our media team is ready to help you with any questions or requests.
+            </p>
+            <div className="flex flex-wrap gap-4 justify-center">
+              <Button className="bg-crimson-600 hover:bg-crimson-700 text-white px-8 py-4">
+                📧 Contact Media Team
+              </Button>
+              <Button variant="outline" className="border-crimson-600 text-crimson-400 hover:bg-crimson-950 px-8 py-4">
+                🌐 Visit Main Website
+              </Button>
+            </div>
+          </GlassCard>
+        </div>
+      </Section>
+    </div>
   );
 }

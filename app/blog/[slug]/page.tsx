@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { ArrowLeft, Calendar, Clock, User, Tag } from 'lucide-react';
 
 interface BlogPostPageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 // Mock post data (v production fetch from CMS)
@@ -60,7 +60,8 @@ const getPostBySlug = (slug: string) => {
 };
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
-  const post = getPostBySlug(params.slug);
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
   
   return {
     title: `${post.title} | The Drinkers`,

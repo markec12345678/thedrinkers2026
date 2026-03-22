@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Drinkers - Concert Poster</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Arial Black', sans-serif;
+            background: linear-gradient(135deg, #1a0a0a 0%, #4a0a0a 50%, #1a0a0a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .poster {
+            width: 1080px;
+            height: 1350px;
+            background: linear-gradient(180deg, #0a0a0a 0%, #2a0a0a 50%, #0a0a0a 100%);
+            position: relative;
+            overflow: hidden;
+            border: 20px solid #dc143c;
+        }
+        .stage-lights {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 400px;
+            background: radial-gradient(circle at 20% 50%, rgba(220,20,60,0.4) 0%, transparent 50%),
+                        radial-gradient(circle at 50% 30%, rgba(220,20,60,0.3) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 50%, rgba(220,20,60,0.4) 0%, transparent 50%);
+        }
+        .content {
+            position: relative;
+            z-index: 10;
+            padding: 60px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .band-name {
+            font-size: 120px;
+            color: #dc143c;
+            text-transform: uppercase;
+            text-align: center;
+            text-shadow: 0 0 40px rgba(220,20,60,0.8), 0 0 80px rgba(220,20,60,0.4);
+            letter-spacing: 10px;
+            margin-top: 40px;
+        }
+        .tagline {
+            font-size: 36px;
+            color: #ffffff;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin-top: 20px;
+        }
+        .guitar-icon {
+            font-size: 200px;
+            text-align: center;
+            margin: 40px 0;
+            color: #dc143c;
+            text-shadow: 0 0 40px rgba(220,20,60,0.8);
+        }
+        .event-info {
+            background: rgba(220,20,60,0.1);
+            border: 4px solid #dc143c;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+        .event-info h2 {
+            font-size: 48px;
+            color: #dc143c;
+            text-align: center;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            font-size: 32px;
+            color: #ffffff;
+        }
+        .info-label {
+            color: #dc143c;
+            font-weight: bold;
+        }
+        .beer-mug {
+            font-size: 120px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        .cta {
+            text-align: center;
+            font-size: 42px;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-top: 40px;
+            text-shadow: 0 0 20px rgba(220,20,60,0.6);
+        }
+        .tickets {
+            background: #dc143c;
+            color: #ffffff;
+            padding: 20px 60px;
+            border-radius: 50px;
+            display: inline-block;
+            font-size: 36px;
+            text-transform: uppercase;
+            margin-top: 30px;
+            box-shadow: 0 0 40px rgba(220,20,60,0.6);
+        }
+    </style>
+</head>
+<body>
+    <div class="poster">
+        <div class="stage-lights"></div>
+        <div class="content">
+            <div>
+                <h1 class="band-name">THE DRINKERS</h1>
+                <p class="tagline">Slovenian Booze Rock Legends</p>
+                <div class="guitar-icon">🎸</div>
+            </div>
+            
+            <div class="event-info">
+                <h2>LIVE IN CONCERT</h2>
+                <div class="info-row">
+                    <span class="info-label">📍 VENUE:</span>
+                    <span>Orto Bar, Ljubljana</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">📅 DATE:</span>
+                    <span>April 15, 2026</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">⏰ TIME:</span>
+                    <span>21:00</span>
+                </div>
+                <div class="beer-mug">🍺</div>
+            </div>
+            
+            <div>
+                <p class="cta">Don't Miss The Rock Event Of The Year!</p>
+                <div style="text-align: center;">
+                    <div class="tickets">Tickets Available Now</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Screenshot this page manually or use html2canvas
+        console.log('🎸 Concert Poster Ready!');
+        console.log('📸 Take screenshot at 1080x1350px for Instagram/Facebook');
+    </script>
+</body>
+</html>
