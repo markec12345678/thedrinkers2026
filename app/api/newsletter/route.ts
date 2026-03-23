@@ -1,56 +1,64 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { Resend } from 'resend';
 
-// Edge Runtime za hitrejše odzive iz edge lokacij
-export const runtime = 'edge';
-
-// Cache strategija
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-
-// Validation schema
-const newsletterSchema = z.object({
-  email: z.string().email('Neveljaven email naslov'),
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email } = newsletterSchema.parse(body);
+    const { email, name } = body;
 
-    // TODO: Integrate with email service (SendGrid, Mailchimp, etc.)
-    // For now, we'll simulate a successful subscription
-    
-    console.log('Newsletter subscription:', email);
-
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    return NextResponse.json(
-      { 
-        success: true, 
-        message: 'Uspešno ste se prijavili na novice!' 
-      },
-      { status: 200 }
-    );
-  } catch (error) {
-    if (error instanceof z.ZodError) {
+    if (!email || !name) {
       return NextResponse.json(
-        { 
-          success: false, 
-          message: 'Neveljaven email naslov',
-          errors: error.errors 
-        },
+        { error: 'Email and name are required' },
         { status: 400 }
       );
     }
 
-    console.error('Newsletter error:', error);
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        { error: 'Invalid email format' },
+        { status: 400 }
+      );
+    }
+
+    // TODO: Save to database
+    // await db.newsletter.create({ data: { email, name } });
+
+    // Send confirmation email
+    await resend.emails.send({
+      from: 'The Drinkers <noreply@thedrinkers.si>',
+      to: email,
+      subject: 'Dobrodošel v The Drinkers Newsletter!',
+      html: `
+        <h1>Hvala za prijavo! 🍺</h1>
+        <p>Pozdravljen ${name},</p>
+        <p>Hvala, da si se pridružil The Drinkers newsletterju! Zdaj boš prvi izvedel za:</p>
+        <ul>
+          <li>🎸 Nove koncerte in turneje</li>
+          <li>🎵 Nove pesmi in albume</li>
+          <li>👕 Ekskluzivne merchandise popuste</li>
+          <li>🎉 Posebne dogodke in presenečenja</li>
+        </ul>
+        <p>Na zdravje!</p>
+        <p><strong>The Drinkers Team</strong></p>
+        <hr/>
+        <p style="font-size: 12px; color: #666;">
+          Če se želiš odjaviti, klikni <a href="${process.env.NEXT_PUBLIC_SITE_URL}/unsubscribe?email=${encodeURIComponent(email)}">tukaj</a>.
+        </p>
+      `,
+    });
+
+    return NextResponse.json({ 
+      success: true, 
+      message: 'Prijavljen na newsletter!' 
+    });
+  } catch (error) {
+    console.error('Newsletter signup error:', error);
     return NextResponse.json(
-      { 
-        success: false, 
-        message: 'Prišlo je do napake. Poskusite znova.' 
-      },
+      { error: 'Failed to signup for newsletter' },
       { status: 500 }
     );
   }

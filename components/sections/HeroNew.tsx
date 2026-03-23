@@ -79,7 +79,7 @@ export default function HeroSection() {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="max-w-3xl mb-12 text-base md:text-lg text-gray-300 leading-relaxed"
         >
-          Since 1993 • Litija, Slovenia • 33 Years of Rock'n'Roll
+          Since 1993 • Litija, Slovenia • 33 Years of Rock&apos;n&apos;Roll
         </motion.p>
 
         {/* Call-to-Action Buttons */}

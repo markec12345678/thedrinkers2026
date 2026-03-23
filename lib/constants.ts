@@ -382,10 +382,9 @@ export const siteConfig = SITE_CONFIG;
 
 // Stats
 export const STATS = [
-  { label: 'Koncertov', value: '150+' },
-  { label: 'Albumov', value: '3' },
-  { label: 'Držav', value: '8' },
-  { label: 'Fanov', value: '50K+' },
+  { value: '33', label: 'Let na sceni' },
+  { value: '7', label: 'Studijskih albumov' },
+  { value: '500+', label: 'Odigranih koncertov' },
 ];
 
 // Footer Links

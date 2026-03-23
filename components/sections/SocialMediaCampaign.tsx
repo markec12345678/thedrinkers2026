@@ -227,9 +227,9 @@ export function SocialMediaCampaign() {
         <div className="mt-12 bg-gray-900 rounded-lg p-6 border border-gray-800">
           <h3 className="text-xl font-bold text-white mb-4">📋 Navodila</h3>
           <ol className="space-y-2 text-gray-300">
-            <li>1. Klikni "Generate All Campaign Images" ali posamično za vsak dan</li>
+            <li>1. Klikni &quot;Generate All Campaign Images&quot; ali posamično za vsak dan</li>
             <li>2. Počakaj 10-30 sekund na generiranje vsake slike</li>
-            <li>3. Desni klik na sliko → "Save image as..."</li>
+            <li>3. Desni klik na sliko → &quot;Save image as...&quot;</li>
             <li>4. Shrani v public/images/social/[platform]/[filename].jpg</li>
             <li>5. Uploadaj v Meta Business Suite in schedule objave</li>
           </ol>

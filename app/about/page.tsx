@@ -42,17 +42,19 @@ export default function AboutPage() {
             <div className="space-y-6">
               <h2 className="text-4xl font-bold text-crimson">ZGODBA</h2>
               <p className="text-lg text-text-gray leading-relaxed">
-                The Drinkers so rock skupina, ki je nastala leta 2019 v srcu Slovenije. Naša glasba je mešanica
-                klasičnega rocka, modernega zvoka in avtentičnih besedil, ki govori o življenju, ljubezni in
-                seveda - o dobri pijači.
+                The Drinkers so rock skupina, ki je nastala nekega soparnega julijskega večera leta 1993 
+                v Litiji. Pet prijateljev, vseh nekdanjih glasbenikov v različnih zasedbah, je ob hladnem 
+                pivu dobilo idejo, da bi ustanovili skupino, sposobno nastopiti na lokalnem rock festivalu 
+                &quot;Rusty Trumpets&quot;. Presenetljivo so zmagali in se odločili ostati skupaj.
               </p>
               <p className="text-lg text-text-gray leading-relaxed">
-                Skozi leta smo nastopili na številnih festivalih in v klubih po vsej Sloveniji, kjer smo si
+                Skozi leta smo nastopili na številnih festivalih in v klubih po vsej Sloveniji, kjer smo si 
                 pridobili zvesto občinstvo. Naša energija na odru in iskrenost v glasbi nas ločuje od drugih.
               </p>
               <p className="text-lg text-text-gray leading-relaxed">
-                Z našim prvim albumom &quot;First Round&quot; smo leta 2019 takoj osvojili srca poslušalcev. Sledila sta
-                &quot;Midnight Rocker&quot; (2022) in najnovejši &quot;Last Call&quot; (2024), ki nas je popeljal tudi na tuje odre.
+                Z našim prvim albumom &quot;Lepi in trezni&quot; (1995) smo takoj osvojili srca poslušalcev. Sledili so 
+                &quot;Žeja&quot; (1997), &quot;Pivolucija&quot; (1999), &quot;De Best Od&quot; (2001), &quot;Prohibicija&quot; (2003), &quot;Hajdi&quot; (2007) 
+                in &quot;Recidiv&quot; (2014). Danes, po 33 letih, še vedno rockamo!
               </p>
             </div>
           </div>

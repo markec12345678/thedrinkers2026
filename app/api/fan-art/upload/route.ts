@@ -1,56 +1,82 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { validateUpload, DEFAULT_FAN_ART_TERMS } from '@/lib/fan-art';
+import { writeFile, mkdir } from 'fs/promises';
+import { join } from 'path';
 
-export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic';
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb', // 10MB max file size
+    },
+  },
+};
 
-/**
- * POST /api/fan-art/upload
- * Upload fan artwork
- */
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
-    const file = Array.from(formData.getAll('file'))[0] as unknown as File;
-    const title = Array.from(formData.getAll('title'))[0] as string;
-    const description = Array.from(formData.getAll('description'))[0] as string;
-    const category = Array.from(formData.getAll('category'))[0] as string;
-    const agreeToTerms = Array.from(formData.getAll('agreeToTerms'))[0] === 'true';
-    const allowAIEnhancement = Array.from(formData.getAll('allowAIEnhancement'))[0] === 'true';
-    const merchInterest = Array.from(formData.getAll('merchInterest'))[0] === 'true';
+    const file = formData.get('file') as File;
+    const title = formData.get('title') as string;
+    const artist = formData.get('artist') as string;
+    const description = formData.get('description') as string;
 
-    // Validate file
     if (!file) {
+      return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
+    }
+
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
       return NextResponse.json(
-        { error: 'No file provided' },
+        { error: 'Invalid file type. Allowed: JPEG, PNG, WebP, GIF' },
         { status: 400 }
       );
     }
 
-    const validation = validateUpload(file);
-    if (!validation.valid) {
+    // Validate file size (10MB max)
+    const maxSize = 10 * 1024 * 1024; // 10MB
+    if (file.size > maxSize) {
       return NextResponse.json(
-        { error: validation.error },
+        { error: 'File too large. Max size: 10MB' },
         { status: 400 }
       );
     }
 
-    // Validate terms agreement
-    if (!agreeToTerms) {
-      return NextResponse.json(
-        { error: 'Must agree to terms' },
-        { status: 400 }
-      );
-    }
+    // Create upload directory if it doesn't exist
+    const uploadDir = join(process.cwd(), 'public', 'uploads', 'fan-art');
+    await mkdir(uploadDir, { recursive: true });
 
-    // TODO: Save file to storage
-    // TODO: Create database record
-    // TODO: Send to moderation queue
+    // Generate unique filename
+    const timestamp = Date.now();
+    const extension = file.name.split('.').pop();
+    const filename = `fan-art-${timestamp}.${extension}`;
+    const filepath = join(uploadDir, filename);
 
+    // Convert file to buffer and save
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    await writeFile(filepath, buffer);
+
+    // TODO: Save to database
+    // await db.fanArt.create({
+    //   data: {
+    //     title,
+    //     artist,
+    //     description,
+    //     imageUrl: `/uploads/fan-art/${filename}`,
+    //     status: 'pending', // pending, approved, rejected
+    //   },
+    // });
+
+    // In production, send to moderation queue
+    // For now, just return success
     return NextResponse.json({
       success: true,
-      message: 'Artwork submitted for review',
-      reviewTime: '24-48 hours',
+      message: 'Artwork uploaded successfully! Awaiting moderation.',
+      data: {
+        filename,
+        url: `/uploads/fan-art/${filename}`,
+        size: file.size,
+        type: file.type,
+      },
     });
   } catch (error) {
     console.error('Fan art upload error:', error);
@@ -61,28 +87,50 @@ export async function POST(request: NextRequest) {
   }
 }
 
-/**
- * GET /api/fan-art
- * Get fan art gallery
- */
+// GET endpoint to fetch all fan art
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const category = searchParams.get('category');
-    const status = searchParams.get('status');
-    const sortBy = searchParams.get('sort');
-
     // TODO: Fetch from database
-    // For now, return mock data
-    const mockData = {
-      total: 47,
-      approved: 40,
-      featured: 12,
-      pending: 5,
-      artworks: [],
-    };
+    // const fanArt = await db.fanArt.findMany({
+    //   where: { status: 'approved' },
+    //   orderBy: { createdAt: 'desc' },
+    // });
 
-    return NextResponse.json(mockData);
+    // Mock data for now
+    const mockFanArt = [
+      {
+        id: 1,
+        title: 'The Drinkers Concert Poster',
+        artist: 'Marko M.',
+        description: 'My artwork for the upcoming tour',
+        imageUrl: '/uploads/fan-art/fan-art-1.jpg',
+        likes: 42,
+        createdAt: '2026-03-20',
+      },
+      {
+        id: 2,
+        title: 'Pijemo ga radi Illustration',
+        artist: 'Ana K.',
+        description: 'Inspired by the classic hit',
+        imageUrl: '/uploads/fan-art/fan-art-2.jpg',
+        likes: 38,
+        createdAt: '2026-03-19',
+      },
+      {
+        id: 3,
+        title: 'Band Portrait',
+        artist: 'Peter S.',
+        description: 'Digital painting of the band',
+        imageUrl: '/uploads/fan-art/fan-art-3.jpg',
+        likes: 56,
+        createdAt: '2026-03-18',
+      },
+    ];
+
+    return NextResponse.json({
+      success: true,
+      data: mockFanArt,
+    });
   } catch (error) {
     console.error('Fan art fetch error:', error);
     return NextResponse.json(

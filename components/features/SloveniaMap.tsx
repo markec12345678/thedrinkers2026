@@ -1,17 +1,24 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useId, useCallback } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { tourDates } from '@/lib/constants';
 import L from 'leaflet';
 
 export function SloveniaMap() {
+  const uniqueId = useId();
   const [isClient, setIsClient] = useState(false);
   const [crimsonIcon, setCrimsonIcon] = useState<L.Icon | null>(null);
-  const [mapKey, setMapKey] = useState(0);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // Only run on client
+    if (typeof window === 'undefined') return;
+
+    // Mark as mounted
+    setMounted(true);
+
     // Fix for default marker icon in Next.js
     delete (L.Icon.Default.prototype as any)._getIconUrl;
     L.Icon.Default.mergeOptions({
@@ -33,14 +40,14 @@ export function SloveniaMap() {
     setIsClient(true);
   }, []);
 
-  // Force re-mount map on navigation
+  // Cleanup on unmount
   useEffect(() => {
-    if (isClient) {
-      setMapKey(prev => prev + 1);
-    }
-  }, [isClient]);
+    return () => {
+      setMounted(false);
+    };
+  }, []);
 
-  if (!isClient || !crimsonIcon) {
+  if (!isClient || !crimsonIcon || !mounted) {
     return (
       <div className="w-full h-[500px] bg-rock-gray rounded-lg animate-pulse" />
     );
@@ -52,14 +59,14 @@ export function SloveniaMap() {
   return (
     <div className="w-full h-[500px] rounded-lg overflow-hidden border-2 border-crimson/30">
       <MapContainer
-        key={`map-${mapKey}`}
+        key={`map-${uniqueId}-${mounted ? 'ready' : 'loading'}`}
         center={center}
         zoom={8}
         scrollWheelZoom={false}
         className="w-full h-full"
         style={{ background: '#1a1a1a' }}
-        fadeAnimation={false}
-        zoomAnimation={false}
+        fadeAnimation={true}
+        zoomAnimation={true}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

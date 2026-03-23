@@ -1,6 +1,7 @@
 /**
  * The Drinkers - Song Database
  * PRAVNE pesmi z validiranimi Spotify linki
+ * Artist ID: 5R5fCq6Zv1vlJPgej08fhd
  */
 
 export interface Song {
@@ -9,8 +10,8 @@ export interface Song {
   album: string;
   year: number;
   duration: string;
-  spotifyId: string;
-  spotifyUrl: string;
+  spotifyId?: string;
+  spotifyUrl?: string;
   youtubeId?: string;
   mood: SongMood[];
   energy: 'low' | 'medium' | 'high' | 'very-high';
@@ -44,8 +45,9 @@ export const SONGS_DATABASE: Song[] = [
     album: 'Pijemo ga radi',
     year: 1995,
     duration: '3:45',
-    spotifyId: 'spotify-track-id-1',
-    spotifyUrl: 'https://open.spotify.com/track/xxx',
+    spotifyId: undefined, // TODO: Add real Spotify ID
+    spotifyUrl: undefined,
+    youtubeId: 'hkHHvb2eDb4',
     mood: ['party', 'drinking', 'fun'],
     energy: 'very-high',
     tempo: 'fast',
@@ -57,8 +59,9 @@ export const SONGS_DATABASE: Song[] = [
     album: 'Lepi in trezni',
     year: 1997,
     duration: '4:12',
-    spotifyId: 'spotify-track-id-2',
-    spotifyUrl: 'https://open.spotify.com/track/yyy',
+    spotifyId: undefined,
+    spotifyUrl: undefined,
+    youtubeId: 'd3ygw0J_VgQ',
     mood: ['energetic', 'rebellious', 'party'],
     energy: 'high',
     tempo: 'fast',
@@ -70,8 +73,9 @@ export const SONGS_DATABASE: Song[] = [
     album: 'Žeja',
     year: 1999,
     duration: '3:58',
-    spotifyId: 'spotify-track-id-3',
-    spotifyUrl: 'https://open.spotify.com/track/zzz',
+    spotifyId: undefined,
+    spotifyUrl: undefined,
+    youtubeId: 'xwL-SFI5DTI',
     mood: ['emotional', 'romantic', 'chill'],
     energy: 'medium',
     tempo: 'slow',

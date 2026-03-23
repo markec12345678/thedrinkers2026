@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   // output: 'standalone', // Disabled for deployment
-  
+
   // Image optimization
   images: {
     remotePatterns: [

@@ -1,8 +1,9 @@
 import { Metadata } from 'next';
 import { Section } from '@/components/ui/Section';
 import { GlassCard } from '@/components/ui/GlassCard';
-import { BlogPosting } from '@/lib/blog-schema';
+import { generateBlogPostingSchema } from '@/lib/blog-schema';
 import Link from 'next/link';
+import { JsonLd } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Blog | The Drinkers',
@@ -71,8 +72,20 @@ const categories = [
 ];
 
 export default function BlogPage() {
+  const blogSchema = generateBlogPostingSchema({
+    id: 'blog-main',
+    title: 'Blog | The Drinkers',
+    description: 'Novice, zgodbe in posodobitve iz sveta The Drinkers',
+    content: 'Blog page with all news and updates',
+    publishedAt: '2026-03-21',
+    author: 'The Drinkers',
+    image: '/images/og-image.jpg',
+    tags: ['blog', 'news', 'updates'],
+  });
+
   return (
     <>
+      <JsonLd schema={blogSchema} />
       {/* Hero */}
       <section className="relative h-[60vh] flex items-center justify-center bg-rock-black">
         <div className="absolute inset-0">

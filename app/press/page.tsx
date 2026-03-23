@@ -158,12 +158,12 @@ export default function PressPage() {
               </p>
 
               <blockquote className="border-l-4 border-crimson-600 pl-4 my-6 italic text-gray-300">
-                "We wanted to create something that's not just a website, but a 
-                true digital experience for our fans."
+                &quot;We wanted to create something that&apos;s not just a website, but a 
+                true digital experience for our fans.&quot;
               </blockquote>
 
               <p className="text-gray-300">
-                The website features include VIP "Drinkers Bar" with AI bots, 
+                The website features include VIP &quot;Drinkers Bar&quot; with AI bots, 
                 AI Studio for fan artwork generation, interactive map of all 
                 concerts from 1993-2026, and fully integrated merch store.
               </p>

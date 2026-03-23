@@ -3,107 +3,194 @@
 import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Section } from '@/components/ui/Section';
+import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
+import { Upload, Image, X, Check, Loader2 } from 'lucide-react';
 
 export function FanArtUpload() {
-  const [isDragging, setIsDragging] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
-  const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [title, setTitle] = useState('');
+  const [artist, setArtist] = useState('');
+  const [description, setDescription] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const [uploaded, setUploaded] = useState(false);
+  const [error, setError] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      // Validate file type
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+      if (!allowedTypes.includes(selectedFile.type)) {
+        setError('Invalid file type. Please upload JPEG, PNG, WebP, or GIF.');
+        return;
+      }
 
-  const handleDragLeave = () => {
-    setIsDragging(false);
+      // Validate file size (10MB max)
+      const maxSize = 10 * 1024 * 1024;
+      if (selectedFile.size > maxSize) {
+        setError('File too large. Max size: 10MB.');
+        return;
+      }
+
+      setFile(selectedFile);
+      setError('');
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+      };
+      reader.readAsDataURL(selectedFile);
+    }
   };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
-    setIsDragging(false);
-    const file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith('image/')) {
-      handleFile(file);
+    const droppedFile = e.dataTransfer.files?.[0];
+    if (droppedFile) {
+      setFile(droppedFile);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+      };
+      reader.readAsDataURL(droppedFile);
     }
   };
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      handleFile(file);
+  const handleUpload = async () => {
+    if (!file || !title || !artist) {
+      setError('Please fill in all required fields and select a file.');
+      return;
     }
-  };
 
-  const handleFile = (file: File) => {
-    setSelectedFile(file);
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreview(reader.result as string);
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleSubmit = async () => {
-    if (!selectedFile) return;
-
-    setIsUploading(true);
+    setUploading(true);
+    setError('');
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      setUploadSuccess(true);
-      setTimeout(() => {
-        setUploadSuccess(false);
-        setSelectedFile(null);
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('title', title);
+      formData.append('artist', artist);
+      formData.append('description', description);
+
+      const response = await fetch('/api/fan-art/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setUploaded(true);
+        setFile(null);
         setPreview(null);
-      }, 3000);
-    } catch (error) {
-      console.error('Upload failed:', error);
+        setTitle('');
+        setArtist('');
+        setDescription('');
+      } else {
+        setError(result.error || 'Upload failed. Please try again.');
+      }
+    } catch (err) {
+      setError('Upload failed. Please try again.');
     } finally {
-      setIsUploading(false);
+      setUploading(false);
+    }
+  };
+
+  const resetForm = () => {
+    setUploaded(false);
+    setFile(null);
+    setPreview(null);
+    setTitle('');
+    setArtist('');
+    setDescription('');
+    setError('');
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
   };
 
   return (
-    <Section background="darker">
+    <Section background="gradient">
       <div className="max-w-3xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <h2 className="text-4xl font-bold text-crimson text-center mb-4">
-            FAN ART GALERIJA
+        <div className="text-center mb-8">
+          <h2 className="text-4xl font-bold text-crimson mb-4">
+            🎨 Objavi Svojo Umetnino
           </h2>
-          <p className="text-text-gray text-center mb-8 max-w-2xl mx-auto">
-            Ustvari umetninsko delo, inspirirano s The Drinkers in ga deli z nami! Izbrana dela bodo objavljena v naši galeriji.
+          <p className="text-xl text-text-gray">
+            Deli svojo The Drinkers umetnost s skupnostjo
           </p>
+        </div>
 
-          <div
-            className={`card p-8 transition-all duration-300 ${
-              isDragging ? 'border-crimson bg-crimson/10' : ''
-            }`}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-          >
-            {!preview ? (
+        {uploaded ? (
+          /* Success State */
+          <GlassCard variant="dark" className="p-8 text-center">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4"
+            >
+              <Check className="w-10 h-10 text-white" />
+            </motion.div>
+            <h3 className="text-2xl font-bold text-white mb-4">
+              Hvala za prispevek! 🎉
+            </h3>
+            <p className="text-text-gray mb-6">
+              Tvoja umetnina je bila uspešno oddana. Naša ekipa jo bo pregledala v 24-48 urah.
+            </p>
+            <Button onClick={resetForm} size="lg">
+              Objavi Še Eno
+            </Button>
+          </GlassCard>
+        ) : (
+          /* Upload Form */
+          <GlassCard variant="dark" className="p-8">
+            {/* File Upload */}
+            <div className="mb-6">
+              <label className="block text-white font-bold mb-4">
+                Umetnina *
+              </label>
               <div
-                className="border-2 border-dashed border-white/30 rounded-lg p-12 text-center cursor-pointer hover:border-crimson transition-colors"
+                onDrop={handleDrop}
+                onDragOver={(e) => e.preventDefault()}
                 onClick={() => fileInputRef.current?.click()}
+                className="border-2 border-dashed border-white/20 rounded-xl p-8 text-center cursor-pointer hover:border-crimson/50 transition-colors"
               >
-                <div className="text-6xl mb-4">🎨</div>
-                <h3 className="text-xl font-bold text-white mb-2">
-                  Povleci in spusti sliko
-                </h3>
-                <p className="text-text-gray mb-4">ali klikni za izbiro datoteke</p>
-                <p className="text-text-gray text-sm">
-                  Podprti formati: JPG, PNG, GIF (max 5MB)
-                </p>
+                {preview ? (
+                  <div className="relative">
+                    <img
+                      src={preview}
+                      alt="Preview"
+                      className="max-h-64 mx-auto rounded-lg shadow-lg"
+                    />
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setFile(null);
+                        setPreview(null);
+                        if (fileInputRef.current) {
+                          fileInputRef.current.value = '';
+                        }
+                      }}
+                      className="absolute top-2 right-2 p-2 bg-red-500 rounded-full hover:bg-red-600 transition-colors"
+                    >
+                      <X className="w-5 h-5 text-white" />
+                    </button>
+                  </div>
+                ) : (
+                  <div>
+                    <Upload className="w-16 h-16 text-text-gray mx-auto mb-4" />
+                    <p className="text-white font-bold mb-2">
+                      Povleci in spusti ali klikni za upload
+                    </p>
+                    <p className="text-text-gray text-sm">
+                      JPEG, PNG, WebP, GIF (max 10MB)
+                    </p>
+                  </div>
+                )}
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -112,78 +199,84 @@ export function FanArtUpload() {
                   className="hidden"
                 />
               </div>
-            ) : (
-              <div className="space-y-6">
-                <div className="relative">
-                  <img
-                    src={preview}
-                    alt="Preview"
-                    className="w-full max-h-96 object-contain rounded-lg"
-                  />
-                  <button
-                    onClick={() => {
-                      setPreview(null);
-                      setSelectedFile(null);
-                    }}
-                    className="absolute top-4 right-4 bg-crimson text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-crimson-light transition-colors font-bold"
-                  >
-                    ×
-                  </button>
-                </div>
+            </div>
 
-                <div className="flex gap-4">
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      setPreview(null);
-                      setSelectedFile(null);
-                    }}
-                  >
-                    PREKLIČI
-                  </Button>
-                  <Button
-                    onClick={handleSubmit}
-                    disabled={isUploading || uploadSuccess}
-                    className="flex-1"
-                  >
-                    {isUploading ? 'NALAGANJE...' : uploadSuccess ? 'OBJAVLJENO!' : 'OBJAVI'}
-                  </Button>
-                </div>
+            {/* Title */}
+            <div className="mb-4">
+              <label className="block text-white font-bold mb-2">
+                Naslov *
+              </label>
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="npr. The Drinkers Concert Poster"
+                className="w-full px-4 py-3 bg-rock-black/50 border border-white/10 rounded-lg text-white placeholder-text-gray focus:border-crimson focus:outline-none transition-colors"
+                required
+              />
+            </div>
+
+            {/* Artist Name */}
+            <div className="mb-4">
+              <label className="block text-white font-bold mb-2">
+                Tvoje Ime *
+              </label>
+              <input
+                type="text"
+                value={artist}
+                onChange={(e) => setArtist(e.target.value)}
+                placeholder="npr. Marko M."
+                className="w-full px-4 py-3 bg-rock-black/50 border border-white/10 rounded-lg text-white placeholder-text-gray focus:border-crimson focus:outline-none transition-colors"
+                required
+              />
+            </div>
+
+            {/* Description */}
+            <div className="mb-6">
+              <label className="block text-white font-bold mb-2">
+                Opis (Opcijsko)
+              </label>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Opiši svojo umetnino..."
+                rows={4}
+                className="w-full px-4 py-3 bg-rock-black/50 border border-white/10 rounded-lg text-white placeholder-text-gray focus:border-crimson focus:outline-none transition-colors resize-none"
+              />
+            </div>
+
+            {/* Error Message */}
+            {error && (
+              <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-500">
+                {error}
               </div>
             )}
-          </div>
 
-          {/* Guidelines */}
-          <div className="mt-12 grid md:grid-cols-3 gap-6">
-            <div className="card p-6 text-center">
-              <div className="text-crimson text-3xl mb-4">
-                <i className="fas fa-image" />
-              </div>
-              <h3 className="text-lg font-bold text-white mb-2">Format</h3>
-              <p className="text-text-gray text-sm">
-                JPG, PNG ali GIF, največ 5MB
-              </p>
-            </div>
-            <div className="card p-6 text-center">
-              <div className="text-crimson text-3xl mb-4">
-                <i className="fas fa-shield-alt" />
-              </div>
-              <h3 className="text-lg font-bold text-white mb-2">Originalnost</h3>
-              <p className="text-text-gray text-sm">
-                Delo mora biti tvoje originalno
-              </p>
-            </div>
-            <div className="card p-6 text-center">
-              <div className="text-crimson text-3xl mb-4">
-                <i className="fas fa-clock" />
-              </div>
-              <h3 className="text-lg font-bold text-white mb-2">Pregled</h3>
-              <p className="text-text-gray text-sm">
-                Vsa dela so moderirana pred objavo
-              </p>
-            </div>
-          </div>
-        </motion.div>
+            {/* Submit Button */}
+            <Button
+              onClick={handleUpload}
+              disabled={uploading || !file || !title || !artist}
+              className="w-full py-4 text-lg"
+              size="lg"
+            >
+              {uploading ? (
+                <span className="flex items-center gap-2">
+                  <Loader2 className="w-6 h-6 animate-spin" />
+                  Oddajam...
+                </span>
+              ) : (
+                <span className="flex items-center gap-2">
+                  <Image className="w-6 h-6" alt="" />
+                  Objavi Umetnino
+                </span>
+              )}
+            </Button>
+
+            <p className="text-text-gray text-sm text-center mt-4">
+              Z objavo se strinjaš, da se tvoja umetnina lahko prikaže v galeriji.
+            </p>
+          </GlassCard>
+        )}
       </div>
     </Section>
   );

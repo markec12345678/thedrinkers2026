@@ -39,13 +39,15 @@ export function AboutSection() {
             viewport={{ once: true }}
           >
             <p className="text-lg text-text-gray leading-relaxed">
-              The Drinkers so rock skupina, ki je nastala leta 2019 v srcu Slovenije. Naša glasba je mešanica
-              klasičnega rocka, modernega zvoka in avtentičnih besedil, ki govori o življenju, ljubezni in
-              seveda - o dobri pijači.
+              The Drinkers so rock skupina, ki je nastala nekega soparnega julijskega večera leta 1993 
+              v Litiji. Pet prijateljev, vseh nekdanjih glasbenikov, je ob hladnem pivu dobilo idejo za 
+              skupino. Nastopili so na festivalu &quot;Rusty Trumpets&quot;, presenetljivo zmagali in odločili so 
+              se ostati skupaj.
             </p>
             <p className="text-lg text-text-gray leading-relaxed">
-              Skozi leta smo nastopili na številnih festivalih in v klubih po vsej Sloveniji, kjer smo si
-              pridobili zvesto občinstvo. Naša energija na odru in iskrenost v glasbi nas ločuje od drugih.
+              Danes, po 33 letih, še vedno rockamo po odrih Slovenije in tujine. Z našim prvim albumom 
+              &quot;Lepi in trezni&quot; (1995) smo osvojili srca poslušalcev. Sledili so &quot;Žeja&quot; (1997), &quot;Pivolucija&quot; 
+              (1999), &quot;Prohibicija&quot; (2003), &quot;Hajdi&quot; (2007) in &quot;Recidiv&quot; (2014).
             </p>
 
             {/* Stats */}
