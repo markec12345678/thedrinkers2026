@@ -43,7 +43,7 @@ const recentSignups = [
   { id: 5, name: 'Tomaž D.', email: 'tomaz@example.com', date: '2026-03-20', tier: 'Fan' },
 ];
 
-export function AdminDashboard() {
+export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<'overview' | 'orders' | 'fans'>('overview');
 
   const statCards = [

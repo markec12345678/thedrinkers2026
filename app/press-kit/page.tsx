@@ -80,7 +80,7 @@ const pressKitItems = [
   },
 ];
 
-export function PressKitPage() {
+export default function PressKitPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const handleDownloadAll = () => {
