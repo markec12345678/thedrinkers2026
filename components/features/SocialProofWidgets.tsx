@@ -106,17 +106,18 @@ export function LiveActivityFeed() {
   useEffect(() => {
     // Simulate live activity (in production, use WebSocket)
     const mockActivities = [
-      { type: 'listen', user: 'Marko M.', action: 'posluša "Pijemo ga radi"', time: 'zdaj' },
-      { type: 'join', user: 'Ana K.', action: 'se je pridružila VIP', time: 'pred 2 min' },
-      { type: 'buy', user: 'Peter S.', action: 'je kupil majico', time: 'pred 5 min' },
-      { type: 'view', user: 'Luka B.', action: 'ogleduje turnejo', time: 'pred 7 min' },
+      { id: 1, type: 'listen' as const, user: 'Marko M.', action: 'posluša "Pijemo ga radi"', time: 'zdaj' },
+      { id: 2, type: 'join' as const, user: 'Ana K.', action: 'se je pridružila VIP', time: 'pred 2 min' },
+      { id: 3, type: 'buy' as const, user: 'Peter S.', action: 'je kupil majico', time: 'pred 5 min' },
+      { id: 4, type: 'view' as const, user: 'Luka B.', action: 'ogleduje turnejo', time: 'pred 7 min' },
     ];
 
-    setActivities(mockActivities as any);
+    setActivities(mockActivities);
 
     const interval = setInterval(() => {
       setActivities(prev => {
-        const newActivity = mockActivities[Math.floor(Math.random() * mockActivities.length)];
+        const randomIndex = Math.floor(Math.random() * mockActivities.length);
+        const newActivity = { ...mockActivities[randomIndex], id: Date.now() };
         return [newActivity, ...prev.slice(0, 3)];
       });
     }, 10000);

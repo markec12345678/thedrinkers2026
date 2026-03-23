@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ReactNode } from 'react';
+import { ReactNode, MouseEventHandler } from 'react';
 
 interface GlassCardProps {
   children: ReactNode;
@@ -10,6 +10,7 @@ interface GlassCardProps {
   hover?: boolean;
   floating?: boolean;
   delay?: number;
+  onClick?: MouseEventHandler<HTMLDivElement>;
 }
 
 export function GlassCard({
@@ -19,6 +20,7 @@ export function GlassCard({
   hover = true,
   floating = false,
   delay = 0,
+  onClick,
 }: GlassCardProps) {
   const variantClasses = {
     default: 'glass',
@@ -32,15 +34,16 @@ export function GlassCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay }}
-      whileHover={hover ? { 
-        y: -8, 
-        boxShadow: '0 20px 40px rgba(220, 20, 60, 0.3)' 
+      whileHover={hover ? {
+        y: -8,
+        boxShadow: '0 20px 40px rgba(220, 20, 60, 0.3)'
       } : undefined}
+      onClick={onClick}
       className={`
-        ${variantClasses[variant]} 
-        rounded-lg 
+        ${variantClasses[variant]}
+        rounded-lg
         backdrop-blur-md
-        transition-all 
+        transition-all
         duration-300
         ${floating ? 'animate-float' : ''}
         ${className}

@@ -100,7 +100,7 @@ export function TourCalendar() {
                   transition={{ delay: index * 0.1 }}
                 >
                   <img
-                    src={`/images/gallery/concert-${i + 1}.jpg`}
+                    src={`/images/gallery/concert-${index + 1}.jpg`}
                     alt={show.venue}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   />

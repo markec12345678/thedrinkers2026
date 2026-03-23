@@ -220,9 +220,9 @@ export default function FanArtGallery() {
                   >
                     <GlassCard variant="dark" className="p-4 h-full">
                       {/* Image */}
-                      <div className="relative aspect-square mb-4 rounded-lg overflow-hidden bg-rock-gray">
-                        <Image className="w-16 h-16 opacity-50" aria-hidden="true" alt="" />
-                        
+                      <div className="relative aspect-square mb-4 rounded-lg overflow-hidden bg-rock-gray flex items-center justify-center">
+                        <Image className="w-16 h-16 opacity-50 text-gray-600" aria-hidden="true" />
+
                         {/* Status Badge */}
                         <div className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1 ${statusColors[art.status]}`}>
                           <StatusIcon className="w-3 h-3" />

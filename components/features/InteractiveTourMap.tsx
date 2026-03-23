@@ -109,10 +109,10 @@ export function InteractiveTourMap() {
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
               url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
             />
-            {tourDates.map((show) => (
+            {tourDates.filter(show => show.coordinates).map((show) => (
               <Marker
                 key={show.id}
-                position={[show.coordinates[0], show.coordinates[1]]}
+                position={[show.coordinates![0], show.coordinates![1]]}
                 icon={crimsonIcon}
                 eventHandlers={{
                   click: () => setSelectedShow(show.id),

@@ -266,7 +266,7 @@ export function FanArtUpload() {
                 </span>
               ) : (
                 <span className="flex items-center gap-2">
-                  <Image className="w-6 h-6" alt="" />
+                  <Image className="w-6 h-6" />
                   Objavi Umetnino
                 </span>
               )}
