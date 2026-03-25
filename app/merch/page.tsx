@@ -1,242 +1,199 @@
-'use client';
+"use client";
 
-import { Section } from '@/components/ui/Section';
-import { Button } from '@/components/ui/Button';
-import { GlassCard } from '@/components/ui/GlassCard';
-import { merchItems } from '@/lib/constants';
-import { formatPrice } from '@/lib/utils';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import {
+  MerchProductCard,
+  MerchProductCardSkeleton,
+  ShoppingCartSidebar,
+} from "@/components/merch";
+import { QuickViewModal } from "@/components/merch";
+import { ShoppingBag, Filter } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+interface Product {
+  id: string;
+  name: string;
+  description: string | null;
+  price: string;
+  compareAtPrice: string | null;
+  stock: number;
+  images: string[];
+  sizes: string[] | null;
+  featured: boolean;
+  active: boolean;
+  category: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface CartItem {
+  id: string;
+  productId: string;
+  name: string;
+  price: string;
+  image: string;
+  size: string;
+  quantity: number;
+  maxStock: number;
+}
 
 export default function MerchPage() {
-  const router = useRouter();
-  const [notifyEmails, setNotifyEmails] = useState<Record<string, string>>({});
-  
-  // Filter only t-shirts for MVP
-  const mvpProducts = merchItems.filter(item => 
-    item.name.toLowerCase().includes('t-shirt') || 
-    item.name.toLowerCase().includes('majica')
-  ).slice(0, 3);
-
-  const comingSoonProducts = merchItems.filter(item => 
-    !item.name.toLowerCase().includes('t-shirt') && 
-    !item.name.toLowerCase().includes('majica')
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(
+    null,
   );
 
+  useEffect(() => {
+    // Fetch products from API
+    fetch("/api/products")
+      .then((res) => res.json())
+      .then((data) => {
+        setProducts(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching products:", err);
+        setLoading(false);
+      });
+  }, []);
+
+  const handleAddToCart = (
+    product: Product,
+    size: string,
+    quantity: number,
+  ) => {
+    const cartItem: CartItem = {
+      id: `cart_${Date.now()}`,
+      productId: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.images[0],
+      size,
+      quantity,
+      maxStock: product.stock,
+    };
+
+    setCartItems((prev) => [...prev, cartItem]);
+    setIsCartOpen(true);
+  };
+
+  const handleQuantityChange = (itemId: string, quantity: number) => {
+    setCartItems((prev) =>
+      prev.map((item) => (item.id === itemId ? { ...item, quantity } : item)),
+    );
+  };
+
+  const handleRemoveItem = (itemId: string) => {
+    setCartItems((prev) => prev.filter((item) => item.id !== itemId));
+  };
+
+  const handleCheckout = (items: CartItem[], discountCode?: string) => {
+    // Redirect to Stripe checkout
+    console.log("Checkout:", items, discountCode);
+  };
+
+  const filteredProducts =
+    selectedCategory === "all"
+      ? products
+      : products.filter((p) => p.category === selectedCategory);
+
+  const categories = [
+    "all",
+    ...Array.from(new Set(products.map((p) => p.category).filter(Boolean))),
+  ];
+
   return (
-    <>
-      {/* Hero */}
-      <section className="relative h-[60vh] flex items-center justify-center bg-rock-dark">
-        <div className="absolute inset-0">
-          <img
-            src="/images/merch-hero.jpg"
-            alt="Merch"
-            className="w-full h-full object-cover opacity-30"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-rock-black/50 to-rock-dark" />
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 py-12 px-4">
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-center mb-12"
+      >
+        <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
+          The Drinkers Merch Store
+        </h1>
+        <p className="text-xl text-purple-200 max-w-2xl mx-auto">
+          Official merchandise from The Drinkers. Premium quality, limited
+          editions.
+        </p>
+
+        {/* Cart Button */}
+        <Button
+          onClick={() => setIsCartOpen(true)}
+          className="mt-6 relative bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+          size="lg"
+        >
+          <ShoppingBag className="w-5 h-5 mr-2" />
+          Cart
+          {cartItems.length > 0 && (
+            <span className="absolute -top-2 -right-2 w-6 h-6 bg-white text-purple-600 rounded-full text-xs font-bold flex items-center justify-center">
+              {cartItems.length}
+            </span>
+          )}
+        </Button>
+      </motion.div>
+
+      {/* Category Filter */}
+      <div className="flex flex-wrap justify-center gap-4 mb-12">
+        {categories.map((category) => (
+          <Button
+            key={category}
+            onClick={() => setSelectedCategory(category)}
+            variant={selectedCategory === category ? "default" : "outline"}
+            className="capitalize"
+          >
+            <Filter className="w-4 h-4 mr-2" />
+            {category}
+          </Button>
+        ))}
+      </div>
+
+      {/* Products Grid */}
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {loading
+            ? Array.from({ length: 8 }).map((_, i) => (
+                <MerchProductCardSkeleton key={i} />
+              ))
+            : filteredProducts.map((product) => (
+                <MerchProductCard
+                  key={product.id}
+                  product={product}
+                  onAddToCart={handleAddToCart}
+                  onAddToWishlist={(productId) =>
+                    console.log("Wishlist:", productId)
+                  }
+                  onQuickView={setQuickViewProduct}
+                />
+              ))}
         </div>
-        <div className="relative z-10 text-center">
-          <h1 className="text-5xl md:text-7xl font-bold text-gradient mb-4">TRGOVINA</h1>
-          <p className="text-xl text-text-gray">Uradni merchandise</p>
-          <div className="mt-4 flex items-center justify-center gap-2 text-sm text-crimson">
-            <span className="px-3 py-1 bg-crimson/20 rounded-full">🚀 MVP Launch</span>
-            <span className="px-3 py-1 bg-crimson/20 rounded-full">📦 Free Shipping EU</span>
-          </div>
-        </div>
-      </section>
+      </div>
 
-      {/* MVP Products - Available Now */}
-      <Section background="gradient">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-crimson mb-4">NA VOLJO ZDAJ</h2>
-            <p className="text-text-gray">Omejena količina - Print-on-Demand</p>
-          </div>
+      {/* Quick View Modal */}
+      {quickViewProduct && (
+        <QuickViewModal
+          product={quickViewProduct}
+          isOpen={!!quickViewProduct}
+          onClose={() => setQuickViewProduct(null)}
+          onAddToCart={handleAddToCart}
+        />
+      )}
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {mvpProducts.map((item, index) => (
-              <GlassCard 
-                key={item.id} 
-                variant="dark" 
-                hover 
-                floating={index % 2 === 0}
-                className="h-full flex flex-col"
-              >
-                {/* Image */}
-                <div className="relative aspect-square overflow-hidden rounded-lg mb-4 bg-rock-gray">
-                  <img
-                    src={item.images[0]}
-                    alt={item.name}
-                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
-                  />
-                  {item.limited && (
-                    <div className="absolute top-2 right-2 bg-crimson text-white px-3 py-1 rounded text-xs font-bold uppercase">
-                      Limited Edition
-                    </div>
-                  )}
-                  {!item.inStock && (
-                    <div className="absolute top-2 right-2 bg-yellow-600 text-white px-3 py-1 rounded text-xs font-bold uppercase">
-                      Pre-Order
-                    </div>
-                  )}
-                </div>
-
-                {/* Info */}
-                <div className="flex-1 flex flex-col">
-                  <h4 className="text-xl font-bold text-white mb-2">{item.name}</h4>
-                  <div className="text-2xl font-bold text-crimson mb-4">
-                    {formatPrice(item.price)}
-                  </div>
-
-                  {/* Sizes */}
-                  {item.variants && item.variants.length > 0 && (
-                    <div className="mb-4">
-                      <p className="text-sm text-text-gray mb-2">Velikosti:</p>
-                      <div className="flex gap-2 flex-wrap">
-                        {item.variants.slice(0, 5).map((variant, idx) => (
-                          <button
-                            key={idx}
-                            className="w-10 h-10 border border-white/30 rounded flex items-center justify-center text-white hover:border-crimson hover:text-crimson transition-colors text-sm font-bold"
-                          >
-                            {variant.size || 'S'}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Add to Cart Button */}
-                  <Button
-                    className="w-full mb-2"
-                    disabled={!item.inStock}
-                    onClick={() => router.push('#checkout')}
-                  >
-                    {item.inStock ? 'DODAJ V KOŠARICO' : 'OBVESTI ME'}
-                  </Button>
-
-                  {/* Features */}
-                  <div className="mt-auto pt-4 border-t border-white/10">
-                    <ul className="text-sm text-text-gray space-y-1">
-                      <li>✅ Premium kvaliteta (100% bombaž)</li>
-                      <li>✅ Print-on-Demand (eko-friendly)</li>
-                      <li>✅ Dostava 5-7 dni</li>
-                      <li>✅ Brezplačna menjava velikosti</li>
-                    </ul>
-                  </div>
-                </div>
-              </GlassCard>
-            ))}
-          </div>
-
-          {/* Trust Badges */}
-          <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            <div className="p-4">
-              <div className="text-3xl mb-2">🚚</div>
-              <p className="text-sm text-text-gray">Free Shipping EU</p>
-            </div>
-            <div className="p-4">
-              <div className="text-3xl mb-2">🔒</div>
-              <p className="text-sm text-text-gray">Secure Payment</p>
-            </div>
-            <div className="p-4">
-              <div className="text-3xl mb-2">♻️</div>
-              <p className="text-sm text-text-gray">Eco-Friendly</p>
-            </div>
-            <div className="p-4">
-              <div className="text-3xl mb-2">💯</div>
-              <p className="text-sm text-text-gray">Official Merch</p>
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* Coming Soon Products */}
-      <Section background="darker">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-crimson mb-4">KMALU NA VOLJO</h2>
-            <p className="text-text-gray">Prijavi se na email listo za obvestilo</p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {comingSoonProducts.slice(0, 6).map((item, index) => (
-              <GlassCard 
-                key={item.id} 
-                variant="dark" 
-                className="opacity-60"
-              >
-                {/* Placeholder Image */}
-                <div className="relative aspect-square overflow-hidden rounded-lg mb-4 bg-rock-gray flex items-center justify-center">
-                  <div className="text-center p-4">
-                    <div className="text-4xl mb-2">👕</div>
-                    <p className="text-sm text-text-gray">{item.name}</p>
-                  </div>
-                  <div className="absolute top-2 right-2 bg-yellow-600 text-white px-3 py-1 rounded text-xs font-bold uppercase">
-                    Coming Soon
-                  </div>
-                </div>
-
-                {/* Info */}
-                <div>
-                  <h4 className="text-xl font-bold text-white mb-2">{item.name}</h4>
-                  <div className="text-2xl font-bold text-crimson mb-4">
-                    {formatPrice(item.price)}
-                  </div>
-
-                  {/* Notify Me Form */}
-                  <form className="space-y-2" onSubmit={(e) => {
-                    e.preventDefault();
-                    console.log('Notify me submitted');
-                    alert('Hvala! Obvestili te bomo ko bo na voljo.');
-                  }}>
-                    <input
-                      type="email"
-                      placeholder="Tvoj email"
-                      className="input-field w-full"
-                      required
-                    />
-                    <Button type="submit" variant="secondary" className="w-full">
-                      OBVESTI ME
-                    </Button>
-                  </form>
-                </div>
-              </GlassCard>
-            ))}
-          </div>
-        </div>
-      </Section>
-
-      {/* Newsletter CTA */}
-      <Section background="gradient">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="bg-crimson/10 border border-crimson/30 rounded-2xl p-8">
-            <h2 className="text-3xl font-bold text-white mb-4">
-              PRIDI DRINKERS FAN CLUB
-            </h2>
-            <p className="text-text-gray mb-6">
-              Ekskluzivni popusti, zgodnji dostop do vstopnic in nov merchandise
-            </p>
-            <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto" onSubmit={(e) => {
-              e.preventDefault();
-              console.log('Newsletter signup submitted');
-              alert('Hvala za prijavo! 🤘');
-            }}>
-              <input
-                type="email"
-                placeholder="Tvoj email"
-                className="input-field flex-1"
-                required
-              />
-              <Button type="submit">
-                PRIJAVI SE
-              </Button>
-            </form>
-            <p className="text-xs text-text-gray mt-4">
-              Brez spama. Odjaviš se lahko kadarkoli.
-            </p>
-          </div>
-        </div>
-      </Section>
-    </>
+      {/* Shopping Cart Sidebar */}
+      <ShoppingCartSidebar
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        items={cartItems}
+        onQuantityChange={handleQuantityChange}
+        onRemoveItem={handleRemoveItem}
+        onCheckout={handleCheckout}
+      />
+    </div>
   );
 }
