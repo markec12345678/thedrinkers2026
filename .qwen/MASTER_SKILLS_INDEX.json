@@ -1,0 +1,128 @@
+{
+  "name": "The Drinkers - Master Skills Index",
+  "version": "2.0.0",
+  "description": "Auto-generated master skills index from ALL directories",
+  "generatedAt": "2026-03-25T21:32:39.295Z",
+  "totalSkills": 377,
+  "totalMcpServers": 44,
+  "skillsDirectories": [
+    {
+      "path": "awesome-agent-skills-itgoyo",
+      "absolutePath": "f:\\thedrinkers\\the\\awesome-agent-skills-itgoyo"
+    },
+    {
+      "path": "awesome-skills-gmh",
+      "absolutePath": "f:\\thedrinkers\\the\\awesome-skills-gmh"
+    },
+    {
+      "path": "claude-skills-alirezarezvani",
+      "absolutePath": "f:\\thedrinkers\\the\\claude-skills-alirezarezvani"
+    },
+    {
+      "path": "claude-skills-alirezarezvani\\c-level-advisor\\executive-mentor\\skills",
+      "absolutePath": "f:\\thedrinkers\\the\\claude-skills-alirezarezvani\\c-level-advisor\\executive-mentor\\skills"
+    },
+    {
+      "path": "claude-skills-alirezarezvani\\docs\\skills",
+      "absolutePath": "f:\\thedrinkers\\the\\claude-skills-alirezarezvani\\docs\\skills"
+    },
+    {
+      "path": "claude-skills-alirezarezvani\\docs\\skills\\marketing-skill",
+      "absolutePath": "f:\\thedrinkers\\the\\claude-skills-alirezarezvani\\docs\\skills\\marketing-skill"
+    },
+    {
+      "path": "claude-skills-alirezarezvani\\engineering\\agenthub\\skills",
+      "absolutePath": "f:\\thedrinkers\\the\\claude-skills-alirezarezvani\\engineering\\agenthub\\skills"
+    },
+    {
+      "path": "claude-skills-alirezarezvani\\engineering\\autoresearch-agent\\skills",
+      "absolutePath": "f:\\thedrinkers\\the\\claude-skills-alirezarezvani\\engineering\\autoresearch-agent\\skills"
+    },
+    {
+      "path": "claude-skills-alirezarezvani\\engineering\\skill-security-auditor",
+      "absolutePath": "f:\\thedrinkers\\the\\claude-skills-alirezarezvani\\engineering\\skill-security-auditor"
+    },
+    {
+      "path": "claude-skills-alirezarezvani\\engineering\\skill-tester",
+      "absolutePath": "f:\\thedrinkers\\the\\claude-skills-alirezarezvani\\engineering\\skill-tester"
+    },
+    {
+      "path": "claude-skills-alirezarezvani\\engineering-team\\playwright-pro\\skills",
+      "absolutePath": "f:\\thedrinkers\\the\\claude-skills-alirezarezvani\\engineering-team\\playwright-pro\\skills"
+    },
+    {
+      "path": "claude-skills-alirezarezvani\\engineering-team\\self-improving-agent\\skills",
+      "absolutePath": "f:\\thedrinkers\\the\\claude-skills-alirezarezvani\\engineering-team\\self-improving-agent\\skills"
+    },
+    {
+      "path": "claude-skills-alirezarezvani\\marketing-skill",
+      "absolutePath": "f:\\thedrinkers\\the\\claude-skills-alirezarezvani\\marketing-skill"
+    },
+    {
+      "path": "memorix-avids2\\src\\skills",
+      "absolutePath": "f:\\thedrinkers\\the\\memorix-avids2\\src\\skills"
+    },
+    {
+      "path": "memorix-avids2\\tests\\skills",
+      "absolutePath": "f:\\thedrinkers\\the\\memorix-avids2\\tests\\skills"
+    },
+    {
+      "path": "skills",
+      "absolutePath": "f:\\thedrinkers\\the\\skills"
+    }
+  ],
+  "mcpConfig": {
+    "path": "./.qwen/mcp.json",
+    "servers": [
+      "desktop-commander",
+      "filesystem",
+      "git",
+      "ollama",
+      "ollama-skills-bridge",
+      "_comment_filesystem",
+      "_comment_git",
+      "_comment_ai",
+      "_comment_desktop",
+      "_comment_browser",
+      "playwright",
+      "_comment_thinking",
+      "sequentialthinking",
+      "_comment_office",
+      "excel",
+      "pdf-reader",
+      "_comment_database",
+      "postgres",
+      "_comment_magic_mcp",
+      "magic-mcp",
+      "_comment_memory_bank",
+      "memory-bank",
+      "word",
+      "_comment_codebase_memory",
+      "codebase-memory",
+      "_comment_memorix",
+      "memorix",
+      "github",
+      "airtable",
+      "notion",
+      "slack",
+      "google-drive",
+      "google-maps",
+      "memory",
+      "puppeteer",
+      "sentry",
+      "stripe",
+      "firebase",
+      "vercel",
+      "aws",
+      "azure",
+      "gcp",
+      "pw-testrail",
+      "pw-browserstack"
+    ]
+  },
+  "usage": {
+    "rule": "ALWAYS load ALL skills before ANY action",
+    "threshold": "1% chance skill might apply",
+    "command": "skill: \"skill-name\""
+  }
+}

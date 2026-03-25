@@ -29,7 +29,10 @@
     "db:seed:full": "node do-seed.js",
     "db:verify": "node check-if-seed-needed.js",
     "postbuild": "next-sitemap",
-    "prepare": "husky"
+    "prepare": "husky",
+    "skills:load": "node master-skills-loader.js",
+    "skills:auto": "node auto-load-skills.js",
+    "skills:scan": "node master-skills-loader.js"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
