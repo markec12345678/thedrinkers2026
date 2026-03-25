@@ -1,509 +1,1082 @@
-/**
- * 🎸 THE DRINKERS - DATABASE SEED DATA
- * Generira testne podatke za development
- *
- * Usage: node lib/db/seed.ts
- */
+// lib/db/seed.ts
+// 🎸 THE DRINKERS - COMPLETE DATABASE SEED DATA
+// Usage: npm run db:seed
 
+import { drizzle } from "drizzle-orm/neon-http";
 import { neon } from "@neondatabase/serverless";
+import * as schema from "./schema";
 import { config } from "dotenv";
 
 config();
 
+// Initialize database connection
 const sql = neon(process.env.DATABASE_URL!);
+const db = drizzle(sql, { schema });
+
+// Schema aliases for seed (singular names)
+const products = schema.product;
+const tourDates = schema.tourDate;
+const albums = schema.album;
+const songs = schema.song;
+const vipTiers = schema.vipTier;
+const vipMemberships = schema.vipMembership;
+const fanArt = schema.fanArt;
 
 console.log("🎸 Starting The Drinkers Database Seed...\n");
 
+// ============================================
+// 🛍️ MERCH PRODUCTS (12 produktov)
+// ============================================
+const merchProducts = [
+  {
+    name: "The Drinkers Classic T-Shirt",
+    description:
+      "100% bombažna majica z logotipom The Drinkers. Udobna in stilsko dovršena.",
+    price: "29.99",
+    compareAtPrice: "39.99",
+    stock: 150,
+    sku: "TD-TSHIRT-001",
+    category: "t-shirt",
+    images: [
+      "/images/merch/tshirt-front.jpg",
+      "/images/merch/tshirt-back.jpg",
+      "/images/merch/tshirt-detail.jpg",
+    ],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    colors: ["black", "white"],
+    featured: true,
+    active: true,
+  },
+  {
+    name: "The Drinkers Hoodie Black",
+    description: "Premium pulover s kapuco. Topel in udoben za vse letne čase.",
+    price: "59.99",
+    compareAtPrice: "79.99",
+    stock: 75,
+    sku: "TD-HOODIE-001",
+    category: "hoodie",
+    images: ["/images/merch/hoodie-front.jpg", "/images/merch/hoodie-back.jpg"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    colors: ["black", "grey"],
+    featured: true,
+    active: true,
+  },
+  {
+    name: "Tour 2026 Poster",
+    description: "Limitirana edicija tour posterja. Podpisano od banda.",
+    price: "19.99",
+    compareAtPrice: null,
+    stock: 200,
+    sku: "TD-POSTER-2026",
+    category: "poster",
+    images: ["/images/merch/poster-2026.jpg"],
+    sizes: null,
+    colors: null,
+    featured: true,
+    active: true,
+  },
+  {
+    name: "The Drinkers Vinyl LP",
+    description: "Vinilna plošča z najnovejšim albumom. Limitirana edicija.",
+    price: "34.99",
+    compareAtPrice: "44.99",
+    stock: 50,
+    sku: "TD-VINYL-001",
+    category: "vinyl",
+    images: ["/images/merch/vinyl-front.jpg", "/images/merch/vinyl-back.jpg"],
+    sizes: null,
+    colors: ["black"],
+    featured: true,
+    active: true,
+  },
+  {
+    name: "Beer Pint Glass",
+    description: "Uradni The Drinkers pivski kozarec. 0.5L kapaciteta.",
+    price: "14.99",
+    compareAtPrice: null,
+    stock: 300,
+    sku: "TD-GLASS-001",
+    category: "accessories",
+    images: ["/images/merch/glass.jpg"],
+    sizes: null,
+    colors: ["clear"],
+    featured: false,
+    active: true,
+  },
+  {
+    name: "Snapback Cap",
+    description: "The Drinkers logotip kapa. Ena velikost za vse.",
+    price: "24.99",
+    compareAtPrice: null,
+    stock: 100,
+    sku: "TD-CAP-001",
+    category: "accessories",
+    images: ["/images/merch/cap.jpg"],
+    sizes: ["One Size"],
+    colors: ["black", "navy"],
+    featured: false,
+    active: true,
+  },
+  {
+    name: "Tote Bag",
+    description: "Eko platnena torba z The Drinkers motivom.",
+    price: "12.99",
+    compareAtPrice: null,
+    stock: 150,
+    sku: "TD-BAG-001",
+    category: "accessories",
+    images: ["/images/merch/tote.jpg"],
+    sizes: null,
+    colors: ["natural", "black"],
+    featured: false,
+    active: true,
+  },
+  {
+    name: "Long Sleeve Shirt",
+    description: "Dolga majica z album artworkom.",
+    price: "39.99",
+    compareAtPrice: "49.99",
+    stock: 80,
+    sku: "TD-LONG-001",
+    category: "t-shirt",
+    images: ["/images/merch/longsleeve.jpg"],
+    sizes: ["S", "M", "L", "XL"],
+    colors: ["black", "white"],
+    featured: false,
+    active: true,
+  },
+  {
+    name: "Enamel Pin Set",
+    description: "Set 5 The Drinkers emajliranih značk.",
+    price: "16.99",
+    compareAtPrice: null,
+    stock: 200,
+    sku: "TD-PIN-SET-001",
+    category: "accessories",
+    images: ["/images/merch/pins.jpg"],
+    sizes: null,
+    colors: ["multi"],
+    featured: false,
+    active: true,
+  },
+  {
+    name: "Tour 2026 CD",
+    description: "Live album s tour 2026. Ekskluzivno za fane.",
+    price: "14.99",
+    compareAtPrice: null,
+    stock: 100,
+    sku: "TD-CD-2026",
+    category: "music",
+    images: ["/images/merch/cd-2026.jpg"],
+    sizes: null,
+    colors: null,
+    featured: false,
+    active: true,
+  },
+  {
+    name: "Zip-Up Hoodie",
+    description: "Premium zip-up pulover z žepi.",
+    price: "64.99",
+    compareAtPrice: "84.99",
+    stock: 60,
+    sku: "TD-ZIP-001",
+    category: "hoodie",
+    images: ["/images/merch/zip-hoodie.jpg"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    colors: ["black", "grey"],
+    featured: true,
+    active: true,
+  },
+  {
+    name: "Sticker Pack",
+    description: "Pack 10 The Drinkers nalepk. Vodoodporne.",
+    price: "7.99",
+    compareAtPrice: null,
+    stock: 500,
+    sku: "TD-STICKER-001",
+    category: "accessories",
+    images: ["/images/merch/stickers.jpg"],
+    sizes: null,
+    colors: ["multi"],
+    featured: false,
+    active: true,
+  },
+];
+
+// ============================================
+// 🎫 TOUR DATES (15 koncertov)
+// ============================================
+const tourDatesData = [
+  {
+    tourName: "Spring Tour 2026",
+    venue: "Orto Bar",
+    city: "Ljubljana",
+    state: null,
+    country: "Slovenia",
+    date: "2026-04-15",
+    time: "21:00",
+    doors: "20:00",
+    ticketUrl: "https://eventim.si/the-drinkers-ljubljana",
+    ticketUrlLocal: "https://eventim.si/the-drinkers-ljubljana",
+    ticketPrice: "25.00",
+    ticketPriceMin: "25.00",
+    ticketPriceMax: "35.00",
+    status: "on_sale",
+    capacity: 300,
+    soldTickets: 187,
+    supportActs: ["Local Band A", "DJ B"],
+    ageRestriction: "18+",
+    vipAvailable: true,
+    vipDescription: "VIP includes backstage access and signed poster",
+    featured: true,
+    active: true,
+    notes: "Opening night of Spring Tour",
+  },
+  {
+    tourName: "Spring Tour 2026",
+    venue: "Kino Šiška",
+    city: "Ljubljana",
+    state: null,
+    country: "Slovenia",
+    date: "2026-04-20",
+    time: "20:00",
+    doors: "19:00",
+    ticketUrl: "https://kinosiska.si/the-drinkers",
+    ticketUrlLocal: "https://kinosiska.si/the-drinkers",
+    ticketPrice: "30.00",
+    ticketPriceMin: "30.00",
+    ticketPriceMax: "45.00",
+    status: "on_sale",
+    capacity: 500,
+    soldTickets: 342,
+    supportActs: ["Special Guest"],
+    ageRestriction: "all_ages",
+    vipAvailable: true,
+    vipDescription: "VIP includes meet & greet",
+    featured: true,
+    active: true,
+    notes: null,
+  },
+  {
+    tourName: "Spring Tour 2026",
+    venue: "Galerija Vžigalica",
+    city: "Ljubljana",
+    state: null,
+    country: "Slovenia",
+    date: "2026-05-01",
+    time: "19:00",
+    doors: "18:00",
+    ticketUrl: "https://vzigalica.si/the-drinkers",
+    ticketUrlLocal: "https://vzigalica.si/the-drinkers",
+    ticketPrice: "20.00",
+    ticketPriceMin: "20.00",
+    ticketPriceMax: "20.00",
+    status: "on_sale",
+    capacity: 200,
+    soldTickets: 95,
+    supportActs: [],
+    ageRestriction: "all_ages",
+    vipAvailable: false,
+    vipDescription: null,
+    featured: false,
+    active: true,
+    notes: "Acoustic set",
+  },
+  {
+    tourName: "Spring Tour 2026",
+    venue: "Metelkova Mesto",
+    city: "Ljubljana",
+    state: null,
+    country: "Slovenia",
+    date: "2026-05-15",
+    time: "22:00",
+    doors: "21:00",
+    ticketUrl: "https://metelkova.org/the-drinkers",
+    ticketUrlLocal: "https://metelkova.org/the-drinkers",
+    ticketPrice: "15.00",
+    ticketPriceMin: "15.00",
+    ticketPriceMax: "20.00",
+    status: "on_sale",
+    capacity: 400,
+    soldTickets: 267,
+    supportActs: ["DJ C", "Local Band D"],
+    ageRestriction: "18+",
+    vipAvailable: false,
+    vipDescription: null,
+    featured: false,
+    active: true,
+    notes: null,
+  },
+  {
+    tourName: "Summer Festival 2026",
+    venue: "Cankarjev Dom",
+    city: "Ljubljana",
+    state: null,
+    country: "Slovenia",
+    date: "2026-06-01",
+    time: "20:00",
+    doors: "19:00",
+    ticketUrl: "https://cd.si/the-drinkers",
+    ticketUrlLocal: "https://cd.si/the-drinkers",
+    ticketPrice: "35.00",
+    ticketPriceMin: "35.00",
+    ticketPriceMax: "50.00",
+    status: "on_sale",
+    capacity: 800,
+    soldTickets: 523,
+    supportActs: ["Symphony Orchestra"],
+    ageRestriction: "all_ages",
+    vipAvailable: true,
+    vipDescription: "VIP with orchestra meet & greet",
+    featured: true,
+    active: true,
+    notes: "Special orchestra performance",
+  },
+  {
+    tourName: "Summer Tour 2026",
+    venue: "Club Gromka",
+    city: "Maribor",
+    state: null,
+    country: "Slovenia",
+    date: "2026-06-10",
+    time: "21:00",
+    doors: "20:00",
+    ticketUrl: "https://gromka.si/the-drinkers",
+    ticketUrlLocal: "https://gromka.si/the-drinkers",
+    ticketPrice: "22.00",
+    ticketPriceMin: "22.00",
+    ticketPriceMax: "30.00",
+    status: "on_sale",
+    capacity: 250,
+    soldTickets: 156,
+    supportActs: ["Maribor Band"],
+    ageRestriction: "18+",
+    vipAvailable: false,
+    vipDescription: null,
+    featured: false,
+    active: true,
+    notes: null,
+  },
+  {
+    tourName: "Summer Tour 2026",
+    venue: "Kino Union",
+    city: "Maribor",
+    state: null,
+    country: "Slovenia",
+    date: "2026-06-11",
+    time: "20:00",
+    doors: "19:00",
+    ticketUrl: "https://kinounion.si/the-drinkers",
+    ticketUrlLocal: "https://kinounion.si/the-drinkers",
+    ticketPrice: "25.00",
+    ticketPriceMin: "25.00",
+    ticketPriceMax: "35.00",
+    status: "on_sale",
+    capacity: 300,
+    soldTickets: 198,
+    supportActs: [],
+    ageRestriction: "all_ages",
+    vipAvailable: true,
+    vipDescription: null,
+    featured: false,
+    active: true,
+    notes: null,
+  },
+  {
+    tourName: "Summer Tour 2026",
+    venue: "Pekarna Magdalenske mreže",
+    city: "Maribor",
+    state: null,
+    country: "Slovenia",
+    date: "2026-06-12",
+    time: "19:00",
+    doors: "18:00",
+    ticketUrl: "https://pekarna.si/the-drinkers",
+    ticketUrlLocal: "https://pekarna.si/the-drinkers",
+    ticketPrice: "18.00",
+    ticketPriceMin: "18.00",
+    ticketPriceMax: "18.00",
+    status: "on_sale",
+    capacity: 150,
+    soldTickets: 87,
+    supportActs: ["Acoustic Set"],
+    ageRestriction: "all_ages",
+    vipAvailable: false,
+    vipDescription: null,
+    featured: false,
+    active: true,
+    notes: "Acoustic performance",
+  },
+  {
+    tourName: "European Tour 2026",
+    venue: "Palace Theatre",
+    city: "Vienna",
+    state: null,
+    country: "Austria",
+    date: "2026-07-01",
+    time: "20:00",
+    doors: "19:00",
+    ticketUrl: "https://palacetheatre.at/the-drinkers",
+    ticketUrlLocal: "https://palacetheatre.at/the-drinkers",
+    ticketPrice: "35.00",
+    ticketPriceMin: "35.00",
+    ticketPriceMax: "50.00",
+    status: "on_sale",
+    capacity: 600,
+    soldTickets: 234,
+    supportActs: ["Austrian Band"],
+    ageRestriction: "18+",
+    vipAvailable: true,
+    vipDescription: "VIP with Austrian band meet & greet",
+    featured: true,
+    active: true,
+    notes: "First European show",
+  },
+  {
+    tourName: "European Tour 2026",
+    venue: "Flex Club",
+    city: "Vienna",
+    state: null,
+    country: "Austria",
+    date: "2026-07-02",
+    time: "21:00",
+    doors: "20:00",
+    ticketUrl: "https://flex.at/the-drinkers",
+    ticketUrlLocal: "https://flex.at/the-drinkers",
+    ticketPrice: "28.00",
+    ticketPriceMin: "28.00",
+    ticketPriceMax: "35.00",
+    status: "on_sale",
+    capacity: 400,
+    soldTickets: 312,
+    supportActs: ["DJ E"],
+    ageRestriction: "18+",
+    vipAvailable: false,
+    vipDescription: null,
+    featured: false,
+    active: true,
+    notes: null,
+  },
+  {
+    tourName: "European Tour 2026",
+    venue: "Muffatwerk",
+    city: "Munich",
+    state: "Bavaria",
+    country: "Germany",
+    date: "2026-07-10",
+    time: "20:00",
+    doors: "19:00",
+    ticketUrl: "https://muffatwerk.de/the-drinkers",
+    ticketUrlLocal: "https://muffatwerk.de/the-drinkers",
+    ticketPrice: "32.00",
+    ticketPriceMin: "32.00",
+    ticketPriceMax: "45.00",
+    status: "on_sale",
+    capacity: 500,
+    soldTickets: 287,
+    supportActs: ["German Band"],
+    ageRestriction: "18+",
+    vipAvailable: true,
+    vipDescription: null,
+    featured: false,
+    active: true,
+    notes: null,
+  },
+  {
+    tourName: "European Tour 2026",
+    venue: "Prater Club",
+    city: "Berlin",
+    state: null,
+    country: "Germany",
+    date: "2026-07-15",
+    time: "21:00",
+    doors: "20:00",
+    ticketUrl: "https://praterclub.de/the-drinkers",
+    ticketUrlLocal: "https://praterclub.de/the-drinkers",
+    ticketPrice: "30.00",
+    ticketPriceMin: "30.00",
+    ticketPriceMax: "40.00",
+    status: "on_sale",
+    capacity: 450,
+    soldTickets: 356,
+    supportActs: ["Berlin DJ"],
+    ageRestriction: "18+",
+    vipAvailable: true,
+    vipDescription: null,
+    featured: false,
+    active: true,
+    notes: null,
+  },
+  {
+    tourName: "European Tour 2026",
+    venue: "Melkweg",
+    city: "Amsterdam",
+    state: null,
+    country: "Netherlands",
+    date: "2026-07-20",
+    time: "20:00",
+    doors: "19:00",
+    ticketUrl: "https://melkweg.nl/the-drinkers",
+    ticketUrlLocal: "https://melkweg.nl/the-drinkers",
+    ticketPrice: "35.00",
+    ticketPriceMin: "35.00",
+    ticketPriceMax: "50.00",
+    status: "on_sale",
+    capacity: 700,
+    soldTickets: 423,
+    supportActs: ["Dutch Band"],
+    ageRestriction: "18+",
+    vipAvailable: true,
+    vipDescription: null,
+    featured: true,
+    active: true,
+    notes: null,
+  },
+  {
+    tourName: "European Tour 2026",
+    venue: "La Cigale",
+    city: "Paris",
+    state: null,
+    country: "France",
+    date: "2026-07-25",
+    time: "20:00",
+    doors: "19:00",
+    ticketUrl: "https://lacigale.fr/the-drinkers",
+    ticketUrlLocal: "https://lacigale.fr/the-drinkers",
+    ticketPrice: "38.00",
+    ticketPriceMin: "38.00",
+    ticketPriceMax: "55.00",
+    status: "on_sale",
+    capacity: 1200,
+    soldTickets: 567,
+    supportActs: ["French Band"],
+    ageRestriction: "all_ages",
+    vipAvailable: true,
+    vipDescription: null,
+    featured: true,
+    active: true,
+    notes: null,
+  },
+  {
+    tourName: "European Tour 2026",
+    venue: "O2 Academy",
+    city: "London",
+    state: null,
+    country: "UK",
+    date: "2026-08-01",
+    time: "19:00",
+    doors: "18:00",
+    ticketUrl: "https://o2academy.co.uk/the-drinkers",
+    ticketUrlLocal: "https://o2academy.co.uk/the-drinkers",
+    ticketPrice: "40.00",
+    ticketPriceMin: "40.00",
+    ticketPriceMax: "60.00",
+    status: "announced",
+    capacity: 1500,
+    soldTickets: 0,
+    supportActs: ["UK Band", "DJ F"],
+    ageRestriction: "18+",
+    vipAvailable: true,
+    vipDescription: "VIP with full backstage experience",
+    featured: true,
+    active: true,
+    notes: "Tour finale",
+  },
+];
+
+// ============================================
+// 💿 ALBUMS (4 albumi)
+// ============================================
+const albumsData = [
+  {
+    title: "First Round",
+    artist: "The Drinkers",
+    releaseDate: "2020-03-15",
+    coverImage: "/images/albums/first-round.jpg",
+    coverImageThumbnail: "/images/albums/thumbs/first-round.jpg",
+    description: "Debitantski album The Drinkers. Surov, energičen in iskren.",
+    label: "Independent",
+    genre: ["Rock", "Alternative", "Indie"],
+    totalTracks: 7,
+    duration: 1668,
+    tracks: [
+      { id: "1", title: "Opening Shot", duration: 245, trackNumber: 1 },
+      { id: "2", title: "Last Call", duration: 198, trackNumber: 2 },
+      { id: "3", title: "Bottoms Up", duration: 223, trackNumber: 3 },
+      { id: "4", title: "Hangover", duration: 267, trackNumber: 4 },
+      { id: "5", title: "Round Two", duration: 189, trackNumber: 5 },
+      { id: "6", title: "Cheers", duration: 234, trackNumber: 6 },
+      { id: "7", title: "Final Drink", duration: 312, trackNumber: 7 },
+    ],
+    spotifyUrl: "https://open.spotify.com/album/first-round",
+    spotifyId: "spotify-first-round",
+    appleMusicUrl: "https://music.apple.com/album/first-round",
+    appleMusicId: "apple-first-round",
+    youtubeUrl: "https://youtube.com/playlist?list=first-round",
+    youtubeId: "yt-first-round",
+    bandcampUrl: "https://thedrinkers.bandcamp.com/album/first-round",
+    soundcloudUrl: null,
+    tidalUrl: null,
+    deezerUrl: null,
+    amazonMusicUrl: null,
+    featured: true,
+    active: true,
+    albumType: "album",
+    upc: "123456789012",
+    catalogNumber: "TD-001",
+    copyright: "© 2020 The Drinkers",
+    producers: ["Producer A"],
+    engineers: ["Engineer A"],
+    studios: ["Studio A"],
+    metadata: {},
+  },
+  {
+    title: "Midnight Sessions",
+    artist: "The Drinkers",
+    releaseDate: "2022-06-20",
+    coverImage: "/images/albums/midnight-sessions.jpg",
+    coverImageThumbnail: "/images/albums/thumbs/midnight-sessions.jpg",
+    description: "Drugi album. Temnejši, zrelejši zvok.",
+    label: "Independent",
+    genre: ["Rock", "Blues Rock", "Alternative"],
+    totalTracks: 6,
+    duration: 1614,
+    tracks: [
+      { id: "8", title: "Midnight Train", duration: 278, trackNumber: 1 },
+      { id: "9", title: "Neon Lights", duration: 234, trackNumber: 2 },
+      { id: "10", title: "Empty Glass", duration: 256, trackNumber: 3 },
+      { id: "11", title: "Last Dance", duration: 289, trackNumber: 4 },
+      { id: "12", title: "Shadows", duration: 312, trackNumber: 5 },
+      { id: "13", title: "Dawn", duration: 245, trackNumber: 6 },
+    ],
+    spotifyUrl: "https://open.spotify.com/album/midnight-sessions",
+    spotifyId: "spotify-midnight",
+    appleMusicUrl: "https://music.apple.com/album/midnight-sessions",
+    appleMusicId: "apple-midnight",
+    youtubeUrl: "https://youtube.com/playlist?list=midnight-sessions",
+    youtubeId: "yt-midnight",
+    bandcampUrl: "https://thedrinkers.bandcamp.com/album/midnight-sessions",
+    soundcloudUrl: null,
+    tidalUrl: null,
+    deezerUrl: null,
+    amazonMusicUrl: null,
+    featured: true,
+    active: true,
+    albumType: "album",
+    upc: "123456789013",
+    catalogNumber: "TD-002",
+    copyright: "© 2022 The Drinkers",
+    producers: ["Producer B"],
+    engineers: ["Engineer B"],
+    studios: ["Studio B"],
+    metadata: {},
+  },
+  {
+    title: "Live at Orto Bar",
+    artist: "The Drinkers",
+    releaseDate: "2024-01-10",
+    coverImage: "/images/albums/live-orto.jpg",
+    coverImageThumbnail: "/images/albums/thumbs/live-orto.jpg",
+    description: "Live album posnet v Orto Baru, Ljubljana.",
+    label: "Independent",
+    genre: ["Rock", "Live", "Alternative"],
+    totalTracks: 5,
+    duration: 1400,
+    tracks: [
+      { id: "14", title: "Opening Shot (Live)", duration: 267, trackNumber: 1 },
+      { id: "15", title: "Last Call (Live)", duration: 212, trackNumber: 2 },
+      {
+        id: "16",
+        title: "Midnight Train (Live)",
+        duration: 298,
+        trackNumber: 3,
+      },
+      { id: "17", title: "Empty Glass (Live)", duration: 278, trackNumber: 4 },
+      { id: "18", title: "Encore (Live)", duration: 345, trackNumber: 5 },
+    ],
+    spotifyUrl: "https://open.spotify.com/album/live-orto",
+    spotifyId: "spotify-live-orto",
+    appleMusicUrl: "https://music.apple.com/album/live-orto",
+    appleMusicId: "apple-live-orto",
+    youtubeUrl: "https://youtube.com/playlist?list=live-orto",
+    youtubeId: "yt-live-orto",
+    bandcampUrl: "https://thedrinkers.bandcamp.com/album/live-orto",
+    soundcloudUrl: null,
+    tidalUrl: null,
+    deezerUrl: null,
+    amazonMusicUrl: null,
+    featured: false,
+    active: true,
+    albumType: "live",
+    upc: "123456789014",
+    catalogNumber: "TD-003",
+    copyright: "© 2024 The Drinkers",
+    producers: ["Live Producer"],
+    engineers: ["Live Engineer"],
+    studios: ["Orto Bar"],
+    metadata: {},
+  },
+  {
+    title: "Tour 2026",
+    artist: "The Drinkers",
+    releaseDate: "2026-03-01",
+    coverImage: "/images/albums/tour-2026.jpg",
+    coverImageThumbnail: "/images/albums/thumbs/tour-2026.jpg",
+    description: "Najnovejši album. Izdan ob tour 2026.",
+    label: "Independent",
+    genre: ["Rock", "Alternative", "Indie Rock"],
+    totalTracks: 6,
+    duration: 1520,
+    tracks: [
+      { id: "19", title: "New Beginnings", duration: 234, trackNumber: 1 },
+      { id: "20", title: "Road Trip", duration: 256, trackNumber: 2 },
+      { id: "21", title: "Stage Lights", duration: 289, trackNumber: 3 },
+      { id: "22", title: "Fan Love", duration: 198, trackNumber: 4 },
+      { id: "23", title: "Final Bow", duration: 367, trackNumber: 5 },
+      { id: "24", title: "Until Next Time", duration: 276, trackNumber: 6 },
+    ],
+    spotifyUrl: "https://open.spotify.com/album/tour-2026",
+    spotifyId: "spotify-tour-2026",
+    appleMusicUrl: "https://music.apple.com/album/tour-2026",
+    appleMusicId: "apple-tour-2026",
+    youtubeUrl: "https://youtube.com/playlist?list=tour-2026",
+    youtubeId: "yt-tour-2026",
+    bandcampUrl: "https://thedrinkers.bandcamp.com/album/tour-2026",
+    soundcloudUrl: null,
+    tidalUrl: null,
+    deezerUrl: null,
+    amazonMusicUrl: null,
+    featured: true,
+    active: true,
+    albumType: "album",
+    upc: "123456789015",
+    catalogNumber: "TD-004",
+    copyright: "© 2026 The Drinkers",
+    producers: ["Producer C"],
+    engineers: ["Engineer C"],
+    studios: ["Studio C"],
+    metadata: {},
+  },
+];
+
+// ============================================
+// 🎵 SONGS (iz albumov)
+// ============================================
+const songsData = [
+  // First Round
+  {
+    albumTitle: "First Round",
+    title: "Opening Shot",
+    duration: 245,
+    lyrics: "Instrumental intro...",
+    trackNumber: 1,
+    featured: true,
+    active: true,
+  },
+  {
+    albumTitle: "First Round",
+    title: "Last Call",
+    duration: 198,
+    lyrics: "It's last call at the bar...",
+    trackNumber: 2,
+    featured: true,
+    active: true,
+  },
+  {
+    albumTitle: "First Round",
+    title: "Bottoms Up",
+    duration: 223,
+    lyrics: "Bottoms up, here we go...",
+    trackNumber: 3,
+    featured: false,
+    active: true,
+  },
+
+  // Midnight Sessions
+  {
+    albumTitle: "Midnight Sessions",
+    title: "Midnight Train",
+    duration: 278,
+    lyrics: "Catching the midnight train...",
+    trackNumber: 1,
+    featured: true,
+    active: true,
+  },
+  {
+    albumTitle: "Midnight Sessions",
+    title: "Neon Lights",
+    duration: 234,
+    lyrics: "Under the neon lights...",
+    trackNumber: 2,
+    featured: true,
+    active: true,
+  },
+  {
+    albumTitle: "Midnight Sessions",
+    title: "Empty Glass",
+    duration: 256,
+    lyrics: "Another empty glass...",
+    trackNumber: 3,
+    featured: false,
+    active: true,
+  },
+
+  // Tour 2026
+  {
+    albumTitle: "Tour 2026",
+    title: "New Beginnings",
+    duration: 234,
+    lyrics: "New beginnings await...",
+    trackNumber: 1,
+    featured: true,
+    active: true,
+  },
+  {
+    albumTitle: "Tour 2026",
+    title: "Road Trip",
+    duration: 256,
+    lyrics: "On the road again...",
+    trackNumber: 2,
+    featured: false,
+    active: true,
+  },
+  {
+    albumTitle: "Tour 2026",
+    title: "Stage Lights",
+    duration: 289,
+    lyrics: "Under the stage lights...",
+    trackNumber: 3,
+    featured: true,
+    active: true,
+  },
+];
+
+// ============================================
+// 👑 VIP MEMBERSHIP TIERS (3 tieri)
+// ============================================
+const vipTiersData = [
+  {
+    name: "bronze",
+    displayName: "Bronze Member",
+    description: "Basic VIP membership with early access and discounts",
+    price: "9.99",
+    priceYearly: "99.99",
+    currency: "EUR",
+    benefits: [
+      "Early access to tickets",
+      "10% merch discount",
+      "Exclusive newsletter",
+      "Fan club access",
+    ],
+    discountPercentage: 10,
+    earlyAccess: true,
+    exclusiveContent: false,
+    meetAndGreet: false,
+    lifetimeAccess: false,
+    maxDiscounts: 5,
+    active: true,
+    priority: 1,
+    stripePriceId: "price_bronze_monthly",
+    stripePriceIdYearly: "price_bronze_yearly",
+  },
+  {
+    name: "silver",
+    displayName: "Silver Member",
+    description: "Enhanced VIP experience with better discounts and perks",
+    price: "19.99",
+    priceYearly: "199.99",
+    currency: "EUR",
+    benefits: [
+      "Early access to tickets",
+      "20% merch discount",
+      "Exclusive newsletter",
+      "Fan club access",
+      "Meet & greet entry",
+      "Signed poster",
+    ],
+    discountPercentage: 20,
+    earlyAccess: true,
+    exclusiveContent: true,
+    meetAndGreet: true,
+    lifetimeAccess: false,
+    maxDiscounts: 10,
+    active: true,
+    priority: 2,
+    stripePriceId: "price_silver_monthly",
+    stripePriceIdYearly: "price_silver_yearly",
+  },
+  {
+    name: "gold",
+    displayName: "Gold Member",
+    description: "Ultimate VIP experience with all perks included",
+    price: "29.99",
+    priceYearly: "299.99",
+    currency: "EUR",
+    benefits: [
+      "Early access to tickets",
+      "30% merch discount",
+      "Exclusive newsletter",
+      "Fan club access",
+      "Meet & greet guaranteed",
+      "Signed poster",
+      "Backstage access",
+      "Free drinks at shows",
+      "Exclusive merch pack",
+    ],
+    discountPercentage: 30,
+    earlyAccess: true,
+    exclusiveContent: true,
+    meetAndGreet: true,
+    lifetimeAccess: false,
+    maxDiscounts: 20,
+    active: true,
+    priority: 3,
+    stripePriceId: "price_gold_monthly",
+    stripePriceIdYearly: "price_gold_yearly",
+  },
+];
+
+// ============================================
+// 🎨 FAN ART (5 primerov)
+// ============================================
+const fanArtData = [
+  {
+    email: "fan1@example.com",
+    imageUrl: "/images/fan-art/drawing-1.jpg",
+    thumbnailUrl: "/images/fan-art/thumbs/drawing-1.jpg",
+    title: "The Drinkers Live",
+    description: "My drawing from the Ljubljana concert",
+    medium: "digital",
+    category: "artwork",
+    approved: true,
+    featured: true,
+    likes: 234,
+    views: 1500,
+    tags: ["concert", "live", "drawing"],
+    nsfw: false,
+  },
+  {
+    email: "fan2@example.com",
+    imageUrl: "/images/fan-art/painting-1.jpg",
+    thumbnailUrl: "/images/fan-art/thumbs/painting-1.jpg",
+    title: "Band Portrait",
+    description: "Oil painting of the band",
+    medium: "painting",
+    category: "artwork",
+    approved: true,
+    featured: true,
+    likes: 189,
+    views: 1200,
+    tags: ["portrait", "oil painting", "band"],
+    nsfw: false,
+  },
+  {
+    email: "fan3@example.com",
+    imageUrl: "/images/fan-art/digital-1.jpg",
+    thumbnailUrl: "/images/fan-art/thumbs/digital-1.jpg",
+    title: "Album Art Remix",
+    description: "Digital art inspired by Midnight Sessions",
+    medium: "digital",
+    category: "artwork",
+    approved: true,
+    featured: false,
+    likes: 156,
+    views: 890,
+    tags: ["digital", "album art", "remix"],
+    nsfw: false,
+  },
+  {
+    email: "fan4@example.com",
+    imageUrl: "/images/fan-art/tattoo-1.jpg",
+    thumbnailUrl: "/images/fan-art/thumbs/tattoo-1.jpg",
+    title: "The Drinkers Tattoo",
+    description: "My tattoo inspired by the band",
+    medium: "photo",
+    category: "photo",
+    approved: true,
+    featured: false,
+    likes: 312,
+    views: 2100,
+    tags: ["tattoo", "body art", "inspiration"],
+    nsfw: false,
+  },
+  {
+    email: "fan5@example.com",
+    imageUrl: "/images/fan-art/sculpture-1.jpg",
+    thumbnailUrl: "/images/fan-art/thumbs/sculpture-1.jpg",
+    title: "Clay Sculpture",
+    description: "Clay sculpture of the band logo",
+    medium: "sculpture",
+    category: "artwork",
+    approved: true,
+    featured: false,
+    likes: 98,
+    views: 650,
+    tags: ["sculpture", "clay", "3d art"],
+    nsfw: false,
+  },
+];
+
+// ============================================
+// 🚀 SEED FUNCTION
+// ============================================
 async function seed() {
+  console.log("🌱 Starting seed...\n");
+
   try {
-    // ============================================
-    // 1. MERCHANDISE PRODUCTS (5 products)
-    // ============================================
-    console.log("👕 Seeding Merchandise Products...");
+    // 1. Seed Products
+    console.log("🛍️  Seeding products...");
+    await db.insert(products).values(merchProducts);
+    console.log(`✅ ${merchProducts.length} products seeded\n`);
 
-    const products = [
-      {
-        name: "The Drinkers - Pijemo Ga Radi T-Shirt",
-        description:
-          'Uradna The Drinkers majica z legendarnim napisom "Pijemo Ga Radi". 100% bombaž, visoka kakovost.',
-        price: "24.99",
-        stock: 100,
-        images: ["https://thedrinkers.si/images/merch/tshirt-pijemo.jpg"],
-        category: "tshirt",
-        sizes: ["S", "M", "L", "XL", "XXL"],
-        colors: ["black", "white"],
-        featured: true,
-        active: true,
-      },
-      {
-        name: "The Drinkers - Alkohol Idol Hoodie",
-        description:
-          "Udoben hoodie z motivom Alkohol Idol. Toplo in stilsko oblačilo za prave fane.",
-        price: "49.99",
-        stock: 50,
-        images: ["https://thedrinkers.si/images/merch/alkohol-idol-hoodie.jpg"],
-        category: "hoodie",
-        sizes: ["M", "L", "XL", "XXL"],
-        colors: ["black", "grey"],
-        featured: true,
-        active: true,
-      },
-      {
-        name: "The Drinkers - Pivski Vršček",
-        description:
-          "Uradni pivski vršček The Drinkers. Popoln dodatek za vsakega pravega fana.",
-        price: "14.99",
-        stock: 200,
-        images: ["https://thedrinkers.si/images/merch/pivski-vrcek.jpg"],
-        category: "cap",
-        sizes: ["one-size"],
-        colors: ["black", "blue"],
-        featured: false,
-        active: true,
-      },
-      {
-        name: "The Drinkers - Vinyl Album",
-        description:
-          "Limited edition vinyl album z najboljšimi hiti. Zbirateljski predmet za prave ljubitelje.",
-        price: "39.99",
-        stock: 25,
-        images: ["https://thedrinkers.si/images/merch/vinyl-album.jpg"],
-        category: "vinyl",
-        sizes: ["standard"],
-        colors: ["black"],
-        featured: true,
-        active: true,
-      },
-      {
-        name: "The Drinkers - Keramična Kruška",
-        description:
-          "Kvalitetna keramična kruška z logotipom The Drinkers. Popolna za dom ali službo.",
-        price: "12.99",
-        stock: 150,
-        images: ["https://thedrinkers.si/images/merch/mug.jpg"],
-        category: "mug",
-        sizes: ["standard"],
-        colors: ["white", "black"],
-        featured: false,
-        active: true,
-      },
-    ];
+    // 2. Seed Tour Dates
+    console.log("🎫  Seeding tour dates...");
+    await db.insert(tourDates).values(tourDatesData);
+    console.log(`✅ ${tourDatesData.length} tour dates seeded\n`);
 
-    for (const product of products) {
-      await sql`
-        INSERT INTO product (name, description, price, stock, images, category, sizes, colors, featured, active)
-        VALUES (${product.name}, ${product.description}, ${product.price}, ${product.stock}, 
-                ${JSON.stringify(product.images)}, ${product.category}, ${JSON.stringify(product.sizes)}, 
-                ${JSON.stringify(product.colors)}, ${product.featured}, ${product.active})
-      `;
-    }
-    console.log(`✅ Seeded ${products.length} products\n`);
+    // 3. Seed Albums
+    console.log("💿  Seeding albums...");
+    const insertedAlbums = await db
+      .insert(albums)
+      .values(albumsData)
+      .returning();
+    console.log(`✅ ${albumsData.length} albums seeded\n`);
 
-    // ============================================
-    // 2. ALBUMS (3 albums)
-    // ============================================
-    console.log("💿 Seeding Albums...");
+    // 4. Seed Songs (with album IDs)
+    console.log("🎵  Seeding songs...");
+    const songsWithAlbumIds = songsData.map((song, index) => ({
+      ...song,
+      albumId: insertedAlbums[Math.floor(index / 3)]?.id,
+    }));
+    await db.insert(songs).values(songsWithAlbumIds);
+    console.log(`✅ ${songsWithAlbumIds.length} songs seeded\n`);
 
-    const albums = [
-      {
-        title: "Prohibicija",
-        releaseDate: "2020-01-15",
-        coverImage: "https://thedrinkers.si/images/albums/prohibicija.jpg",
-        description: "Legendarni album Prohibicija z največjimi hiti.",
-        label: "The Drinkers Records",
-        genre: "Rock",
-        totalTracks: 12,
-        featured: true,
-        active: true,
-      },
-      {
-        title: "Pivolucija",
-        releaseDate: "2018-06-20",
-        coverImage: "https://thedrinkers.si/images/albums/pivolucija.jpg",
-        description: "Revolucionaren album posvečen pivu in dobri glasbi.",
-        label: "The Drinkers Records",
-        genre: "Rock",
-        totalTracks: 10,
-        featured: true,
-        active: true,
-      },
-      {
-        title: "Žeja",
-        releaseDate: "2015-03-10",
-        coverImage: "https://thedrinkers.si/images/albums/zeja.jpg",
-        description: "Album Žeja - začetek naše glasbene poti.",
-        label: "The Drinkers Records",
-        genre: "Rock",
-        totalTracks: 8,
-        featured: false,
-        active: true,
-      },
-    ];
+    // 5. Seed VIP Tiers
+    console.log("👑  Seeding VIP tiers...");
+    await db.insert(vipTiers).values(vipTiersData);
+    console.log(`✅ ${vipTiersData.length} VIP tiers seeded\n`);
 
-    for (const album of albums) {
-      await sql`
-        INSERT INTO album (title, releaseDate, coverImage, description, label, genre, totalTracks, featured, active)
-        VALUES (${album.title}, ${album.releaseDate}, ${album.coverImage}, ${album.description}, 
-                ${album.label}, ${album.genre}, ${album.totalTracks}, ${album.featured}, ${album.active})
-      `;
-    }
-    console.log(`✅ Seeded ${albums.length} albums\n`);
+    // 6. Seed Fan Art
+    console.log("🎨  Seeding fan art...");
+    await db.insert(fanArt).values(fanArtData);
+    console.log(`✅ ${fanArtData.length} fan art pieces seeded\n`);
 
-    // ============================================
-    // 3. SONGS (10 songs)
-    // ============================================
-    console.log("🎵 Seeding Songs...");
-
-    const songs = [
-      {
-        albumTitle: "Prohibicija",
-        title: "Prohibicija",
-        duration: 245,
-        trackNumber: 1,
-        lyrics: "...",
-      },
-      {
-        albumTitle: "Prohibicija",
-        title: "Pijemo Ga Radi",
-        duration: 198,
-        trackNumber: 2,
-        lyrics: "...",
-      },
-      {
-        albumTitle: "Prohibicija",
-        title: "Alkohol Idol",
-        duration: 212,
-        trackNumber: 3,
-        lyrics: "...",
-      },
-      {
-        albumTitle: "Prohibicija",
-        title: "Na Zdravje",
-        duration: 187,
-        trackNumber: 4,
-        lyrics: "...",
-      },
-      {
-        albumTitle: "Pivolucija",
-        title: "Pivolucija",
-        duration: 234,
-        trackNumber: 1,
-        lyrics: "...",
-      },
-      {
-        albumTitle: "Pivolucija",
-        title: "Pivo Je Krivo",
-        duration: 201,
-        trackNumber: 2,
-        lyrics: "...",
-      },
-      {
-        albumTitle: "Pivolucija",
-        title: "Žejna Grla",
-        duration: 189,
-        trackNumber: 3,
-        lyrics: "...",
-      },
-      {
-        albumTitle: "Žeja",
-        title: "Žeja",
-        duration: 223,
-        trackNumber: 1,
-        lyrics: "...",
-      },
-      {
-        albumTitle: "Žeja",
-        title: "Dvižam Kozarec",
-        duration: 195,
-        trackNumber: 2,
-        lyrics: "...",
-      },
-      {
-        albumTitle: "Žeja",
-        title: "Zadnja Runda",
-        duration: 267,
-        trackNumber: 3,
-        lyrics: "...",
-      },
-    ];
-
-    for (const song of songs) {
-      const album =
-        await sql`SELECT id FROM album WHERE title = ${song.albumTitle} LIMIT 1`;
-      if (album.length > 0) {
-        await sql`
-          INSERT INTO song (albumId, title, duration, trackNumber, lyrics, featured, active)
-          VALUES (${album[0].id}, ${song.title}, ${song.duration}, ${song.trackNumber}, 
-                  ${song.lyrics}, true, true)
-        `;
-      }
-    }
-    console.log(`✅ Seeded ${songs.length} songs\n`);
-
-    // ============================================
-    // 4. TOUR DATES (5 concerts)
-    // ============================================
-    console.log("🎤 Seeding Tour Dates...");
-
-    const tourDates = [
-      {
-        venue: "Cankarjev Dom",
-        city: "Ljubljana",
-        country: "Slovenija",
-        date: "2026-06-15",
-        time: "20:00",
-        ticketUrl: "https://eventim.si/the-drinkers-ljubljana",
-        ticketPrice: "25.00",
-        status: "on_sale",
-        capacity: 1500,
-        soldTickets: 850,
-        featured: true,
-      },
-      {
-        venue: "Gledališče Glej",
-        city: "Maribor",
-        country: "Slovenija",
-        date: "2026-06-20",
-        time: "21:00",
-        ticketUrl: "https://eventim.si/the-drinkers-maribor",
-        ticketPrice: "22.00",
-        status: "on_sale",
-        capacity: 800,
-        soldTickets: 420,
-        featured: true,
-      },
-      {
-        venue: "Kino Šiška",
-        city: "Koper",
-        country: "Slovenija",
-        date: "2026-06-25",
-        time: "20:30",
-        ticketUrl: "https://eventim.si/the-drinkers-koper",
-        ticketPrice: "20.00",
-        status: "on_sale",
-        capacity: 600,
-        soldTickets: 380,
-        featured: false,
-      },
-      {
-        venue: "Arena Stožice",
-        city: "Ljubljana",
-        country: "Slovenija",
-        date: "2026-12-31",
-        time: "22:00",
-        ticketUrl: "https://eventim.si/the-drinkers-novo-leto",
-        ticketPrice: "35.00",
-        status: "announced",
-        capacity: 5000,
-        soldTickets: 0,
-        featured: true,
-      },
-      {
-        venue: "Vienna Arena",
-        city: "Vienna",
-        country: "Austria",
-        date: "2027-02-14",
-        time: "19:00",
-        ticketUrl: "https://oeticket.com/the-drinkers-vienna",
-        ticketPrice: "30.00",
-        status: "announced",
-        capacity: 3000,
-        soldTickets: 0,
-        featured: true,
-      },
-    ];
-
-    for (const tour of tourDates) {
-      await sql`
-        INSERT INTO tour_date (venue, city, country, date, time, ticketUrl, ticketPrice, status, capacity, soldTickets, featured)
-        VALUES (${tour.venue}, ${tour.city}, ${tour.country}, ${tour.date}, ${tour.time}, 
-                ${tour.ticketUrl}, ${tour.ticketPrice}, ${tour.status}, ${tour.capacity}, 
-                ${tour.soldTickets}, ${tour.featured})
-      `;
-    }
-    console.log(`✅ Seeded ${tourDates.length} tour dates\n`);
-
-    // ============================================
-    // 5. FAN ART (10 submissions)
-    // ============================================
-    console.log("🎨 Seeding Fan Art...");
-
-    // Get a test user ID (first user or create one)
-    const testUser = await sql`SELECT id FROM user LIMIT 1`;
-    const userId =
-      testUser.length > 0
-        ? testUser[0].id
-        : "00000000-0000-0000-0000-000000000000";
-
-    const fanArts = [
-      {
-        title: "The Drinkers Live",
-        description: "Moja ilustracija koncerta",
-        imageUrl: "https://example.com/fanart1.jpg",
-        approved: true,
-        featured: true,
-        likes: 42,
-      },
-      {
-        title: "Pivo in Rock",
-        description: "Digitalna umetnost",
-        imageUrl: "https://example.com/fanart2.jpg",
-        approved: true,
-        featured: false,
-        likes: 28,
-      },
-      {
-        title: "Alkohol Idol Fan Art",
-        description: "Risba mojega najljubšega hita",
-        imageUrl: "https://example.com/fanart3.jpg",
-        approved: true,
-        featured: true,
-        likes: 56,
-      },
-      {
-        title: "Prohibicija Album Cover",
-        description: "Moja verzija album coverja",
-        imageUrl: "https://example.com/fanart4.jpg",
-        approved: true,
-        featured: false,
-        likes: 33,
-      },
-      {
-        title: "The Drinkers Logo",
-        description: "Nov dizajn logotipa",
-        imageUrl: "https://example.com/fanart5.jpg",
-        approved: false,
-        featured: false,
-        likes: 12,
-      },
-      {
-        title: "Koncertni Spomini",
-        description: "Fotografija s koncerta",
-        imageUrl: "https://example.com/fanart6.jpg",
-        approved: true,
-        featured: false,
-        likes: 67,
-      },
-      {
-        title: "Pivolucija Plakat",
-        description: "Plakat za album Pivolucija",
-        imageUrl: "https://example.com/fanart7.jpg",
-        approved: true,
-        featured: true,
-        likes: 89,
-      },
-      {
-        title: "Žeja Vinyl",
-        description: "Ilustracija vinyl albuma",
-        imageUrl: "https://example.com/fanart8.jpg",
-        approved: true,
-        featured: false,
-        likes: 23,
-      },
-      {
-        title: "The Drinkers Band",
-        description: "Portret celotne zasedbe",
-        imageUrl: "https://example.com/fanart9.jpg",
-        approved: true,
-        featured: true,
-        likes: 104,
-      },
-      {
-        title: "Na Zdravje!",
-        description: "Umetniška interpretacija",
-        imageUrl: "https://example.com/fanart10.jpg",
-        approved: false,
-        featured: false,
-        likes: 8,
-      },
-    ];
-
-    for (const art of fanArts) {
-      await sql`
-        INSERT INTO fan_art (userId, imageUrl, title, description, approved, featured, likes)
-        VALUES (${userId}, ${art.imageUrl}, ${art.title}, ${art.description}, 
-                ${art.approved}, ${art.featured}, ${art.likes})
-      `;
-    }
-    console.log(`✅ Seeded ${fanArts.length} fan art submissions\n`);
-
-    // ============================================
-    // 6. VIP MEMBERSHIPS (3 tiers)
-    // ============================================
-    console.log("🌟 Seeding VIP Memberships...");
-
-    const memberships = [
-      {
-        tier: "bronze",
-        status: "active",
-        startDate: "2026-01-01",
-        expiresAt: "2027-01-01",
-        benefits: [
-          "Early access to tickets",
-          "10% merch discount",
-          "Exclusive newsletter",
-        ],
-        stripeSubscriptionId: "sub_bronze_001",
-      },
-      {
-        tier: "silver",
-        status: "active",
-        startDate: "2026-01-01",
-        expiresAt: "2027-01-01",
-        benefits: [
-          "Early access to tickets",
-          "15% merch discount",
-          "Exclusive newsletter",
-          "Meet & greet access",
-          "Signed posters",
-        ],
-        stripeSubscriptionId: "sub_silver_001",
-      },
-      {
-        tier: "gold",
-        status: "active",
-        startDate: "2026-01-01",
-        expiresAt: "2027-01-01",
-        benefits: [
-          "Early access to tickets",
-          "20% merch discount",
-          "Exclusive newsletter",
-          "Meet & greet access",
-          "Signed albums",
-          "Backstage access",
-          "VIP lounge access",
-        ],
-        stripeSubscriptionId: "sub_gold_001",
-      },
-    ];
-
-    for (const membership of memberships) {
-      await sql`
-        INSERT INTO vip_membership (userId, tier, status, startDate, expiresAt, benefits, stripeSubscriptionId)
-        VALUES (${userId}, ${membership.tier}, ${membership.status}, ${membership.startDate}, 
-                ${membership.expiresAt}, ${JSON.stringify(membership.benefits)}, ${membership.stripeSubscriptionId})
-      `;
-    }
-    console.log(`✅ Seeded ${memberships.length} VIP memberships\n`);
-
-    // ============================================
-    // SUMMARY
-    // ============================================
-    console.log("═══════════════════════════════════════════");
-    console.log("🎉 DATABASE SEED COMPLETE!");
-    console.log("═══════════════════════════════════════════");
-    console.log("✅ Products:        5");
-    console.log("✅ Albums:          3");
-    console.log("✅ Songs:          10");
-    console.log("✅ Tour Dates:      5");
-    console.log("✅ Fan Art:        10");
-    console.log("✅ VIP Memberships: 3");
-    console.log("═══════════════════════════════════════════");
-    console.log("\n🍺 Your database is ready for The Drinkers! 🎸\n");
+    console.log("\n🎉 Seed completed successfully!");
+    console.log("════════════════════════════════════════");
+    console.log("Summary:");
+    console.log(`  - Products:     ${merchProducts.length}`);
+    console.log(`  - Tour Dates:   ${tourDatesData.length}`);
+    console.log(`  - Albums:       ${albumsData.length}`);
+    console.log(`  - Songs:        ${songsWithAlbumIds.length}`);
+    console.log(`  - VIP Tiers:    ${vipTiersData.length}`);
+    console.log(`  - Fan Art:      ${fanArtData.length}`);
+    console.log("════════════════════════════════════════\n");
+    console.log("🍺 Your database is ready for The Drinkers! 🎸\n");
   } catch (error) {
-    console.error("❌ Error seeding database:", error);
+    console.error("❌ Seed failed:", error);
     process.exit(1);
   }
 }
 
+// Run seed
 seed();

@@ -8,13 +8,16 @@ import { CartProvider } from "@/lib/cart";
 import Script from "next/script";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Suspense } from "react";
-import { VercelAnalytics } from './VercelAnalytics';
-import { PlausibleAnalytics } from './PlausibleAnalytics';
+import { VercelAnalytics } from "./VercelAnalytics";
+import { PlausibleAnalytics } from "./PlausibleAnalytics";
+import PersistentPlayer from "@/components/ui/PersistentPlayer";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+  ),
   title: {
     default: SITE_CONFIG.name,
     template: `%s | ${SITE_CONFIG.name}`,
@@ -35,7 +38,7 @@ export const metadata: Metadata = {
   publisher: "The Drinkers",
   // Google Search Console verification
   other: {
-    'google-site-verification': process.env.NEXT_PUBLIC_GSC_VERIFICATION || '',
+    "google-site-verification": process.env.NEXT_PUBLIC_GSC_VERIFICATION || "",
   },
   openGraph: {
     type: "website",
@@ -54,12 +57,12 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    card: 'summary_large_image',
+    card: "summary_large_image",
     title: SITE_CONFIG.name,
     description: SITE_CONFIG.description,
-    images: ['/og-image.jpg'],
-    creator: '@thedrinkers_si',
-    site: '@thedrinkers_si',
+    images: ["/og-image.jpg"],
+    creator: "@thedrinkers_si",
+    site: "@thedrinkers_si",
   },
   robots: {
     index: true,
@@ -67,9 +70,9 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
   icons: {
@@ -81,17 +84,17 @@ export const metadata: Metadata = {
     canonical: SITE_CONFIG.url,
   },
   verification: {
-    google: 'your-google-verification-code',
-    yandex: 'your-yandex-verification-code',
+    google: "your-google-verification-code",
+    yandex: "your-yandex-verification-code",
   },
 };
 
 export const viewport = {
-  width: 'device-width',
+  width: "device-width",
   initialScale: 1,
   maximumScale: 5,
   userScalable: true,
-  themeColor: '#dc143c',
+  themeColor: "#dc143c",
 };
 
 export default function RootLayout({
@@ -108,6 +111,7 @@ export default function RootLayout({
           <Header />
           <main className="min-h-screen">{children}</main>
           <Footer />
+          <PersistentPlayer />
         </CartProvider>
 
         {/* Plausible Analytics (Privacy-Friendly) */}
@@ -142,8 +146,8 @@ export default function RootLayout({
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'MusicGroup',
+              "@context": "https://schema.org",
+              "@type": "MusicGroup",
               name: SITE_CONFIG.name,
               description: SITE_CONFIG.description,
               url: SITE_CONFIG.url,
@@ -161,10 +165,10 @@ export default function RootLayout({
               logo: `${SITE_CONFIG.url}${SITE_CONFIG.logo}`,
               image: `${SITE_CONFIG.url}/og-image.jpg`,
               contactPoint: {
-                '@type': 'ContactPoint',
+                "@type": "ContactPoint",
                 email: SITE_CONFIG.contact.email,
                 telephone: SITE_CONFIG.contact.phone,
-                contactType: 'booking',
+                contactType: "booking",
               },
             }),
           }}

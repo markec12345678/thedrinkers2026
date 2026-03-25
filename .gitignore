@@ -5,6 +5,9 @@ node_modules
 
 # Testing
 coverage
+playwright-report
+test-results
+playwright/.cache
 
 # Next.js
 .next/
@@ -39,3 +42,10 @@ next-env.d.ts
 
 # Nested projects
 thedrinkers20/
+
+# Drizzle
+drizzle/meta
+
+# IDE
+.idea/
+.vscode/settings.json

@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { GlassCard } from '@/components/ui/GlassCard';
-import { 
-  Image, 
-  Upload, 
-  Heart, 
-  Eye, 
-  Award, 
+import { useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { GlassCard } from "@/components/ui/GlassCard";
+import {
+  Image,
+  Upload,
+  Heart,
+  Eye,
+  Award,
   Sparkles,
   CheckCircle2,
   XCircle,
@@ -18,27 +18,31 @@ import {
   Share2,
   Download,
   ExternalLink,
-  AlertCircle
-} from 'lucide-react';
-import { FAN_ART_CATEGORIES, UPLOAD_LIMITS, FanArt } from '@/lib/fan-art';
+  AlertCircle,
+} from "lucide-react";
+import { FAN_ART_CATEGORIES, UPLOAD_LIMITS, FanArt } from "@/lib/fan-art";
 
 export default function FanArtGallery() {
-  const [activeTab, setActiveTab] = useState<'gallery' | 'submit' | 'contests'>('gallery');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [sortBy, setSortBy] = useState<'latest' | 'popular' | 'featured'>('popular');
+  const [activeTab, setActiveTab] = useState<"gallery" | "submit" | "contests">(
+    "gallery",
+  );
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [sortBy, setSortBy] = useState<"latest" | "popular" | "featured">(
+    "popular",
+  );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Mock data
   const [fanArts] = useState<FanArt[]>([
     {
-      id: '1',
-      userId: 'user1',
-      username: 'RockArtist99',
-      title: 'The Drinkers Live',
-      description: 'My sketch from the amazing concert in Ljubljana!',
-      imageUrl: '/images/fan-art/1.jpg',
-      status: 'featured',
-      category: 'sketch',
+      id: "1",
+      userId: "user1",
+      username: "RockArtist99",
+      title: "The Drinkers Live",
+      description: "My sketch from the amazing concert in Ljubljana!",
+      imageUrl: "/images/fan-art/1.jpg",
+      status: "featured",
+      category: "sketch",
       likes: 125,
       views: 1250,
       createdAt: new Date(Date.now() - 86400000 * 2),
@@ -47,14 +51,14 @@ export default function FanArtGallery() {
       merchEligible: true,
     },
     {
-      id: '2',
-      userId: 'user2',
-      username: 'MusicFan',
-      title: 'Pivolucija Album Art',
-      description: 'Digital painting inspired by Pivolucija',
-      imageUrl: '/images/fan-art/2.jpg',
-      status: 'approved',
-      category: 'digital',
+      id: "2",
+      userId: "user2",
+      username: "MusicFan",
+      title: "Pivolucija Album Art",
+      description: "Digital painting inspired by Pivolucija",
+      imageUrl: "/images/fan-art/2.jpg",
+      status: "approved",
+      category: "digital",
       likes: 89,
       views: 890,
       createdAt: new Date(Date.now() - 86400000 * 5),
@@ -63,14 +67,14 @@ export default function FanArtGallery() {
       merchEligible: true,
     },
     {
-      id: '3',
-      userId: 'user3',
-      username: 'ConcertPhotog',
-      title: 'Orto Bar 2025',
-      description: 'Best moment from the concert',
-      imageUrl: '/images/fan-art/3.jpg',
-      status: 'approved',
-      category: 'photo',
+      id: "3",
+      userId: "user3",
+      username: "ConcertPhotog",
+      title: "Orto Bar 2025",
+      description: "Best moment from the concert",
+      imageUrl: "/images/fan-art/3.jpg",
+      status: "approved",
+      category: "photo",
       likes: 156,
       views: 1560,
       createdAt: new Date(Date.now() - 86400000 * 1),
@@ -95,7 +99,7 @@ export default function FanArtGallery() {
     const file = event.target.files?.[0];
     if (file) {
       // TODO: Handle file upload
-      console.log('Selected file:', file);
+      console.log("Selected file:", file);
     }
   };
 
@@ -107,10 +111,10 @@ export default function FanArtGallery() {
   };
 
   const statusColors = {
-    pending: 'text-yellow-500 bg-yellow-500/10',
-    approved: 'text-green-500 bg-green-500/10',
-    rejected: 'text-red-500 bg-red-500/10',
-    featured: 'text-amber-500 bg-amber-500/10',
+    pending: "text-yellow-500 bg-yellow-500/10",
+    approved: "text-green-500 bg-green-500/10",
+    rejected: "text-red-500 bg-red-500/10",
+    featured: "text-amber-500 bg-amber-500/10",
   };
 
   return (
@@ -133,18 +137,19 @@ export default function FanArtGallery() {
             Umetnost ustvarjena s strani fanov
           </p>
           <p className="text-sm text-rock-muted">
-            {stats.totalSubmissions} del | {stats.totalLikes} všečkov | {stats.featured} izbranih
+            {stats.totalSubmissions} del | {stats.totalLikes} všečkov |{" "}
+            {stats.featured} izbranih
           </p>
         </motion.div>
 
         {/* Tabs */}
         <div className="flex gap-4 mb-8 overflow-x-auto">
           <button
-            onClick={() => setActiveTab('gallery')}
+            onClick={() => setActiveTab("gallery")}
             className={`px-6 py-3 rounded-lg font-medium transition-all whitespace-nowrap ${
-              activeTab === 'gallery'
-                ? 'bg-purple-500 text-white'
-                : 'bg-rock-gray/50 text-rock-muted hover:bg-rock-gray'
+              activeTab === "gallery"
+                ? "bg-purple-500 text-white"
+                : "bg-rock-gray/50 text-rock-muted hover:bg-rock-gray"
             }`}
           >
             {/* eslint-disable-next-line jsx-a11y/alt-text */}
@@ -152,22 +157,22 @@ export default function FanArtGallery() {
             Galerija
           </button>
           <button
-            onClick={() => setActiveTab('submit')}
+            onClick={() => setActiveTab("submit")}
             className={`px-6 py-3 rounded-lg font-medium transition-all whitespace-nowrap ${
-              activeTab === 'submit'
-                ? 'bg-purple-500 text-white'
-                : 'bg-rock-gray/50 text-rock-muted hover:bg-rock-gray'
+              activeTab === "submit"
+                ? "bg-purple-500 text-white"
+                : "bg-rock-gray/50 text-rock-muted hover:bg-rock-gray"
             }`}
           >
             <Upload className="w-5 h-5 inline mr-2" />
             Oddaj Delo
           </button>
           <button
-            onClick={() => setActiveTab('contests')}
+            onClick={() => setActiveTab("contests")}
             className={`px-6 py-3 rounded-lg font-medium transition-all whitespace-nowrap ${
-              activeTab === 'contests'
-                ? 'bg-purple-500 text-white'
-                : 'bg-rock-gray/50 text-rock-muted hover:bg-rock-gray'
+              activeTab === "contests"
+                ? "bg-purple-500 text-white"
+                : "bg-rock-gray/50 text-rock-muted hover:bg-rock-gray"
             }`}
           >
             <Award className="w-5 h-5 inline mr-2" />
@@ -176,17 +181,16 @@ export default function FanArtGallery() {
         </div>
 
         {/* Gallery Tab */}
-        {activeTab === 'gallery' && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
+        {activeTab === "gallery" && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             {/* Filters */}
             <div className="flex flex-wrap gap-4 mb-6">
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 className="px-4 py-2 bg-rock-gray/50 border border-purple-500/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                aria-label="Filter kategorij"
+                title="Izberi kategorijo umetnin"
               >
                 <option value="all">Vse Kategorije</option>
                 {Object.entries(FAN_ART_CATEGORIES).map(([id, cat]) => (
@@ -200,6 +204,8 @@ export default function FanArtGallery() {
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
                 className="px-4 py-2 bg-rock-gray/50 border border-purple-500/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                aria-label="Razvršanje"
+                title="Razvršaj umetnine"
               >
                 <option value="popular">Najbolj Priljubljeno</option>
                 <option value="latest">Najnovejše</option>
@@ -221,10 +227,15 @@ export default function FanArtGallery() {
                     <GlassCard variant="dark" className="p-4 h-full">
                       {/* Image */}
                       <div className="relative aspect-square mb-4 rounded-lg overflow-hidden bg-rock-gray flex items-center justify-center">
-                        <Image className="w-16 h-16 opacity-50 text-gray-600" aria-hidden="true" />
+                        <Image
+                          className="w-16 h-16 opacity-50 text-gray-600"
+                          aria-hidden="true"
+                        />
 
                         {/* Status Badge */}
-                        <div className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1 ${statusColors[art.status]}`}>
+                        <div
+                          className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1 ${statusColors[art.status]}`}
+                        >
                           <StatusIcon className="w-3 h-3" />
                           {art.status.toUpperCase()}
                         </div>
@@ -268,7 +279,10 @@ export default function FanArtGallery() {
                             <Heart className="w-4 h-4" />
                             Všeček
                           </button>
-                          <button className="btn-secondary text-sm py-2 px-3">
+                          <button
+                            className="btn-secondary text-sm py-2 px-3"
+                            title="Deli umetnino"
+                          >
                             <Share2 className="w-4 h-4" />
                           </button>
                         </div>
@@ -282,7 +296,7 @@ export default function FanArtGallery() {
         )}
 
         {/* Submit Tab */}
-        {activeTab === 'submit' && (
+        {activeTab === "submit" && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -303,14 +317,17 @@ export default function FanArtGallery() {
                   Klikni za upload ali povleci datoteko
                 </p>
                 <p className="text-sm text-rock-muted">
-                  Max {UPLOAD_LIMITS.maxSize / 1024 / 1024}MB • JPEG, PNG, WebP, GIF
+                  Max {UPLOAD_LIMITS.maxSize / 1024 / 1024}MB • JPEG, PNG, WebP,
+                  GIF
                 </p>
                 <input
                   ref={fileInputRef}
                   type="file"
-                  accept={UPLOAD_LIMITS.allowedFormats.join(',')}
+                  accept={UPLOAD_LIMITS.allowedFormats.join(",")}
                   onChange={handleFileChange}
                   className="hidden"
+                  aria-label="Naloži umetnino"
+                  title="Izberi datoteko za nalaganje"
                 />
               </div>
 
@@ -324,9 +341,14 @@ export default function FanArtGallery() {
                     </h4>
                     <ul className="text-sm text-amber-200 space-y-1">
                       <li>• Obdržiš avtorske pravice na svojem delu</li>
-                      <li>• Z oddajo dovoliš The Drinkers uporabo za promocijo</li>
+                      <li>
+                        • Z oddajo dovoliš The Drinkers uporabo za promocijo
+                      </li>
                       <li>• Za merch uporabo se dogovoriš posebej</li>
-                      <li>• Delo mora biti originalno in brez tujih avtorskih pravic</li>
+                      <li>
+                        • Delo mora biti originalno in brez tujih avtorskih
+                        pravic
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -345,11 +367,8 @@ export default function FanArtGallery() {
         )}
 
         {/* Contests Tab */}
-        {activeTab === 'contests' && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
+        {activeTab === "contests" && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Active Contest */}
               <GlassCard variant="crimson" className="p-6">

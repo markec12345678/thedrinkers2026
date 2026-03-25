@@ -1,42 +1,47 @@
-'use client';
+"use client";
 
-import { useState, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { Section } from '@/components/ui/Section';
-import { GlassCard } from '@/components/ui/GlassCard';
-import { Button } from '@/components/ui/Button';
-import { Upload, Image, X, Check, Loader2 } from 'lucide-react';
+import { useState, useRef } from "react";
+import { motion } from "framer-motion";
+import { Section } from "@/components/ui/Section";
+import { GlassCard } from "@/components/ui/GlassCard";
+import { Button } from "@/components/ui/Button";
+import { Upload, Image, X, Check, Loader2 } from "lucide-react";
 
 export function FanArtUpload() {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [title, setTitle] = useState('');
-  const [artist, setArtist] = useState('');
-  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState("");
+  const [artist, setArtist] = useState("");
+  const [description, setDescription] = useState("");
   const [uploading, setUploading] = useState(false);
   const [uploaded, setUploaded] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       // Validate file type
-      const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+      const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+        "image/gif",
+      ];
       if (!allowedTypes.includes(selectedFile.type)) {
-        setError('Invalid file type. Please upload JPEG, PNG, WebP, or GIF.');
+        setError("Invalid file type. Please upload JPEG, PNG, WebP, or GIF.");
         return;
       }
 
       // Validate file size (10MB max)
       const maxSize = 10 * 1024 * 1024;
       if (selectedFile.size > maxSize) {
-        setError('File too large. Max size: 10MB.');
+        setError("File too large. Max size: 10MB.");
         return;
       }
 
       setFile(selectedFile);
-      setError('');
+      setError("");
 
       // Create preview
       const reader = new FileReader();
@@ -62,22 +67,22 @@ export function FanArtUpload() {
 
   const handleUpload = async () => {
     if (!file || !title || !artist) {
-      setError('Please fill in all required fields and select a file.');
+      setError("Please fill in all required fields and select a file.");
       return;
     }
 
     setUploading(true);
-    setError('');
+    setError("");
 
     try {
       const formData = new FormData();
-      formData.append('file', file);
-      formData.append('title', title);
-      formData.append('artist', artist);
-      formData.append('description', description);
+      formData.append("file", file);
+      formData.append("title", title);
+      formData.append("artist", artist);
+      formData.append("description", description);
 
-      const response = await fetch('/api/fan-art/upload', {
-        method: 'POST',
+      const response = await fetch("/api/fan-art/upload", {
+        method: "POST",
         body: formData,
       });
 
@@ -87,14 +92,14 @@ export function FanArtUpload() {
         setUploaded(true);
         setFile(null);
         setPreview(null);
-        setTitle('');
-        setArtist('');
-        setDescription('');
+        setTitle("");
+        setArtist("");
+        setDescription("");
       } else {
-        setError(result.error || 'Upload failed. Please try again.');
+        setError(result.error || "Upload failed. Please try again.");
       }
     } catch (err) {
-      setError('Upload failed. Please try again.');
+      setError("Upload failed. Please try again.");
     } finally {
       setUploading(false);
     }
@@ -104,12 +109,12 @@ export function FanArtUpload() {
     setUploaded(false);
     setFile(null);
     setPreview(null);
-    setTitle('');
-    setArtist('');
-    setDescription('');
-    setError('');
+    setTitle("");
+    setArtist("");
+    setDescription("");
+    setError("");
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
   };
 
@@ -139,7 +144,8 @@ export function FanArtUpload() {
               Hvala za prispevek! 🎉
             </h3>
             <p className="text-text-gray mb-6">
-              Tvoja umetnina je bila uspešno oddana. Naša ekipa jo bo pregledala v 24-48 urah.
+              Tvoja umetnina je bila uspešno oddana. Naša ekipa jo bo pregledala
+              v 24-48 urah.
             </p>
             <Button onClick={resetForm} size="lg">
               Objavi Še Eno
@@ -172,10 +178,11 @@ export function FanArtUpload() {
                         setFile(null);
                         setPreview(null);
                         if (fileInputRef.current) {
-                          fileInputRef.current.value = '';
+                          fileInputRef.current.value = "";
                         }
                       }}
                       className="absolute top-2 right-2 p-2 bg-red-500 rounded-full hover:bg-red-600 transition-colors"
+                      title="Zapri predogled"
                     >
                       <X className="w-5 h-5 text-white" />
                     </button>
@@ -273,7 +280,8 @@ export function FanArtUpload() {
             </Button>
 
             <p className="text-text-gray text-sm text-center mt-4">
-              Z objavo se strinjaš, da se tvoja umetnina lahko prikaže v galeriji.
+              Z objavo se strinjaš, da se tvoja umetnina lahko prikaže v
+              galeriji.
             </p>
           </GlassCard>
         )}

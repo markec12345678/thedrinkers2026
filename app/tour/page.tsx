@@ -1,12 +1,16 @@
-'use client';
+"use client";
 
-import dynamic from 'next/dynamic';
-import { Section } from '@/components/ui/Section';
+import dynamic from "next/dynamic";
+import { Section } from "@/components/ui/Section";
+import InteractiveTourMap from "@/components/features/InteractiveTourMap";
 
 // Lazy load heavy components
 const TourCalendar = dynamic(
-  () => import('@/components/sections/TourCalendar').then(mod => mod.TourCalendar), 
-  { 
+  () =>
+    import("@/components/sections/TourCalendar").then(
+      (mod) => mod.TourCalendar,
+    ),
+  {
     ssr: false,
     loading: () => (
       <Section className="min-h-screen flex items-center justify-center">
@@ -15,18 +19,19 @@ const TourCalendar = dynamic(
           <p className="text-text-gray">Loading tour dates...</p>
         </div>
       </Section>
-    )
-  }
+    ),
+  },
 );
 
 const SloveniaMap = dynamic(
-  () => import('@/components/features/SloveniaMap').then(mod => mod.SloveniaMap), 
-  { 
+  () =>
+    import("@/components/features/SloveniaMap").then((mod) => mod.SloveniaMap),
+  {
     ssr: false,
     loading: () => (
       <div className="w-full h-[500px] bg-rock-gray rounded-lg animate-pulse" />
-    )
-  }
+    ),
+  },
 );
 
 export default function TourPage() {
@@ -43,10 +48,15 @@ export default function TourPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-rock-black/50 to-rock-dark" />
         </div>
         <div className="relative z-10 text-center">
-          <h1 className="text-5xl md:text-7xl font-bold text-gradient mb-4">KONCERTI</h1>
+          <h1 className="text-5xl md:text-7xl font-bold text-gradient mb-4">
+            KONCERTI
+          </h1>
           <p className="text-xl text-text-gray">Pridi nas gledat v živo!</p>
         </div>
       </section>
+
+      {/* Interactive Tour Map - NEW! */}
+      <InteractiveTourMap />
 
       {/* Tour Dates */}
       <TourCalendar />
@@ -54,7 +64,9 @@ export default function TourPage() {
       {/* Interactive Map */}
       <Section background="darker">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-crimson text-center mb-8">ZEMLJEVID KONCERTOV</h2>
+          <h2 className="text-3xl font-bold text-crimson text-center mb-8">
+            ZEMLJEVID KONCERTOV
+          </h2>
           <SloveniaMap />
         </div>
       </Section>

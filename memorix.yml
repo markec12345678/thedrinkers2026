@@ -1,0 +1,42 @@
+# Memorix Configuration for The Drinkers
+# Generated: 2026-03-25
+
+version: 1
+projectName: the-drinkers
+projectRoot: "F:/thedrinkers/the"
+
+# Git Memory - automatically track commits
+git:
+  enabled: true
+  autoIngest: true
+  noiseFilter: true
+  branches:
+    - main
+    - dev
+
+# Memory retention settings (days)
+memory:
+  retention:
+    git: 90              # Git commits kept for 90 days
+    reasoning: 60        # Decision rationale for 60 days
+    observation: 30      # Changes for 30 days
+    session: 7           # Session context for 7 days
+  
+  compaction:
+    enabled: true
+    threshold: 100       # Compact after 100 memories
+
+# Cross-agent memory sync
+crossAgent:
+  enabled: true
+  sync: true
+
+# Dashboard (optional web UI)
+dashboard:
+  enabled: false
+  port: 3211
+
+# Logging
+logging:
+  level: info
+  file: logs/memorix.log

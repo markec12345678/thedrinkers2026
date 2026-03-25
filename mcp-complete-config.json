@@ -1,0 +1,80 @@
+{
+  "mcpServers": {
+    "_comment_filesystem": "=== FILESYSTEM & NAVIGATION ===",
+    "filesystem": {
+      "command": "mcp-server-filesystem.cmd",
+      "args": ["F:/thedrinkers/the", "F:/d"],
+      "env": {}
+    },
+
+    "_comment_git": "=== VERSION CONTROL ===",
+    "git": {
+      "command": "mcp-server-github.cmd",
+      "args": [],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "TVOJ_TOKEN_CE_GA_IMAS"
+      }
+    },
+
+    "_comment_ai": "=== AI & LLM ===",
+    "ollama": {
+      "command": "ollama-mcp-server.cmd",
+      "env": {
+        "OLLAMA_HOST": "http://localhost:11434"
+      }
+    },
+
+    "_comment_desktop": "=== DESKTOP AUTOMATION ===",
+    "desktop-commander": {
+      "command": "desktop-commander.cmd",
+      "env": {}
+    },
+
+    "_comment_browser": "=== BROWSER AUTOMATION ===",
+    "playwright": {
+      "command": "playwright-mcp.cmd",
+      "env": {}
+    },
+
+    "_comment_thinking": "=== THINKING & REASONING ===",
+    "sequentialthinking": {
+      "command": "mcp-server-sequential-thinking.cmd",
+      "env": {}
+    },
+
+    "_comment_office": "=== OFFICE & DOCUMENTS ===",
+    "excel": {
+      "command": "excel-mcp-server.cmd",
+      "env": {}
+    },
+    "pdf-reader": {
+      "command": "mcp-pdf-server.cmd",
+      "env": {}
+    },
+
+    "_comment_database": "=== DATABASES ===",
+    "postgres": {
+      "command": "mcp-server-postgres.cmd",
+      "args": ["postgresql://localhost:5432/thedrinkers"],
+      "env": {}
+    },
+
+    "_comment_magic_mcp": "=== ✨ MAGIC MCP - UI GENERATION ===",
+    "magic-mcp": {
+      "command": "node",
+      "args": ["F:/thedrinkers/the/magic-mcp-21st/dist/index.js"],
+      "env": {
+        "API_KEY": "an_sk_743d3d6ad30d8b5544534c307534c1b219e73f2b7297613a87f37dcfa69758e4"
+      }
+    },
+
+    "_comment_memory_bank": "=== 🧠 MEMORY BANK - PROJECT DOCUMENTATION ===",
+    "memory-bank": {
+      "command": "node",
+      "args": ["F:/thedrinkers/the/memory-bank-mcp-alioshr/dist/index.js"],
+      "env": {
+        "MEMORY_BANK_ROOT": "F:/thedrinkers/the"
+      }
+    }
+  }
+}

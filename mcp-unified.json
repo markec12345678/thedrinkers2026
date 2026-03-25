@@ -1,0 +1,47 @@
+﻿{
+  "mcpServers": {
+    "filesystem": {
+      "command": "mcp-server-filesystem.cmd",
+      "args": ["F:/thedrinkers/the", "F:/d"],
+      "env": {}
+    },
+    "git": {
+      "command": "mcp-server-github.cmd",
+      "args": [],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "TVOJ_TOKEN_CE_GA_IMAS"
+      }
+    },
+    "ollama": {
+      "command": "ollama-mcp-server.cmd",
+      "env": {
+        "OLLAMA_HOST": "http://localhost:11434"
+      }
+    },
+    "desktop-commander": {
+      "command": "desktop-commander.cmd",
+      "env": {}
+    },
+    "playwright": {
+      "command": "playwright-mcp.cmd",
+      "env": {}
+    },
+    "sequentialthinking": {
+      "command": "mcp-server-sequential-thinking.cmd",
+      "env": {}
+    },
+    "excel": {
+      "command": "excel-mcp-server.cmd",
+      "env": {}
+    },
+    "pdf-reader": {
+      "command": "mcp-pdf-server.cmd",
+      "env": {}
+    },
+    "postgres": {
+      "command": "mcp-server-postgres.cmd",
+      "args": ["postgresql://localhost:5432/thedrinkers"],
+      "env": {}
+    }
+  }
+}
