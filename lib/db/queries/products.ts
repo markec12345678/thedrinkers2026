@@ -1,6 +1,54 @@
 import { db } from "@/lib/db";
 import { product } from "@/lib/db/schema";
-import { eq, desc, asc, and, gte, lte } from "drizzle-orm";
+import { eq, desc, asc, and, gte, lte, gt } from "drizzle-orm";
+
+// ============================================
+// BASIC QUERIES (Simple, commonly used)
+// ============================================
+
+export async function getAllProducts() {
+  return await db
+    .select()
+    .from(product)
+    .where(eq(product.active, true))
+    .orderBy(desc(product.createdAt));
+}
+
+export async function getProductById(id: string) {
+  const [result] = await db
+    .select()
+    .from(product)
+    .where(and(eq(product.id, id), eq(product.active, true)))
+    .limit(1);
+
+  return result;
+}
+
+export async function getFeaturedProducts() {
+  return await db
+    .select()
+    .from(product)
+    .where(and(eq(product.active, true), eq(product.featured, true)))
+    .limit(8);
+}
+
+export async function getProductsByCategory(category: string) {
+  return await db
+    .select()
+    .from(product)
+    .where(and(eq(product.active, true), eq(product.category, category)));
+}
+
+export async function updateProductStock(id: string, quantity: number) {
+  return await db
+    .update(product)
+    .set({ stock: quantity, updatedAt: new Date() })
+    .where(eq(product.id, id));
+}
+
+// ============================================
+// ADVANCED QUERIES (With filters, pagination)
+// ============================================
 
 export interface GetProductsParams {
   category?: string;
