@@ -1,5 +1,9 @@
-import BeerCounter from '@/components/features/BeerCounter';
-import BeerSongGenerator from '@/components/features/BeerSongGenerator';
-import VirtualBar from '@/components/features/VirtualBar';
+// Merch Product Components
+export { MerchProductCard } from "./MerchProductCard";
+export { MerchProductCardSkeleton } from "./MerchProductCardSkeleton";
+export { QuickViewModal } from "./QuickViewModal";
 
-export { BeerCounter, BeerSongGenerator, VirtualBar };
+// Re-export sub-components for individual use
+export { default as MerchProductCardDefault } from "./MerchProductCard";
+export { default as MerchProductCardSkeletonDefault } from "./MerchProductCardSkeleton";
+export { default as QuickViewModalDefault } from "./QuickViewModal";
