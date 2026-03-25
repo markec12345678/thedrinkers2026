@@ -25,7 +25,9 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:check": "drizzle-kit check",
-    "db:seed": "tsx lib/db/seed.ts",
+    "db:seed": "node seed-minimal.js",
+    "db:seed:full": "node do-seed.js",
+    "db:verify": "node check-if-seed-needed.js",
     "postbuild": "next-sitemap",
     "prepare": "husky"
   },
