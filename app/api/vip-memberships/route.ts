@@ -1,36 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAllVipTiers } from "@/lib/db/queries/memberships";
-
-/**
- * GET /api/vip-memberships
- *
- * Returns all active VIP tiers
- */
-export async function GET() {
-  try {
-    const tiers = await getAllVipTiers();
-
-    return NextResponse.json({
-      success: true,
-      data: tiers,
-      count: tiers.length,
-    });
-  } catch (error) {
-    console.error("Error fetching VIP tiers:", error);
-    return NextResponse.json(
-      { success: false, error: "Failed to fetch VIP tiers" },
-      { status: 500 },
-    );
-  }
-}
+import { db } from "@/lib/db";
+import { vipMembership } from "@/lib/db/schema";
 
 /**
  * POST /api/vip-memberships
- *
- * Body:
- * - user_id: string
- * - tier: string (bronze, silver, gold)
- * - billing_cycle: 'monthly' | 'yearly'
+ * Create new VIP membership
  */
 export async function POST(request: NextRequest) {
   try {
@@ -47,12 +21,58 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // TODO: Create VIP membership
-    // For now, return not implemented
-    return NextResponse.json(
-      { success: false, error: "Not implemented" },
-      { status: 501 },
-    );
+    // Get tier details
+    const [tier] = await db
+      .select()
+      .from(vipTier)
+      .where(eq(vipTier.name, body.tier))
+      .limit(1);
+
+    if (!tier) {
+      return NextResponse.json(
+        { success: false, error: "Invalid tier" },
+        { status: 400 },
+      );
+    }
+
+    // Calculate expiry date
+    const startDate = new Date();
+    const expiresAt = new Date();
+    if (body.billing_cycle === "yearly") {
+      expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+    } else {
+      expiresAt.setMonth(expiresAt.getMonth() + 1);
+    }
+
+    // Create membership
+    const [newMembership] = await db
+      .insert(vipMembership)
+      .values({
+        id: crypto.randomUUID(),
+        userId: body.user_id,
+        tier: body.tier,
+        status: "active",
+        startDate: startDate.toISOString().split("T")[0],
+        expiresAt: expiresAt.toISOString().split("T")[0],
+        billingCycle: body.billing_cycle,
+        price: tier.price,
+        priceYearly: tier.price_yearly,
+        benefits: JSON.stringify(tier.benefits),
+        discountPercentage: tier.discount_percentage,
+        earlyAccess: tier.early_access,
+        exclusiveContent: tier.exclusive_content,
+        meetAndGreet: tier.meet_and_greet,
+        stripeCustomerId: body.stripe_customer_id || null,
+        stripeSubscriptionId: body.stripe_subscription_id || null,
+        stripePriceId: body.stripe_price_id || null,
+      })
+      .returning();
+
+    return NextResponse.json({
+      success: true,
+      data: newMembership,
+      message: "VIP membership created successfully",
+    });
   } catch (error) {
     console.error("Error creating VIP membership:", error);
     return NextResponse.json(

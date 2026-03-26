@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { tourDate } from "@/lib/db/schema";
+import { album } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 
 /**
- * PUT /api/tour-dates/[id]
- * Update tour date by ID
+ * PUT /api/albums/[id]
+ * Update album by ID
  */
 export async function PUT(
   request: NextRequest,
@@ -14,78 +14,78 @@ export async function PUT(
   try {
     const body = await request.json();
 
-    // Check if tour date exists
+    // Check if album exists
     const existing = await db
       .select()
-      .from(tourDate)
-      .where(eq(tourDate.id, params.id))
+      .from(album)
+      .where(eq(album.id, params.id))
       .limit(1);
 
     if (existing.length === 0) {
       return NextResponse.json(
-        { success: false, error: "Tour date not found" },
+        { success: false, error: "Album not found" },
         { status: 404 },
       );
     }
 
-    // Update tour date
+    // Update album
     const [updated] = await db
-      .update(tourDate)
+      .update(album)
       .set({
         ...body,
         updatedAt: new Date(),
       })
-      .where(eq(tourDate.id, params.id))
+      .where(eq(album.id, params.id))
       .returning();
 
     return NextResponse.json({
       success: true,
       data: updated,
-      message: "Tour date updated successfully",
+      message: "Album updated successfully",
     });
   } catch (error) {
-    console.error("Error updating tour date:", error);
+    console.error("Error updating album:", error);
     return NextResponse.json(
-      { success: false, error: "Failed to update tour date" },
+      { success: false, error: "Failed to update album" },
       { status: 500 },
     );
   }
 }
 
 /**
- * DELETE /api/tour-dates/[id]
- * Delete tour date by ID
+ * DELETE /api/albums/[id]
+ * Delete album by ID
  */
 export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } },
 ) {
   try {
-    // Check if tour date exists
+    // Check if album exists
     const existing = await db
       .select()
-      .from(tourDate)
-      .where(eq(tourDate.id, params.id))
+      .from(album)
+      .where(eq(album.id, params.id))
       .limit(1);
 
     if (existing.length === 0) {
       return NextResponse.json(
-        { success: false, error: "Tour date not found" },
+        { success: false, error: "Album not found" },
         { status: 404 },
       );
     }
 
-    // Delete tour date
-    await db.delete(tourDate).where(eq(tourDate.id, params.id));
+    // Delete album
+    await db.delete(album).where(eq(album.id, params.id));
 
     return NextResponse.json({
       success: true,
-      message: "Tour date deleted successfully",
+      message: "Album deleted successfully",
     });
   } catch (error) {
-    console.error("Error deleting tour date:", error);
+    console.error("Error deleting album:", error);
     return NextResponse.json(
-      { success: false, error: "Failed to delete tour date" },
+      { success: false, error: "Failed to delete album" },
       { status: 500 },
     );
   }

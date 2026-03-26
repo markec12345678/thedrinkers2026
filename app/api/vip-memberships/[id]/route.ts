@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { tourDate } from "@/lib/db/schema";
+import { vipMembership, vipTier } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 
 /**
- * PUT /api/tour-dates/[id]
- * Update tour date by ID
+ * PUT /api/vip-memberships/[id]
+ * Update VIP membership by ID
  */
 export async function PUT(
   request: NextRequest,
@@ -14,78 +14,78 @@ export async function PUT(
   try {
     const body = await request.json();
 
-    // Check if tour date exists
+    // Check if membership exists
     const existing = await db
       .select()
-      .from(tourDate)
-      .where(eq(tourDate.id, params.id))
+      .from(vipMembership)
+      .where(eq(vipMembership.id, params.id))
       .limit(1);
 
     if (existing.length === 0) {
       return NextResponse.json(
-        { success: false, error: "Tour date not found" },
+        { success: false, error: "VIP membership not found" },
         { status: 404 },
       );
     }
 
-    // Update tour date
+    // Update membership
     const [updated] = await db
-      .update(tourDate)
+      .update(vipMembership)
       .set({
         ...body,
         updatedAt: new Date(),
       })
-      .where(eq(tourDate.id, params.id))
+      .where(eq(vipMembership.id, params.id))
       .returning();
 
     return NextResponse.json({
       success: true,
       data: updated,
-      message: "Tour date updated successfully",
+      message: "VIP membership updated successfully",
     });
   } catch (error) {
-    console.error("Error updating tour date:", error);
+    console.error("Error updating VIP membership:", error);
     return NextResponse.json(
-      { success: false, error: "Failed to update tour date" },
+      { success: false, error: "Failed to update VIP membership" },
       { status: 500 },
     );
   }
 }
 
 /**
- * DELETE /api/tour-dates/[id]
- * Delete tour date by ID
+ * DELETE /api/vip-memberships/[id]
+ * Delete VIP membership by ID
  */
 export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } },
 ) {
   try {
-    // Check if tour date exists
+    // Check if membership exists
     const existing = await db
       .select()
-      .from(tourDate)
-      .where(eq(tourDate.id, params.id))
+      .from(vipMembership)
+      .where(eq(vipMembership.id, params.id))
       .limit(1);
 
     if (existing.length === 0) {
       return NextResponse.json(
-        { success: false, error: "Tour date not found" },
+        { success: false, error: "VIP membership not found" },
         { status: 404 },
       );
     }
 
-    // Delete tour date
-    await db.delete(tourDate).where(eq(tourDate.id, params.id));
+    // Delete membership
+    await db.delete(vipMembership).where(eq(vipMembership.id, params.id));
 
     return NextResponse.json({
       success: true,
-      message: "Tour date deleted successfully",
+      message: "VIP membership deleted successfully",
     });
   } catch (error) {
-    console.error("Error deleting tour date:", error);
+    console.error("Error deleting VIP membership:", error);
     return NextResponse.json(
-      { success: false, error: "Failed to delete tour date" },
+      { success: false, error: "Failed to delete VIP membership" },
       { status: 500 },
     );
   }
