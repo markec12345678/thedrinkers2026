@@ -1,49 +1,107 @@
-import { NextRequest, NextResponse } from 'next/server';
-import Stripe from 'stripe';
+import { NextRequest, NextResponse } from "next/server";
+import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-02-25.clover',
+  apiVersion: "2023-10-16",
 });
 
+/**
+ * POST /api/checkout
+ *
+ * Create Stripe Checkout Session
+ *
+ * Body:
+ * - items: Array<{
+ *     productId: string,
+ *     name: string,
+ *     price: string,
+ *     image: string,
+ *     size: string,
+ *     quantity: number
+ *   }>
+ * - discountCode?: string
+ */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { items, email } = body;
+    const { items, discountCode } = await request.json();
 
-    if (!items || items.length === 0) {
-      return NextResponse.json({ error: 'No items provided' }, { status: 400 });
+    // Validate items
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return NextResponse.json(
+        { success: false, error: "No items in cart" },
+        { status: 400 },
+      );
+    }
+
+    // Create line items for Stripe
+    const lineItems = items.map((item: any) => ({
+      price_data: {
+        currency: "eur",
+        product_data: {
+          name: `${item.name} (Size: ${item.size})`,
+          description: item.description || undefined,
+          images: item.image ? [item.image] : [],
+          metadata: {
+            productId: item.productId,
+            size: item.size,
+          },
+        },
+        unit_amount: Math.round(parseFloat(item.price) * 100), // Convert to cents
+      },
+      quantity: item.quantity,
+    }));
+
+    // Create discounts if discount code provided
+    let discounts = [];
+    if (discountCode) {
+      discounts = [{ coupon_code: discountCode }];
     }
 
     // Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items: items.map((item: any) => ({
-        price_data: {
-          currency: 'eur',
-          product_data: {
-            name: item.name,
-            description: item.description,
-            images: item.images,
-          },
-          unit_amount: Math.round(item.price * 100), // Convert to cents
-        },
-        quantity: item.quantity || 1,
-      })),
-      mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/merch?success=true`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/merch?canceled=true`,
-      customer_email: email,
+      payment_method_types: ["card"],
+      line_items: lineItems,
+      discounts,
+      mode: "payment",
+      success_url: `${request.headers.get("origin")}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${request.headers.get("origin")}/cart?abandoned=1`,
       metadata: {
-        type: 'merchandise',
+        items: JSON.stringify(items),
+      },
+      shipping_address_collection: {
+        allowed_countries: [
+          "SI",
+          "AT",
+          "DE",
+          "IT",
+          "FR",
+          "NL",
+          "BE",
+          "HR",
+          "SK",
+          "CZ",
+          "PL",
+          "HU",
+        ],
+      },
+      phone_number_collection: {
+        enabled: true,
       },
     });
 
-    return NextResponse.json({ sessionId: session.id, url: session.url });
-  } catch (error) {
-    console.error('Stripe checkout error:', error);
+    return NextResponse.json({
+      success: true,
+      url: session.url,
+      sessionId: session.id,
+    });
+  } catch (error: any) {
+    console.error("Stripe checkout error:", error);
     return NextResponse.json(
-      { error: 'Failed to create checkout session' },
-      { status: 500 }
+      {
+        success: false,
+        error: error.message || "Failed to create checkout session",
+      },
+      { status: 500 },
     );
   }
 }
