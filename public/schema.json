@@ -1,0 +1,88 @@
+{
+  "@context": "https://schema.org",
+  "@type": "MusicGroup",
+  "name": "The Drinkers",
+  "url": "https://thedrinkers.si",
+  "logo": "https://thedrinkers.si/images/logo.png",
+  "sameAs": [
+    "https://www.facebook.com/thedrinkers",
+    "https://www.instagram.com/thedrinkers",
+    "https://twitter.com/thedrinkers",
+    "https://www.youtube.com/thedrinkers",
+    "https://open.spotify.com/artist/thedrinkers"
+  ],
+  "description": "The Drinkers - Slovenian rock band. Official website with tour dates, music, merch, and exclusive fan content.",
+  "genre": ["Rock", "Alternative Rock", "Indie Rock"],
+  "foundingDate": "2019",
+  "foundingLocation": {
+    "@type": "Place",
+    "name": "Slovenia"
+  },
+  "member": [
+    {
+      "@type": "Person",
+      "name": "John Doe",
+      "jobTitle": "Vocals & Guitar"
+    },
+    {
+      "@type": "Person",
+      "name": "Jane Smith",
+      "jobTitle": "Bass & Backing Vocals"
+    },
+    {
+      "@type": "Person",
+      "name": "Mike Johnson",
+      "jobTitle": "Drums"
+    },
+    {
+      "@type": "Person",
+      "name": "Sarah Williams",
+      "jobTitle": "Lead Guitar"
+    }
+  ],
+  "album": [
+    {
+      "@type": "MusicAlbum",
+      "name": "First Round",
+      "datePublished": "2020-03-15"
+    },
+    {
+      "@type": "MusicAlbum",
+      "name": "Midnight Sessions",
+      "datePublished": "2022-06-20"
+    },
+    {
+      "@type": "MusicAlbum",
+      "name": "Live at Orto Bar",
+      "datePublished": "2024-01-10"
+    },
+    {
+      "@type": "MusicAlbum",
+      "name": "Tour 2026",
+      "datePublished": "2026-03-01"
+    }
+  ],
+  "event": [
+    {
+      "@type": "MusicEvent",
+      "name": "The Drinkers - Spring Tour 2026",
+      "startDate": "2026-04-15",
+      "location": {
+        "@type": "MusicVenue",
+        "name": "Orto Bar",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Ljubljana",
+          "addressCountry": "SI"
+        }
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": "https://thedrinkers.si/tour",
+        "price": "25.00",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock"
+      }
+    }
+  ]
+}
