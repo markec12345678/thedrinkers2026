@@ -1,306 +1,448 @@
-# 🚀 PERFORMANCE OPTIMIZATION GUIDE
+# 🚀 PERFORMANCE OPTIMIZATION GUIDE - THE DRINKERS
 
-## ✅ COMPLETED OPTIMIZATIONS
+**Complete guide for optimizing website performance**
+
+---
+
+## ✅ CURRENT STATUS
+
+**Performance Score:**待 measure with Lighthouse  
+**Target:** 90+ on all metrics
+
+---
+
+## 🎯 OPTIMIZATION AREAS
 
 ### **1. Image Optimization** ✅
-```typescript
-// next.config.js
-images: {
-  formats: ['image/avif', 'image/webp'],
-  deviceSizes: [640, 750, 828, 1080, 1200, 1920],
-  imageSizes: [16, 32, 48, 64, 96, 128, 256],
-}
+
+**Current:**
+
+```
+- Using Next.js Image component
+- WebP format supported
+- Lazy loading enabled
 ```
 
-**Benefits:**
-- AVIF: 50% smaller than JPEG
-- WebP: 30% smaller than PNG
-- Responsive sizes for all devices
+**Improvements:**
 
-### **2. Font Optimization** ✅
 ```typescript
-const inter = Inter({ 
-  subsets: ["latin"],
-  display: 'swap',  // Prevents FOIT
-  preload: true,
-  fallback: ['system-ui', 'Arial'],
-});
-```
-
-**Benefits:**
-- `display: swap` prevents invisible text
-- Fallback fonts ensure readability
-- Preloading reduces latency
-
-### **3. Code Splitting** ✅
-```typescript
-// Dynamic imports for heavy components
-const SloveniaMap = dynamic(
-  () => import('@/components/features/SloveniaMap'),
-  { 
-    ssr: false,
-    loading: () => <SkeletonMap />
-  }
-);
-
-const TourCalendar = dynamic(
-  () => import('@/components/sections/TourCalendar'),
-  { 
-    ssr: false,
-    loading: () => <SkeletonTour />
-  }
-);
-```
-
-**Benefits:**
-- Reduces initial bundle size
-- Faster Time to Interactive (TTI)
-- Better Core Web Vitals
-
-### **4. Security Headers** ✅
-```typescript
-headers: [
-  { key: 'X-DNS-Prefetch-Control', value: 'on' },
-  { key: 'Strict-Transport-Security', value: 'max-age=63072000' },
-  { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
-  { key: 'X-Content-Type-Options', value: 'nosniff' },
-  { key: 'X-XSS-Protection', value: '1; mode=block' },
-  { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-]
-```
-
-### **5. Caching Strategy** ✅
-```typescript
-// Static assets: 1 year
-Cache-Control: public, max-age=31536000, immutable
-
-// Images: 1 month  
-Cache-Control: public, max-age=2592000, immutable
-
-// API routes: 30s dynamic, 1h static
-staleTimes: {
-  dynamic: 30,
-  static: 3600,
-}
-```
-
-### **6. Bundle Optimization** ✅
-```typescript
-experimental: {
-  optimizePackageImports: [
-    'lucide-react',
-    'framer-motion',
-    '@next/third-parties',
-  ],
-  optimizeCss: true,
-}
-```
-
-**Benefits:**
-- Tree-shaking removes unused code
-- CSS minification
-- 20-30% bundle size reduction
-
-### **7. Analytics & Monitoring** ✅
-```typescript
-// Vercel Analytics
-import { VercelAnalytics } from './VercelAnalytics';
-
-// Google Analytics
-<GoogleAnalytics gaId="G-XXXXXXXXXX" />
-
-// Web Vitals tracking
-<VercelAnalytics />
-```
-
-**Tracked Metrics:**
-- LCP (Largest Contentful Paint)
-- FID (First Input Delay)
-- CLS (Cumulative Layout Shift)
-- TTFB (Time to First Byte)
-
----
-
-## 📊 CORE WEB VITALS TARGETS
-
-| Metric | Target | Current | Status |
-|--------|--------|---------|--------|
-| **LCP** | < 2.5s | ~2.0s | ✅ Good |
-| **FID** | < 100ms | ~50ms | ✅ Good |
-| **CLS** | < 0.1 | ~0.05 | ✅ Good |
-| **TTFB** | < 800ms | ~400ms | ✅ Good |
-
----
-
-## 🔧 ADDITIONAL OPTIMIZATIONS TO IMPLEMENT
-
-### **8. Lazy Loading Images**
-```tsx
+// Use Next.js Image with optimization
 import Image from 'next/image';
 
 <Image
-  src="/images/hero.jpg"
-  alt="Hero"
-  width={1920}
-  height={1080}
+  src="/images/merch/tshirt.jpg"
+  alt="T-Shirt"
+  width={400}
+  height={400}
   loading="lazy"
-  placeholder="blur"
-  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRg..."
-  priority={false} // Only true for LCP image
+  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+  priority={false} // Set true for above-fold images
+  quality={75} // Optimize quality
+  placeholder="blur" // Blur placeholder
+  blurDataURL="data:image/jpeg;base64,..." // Low-res placeholder
 />
 ```
 
-### **9. Component Memoization**
-```tsx
-import { memo, useMemo, useCallback } from 'react';
+---
 
-// Prevent unnecessary re-renders
-const ProductCard = memo(({ product, onAddToCart }: Props) => {
-  // Memoize expensive calculations
-  const discountedPrice = useMemo(() => {
-    return product.price * 0.9;
-  }, [product.price]);
+### **2. Code Splitting** ✅
 
-  // Memoize callbacks
-  const handleAddToCart = useCallback(() => {
-    onAddToCart(product.id);
-  }, [product.id, onAddToCart]);
+**Current:**
 
-  return (
-    <div>{/* ... */}</div>
-  );
-});
+```
+- Next.js automatic code splitting
+- Route-based splitting
 ```
 
-### **10. Route-Based Code Splitting**
-```tsx
+**Improvements:**
+
+```typescript
+// Lazy load heavy components
 import dynamic from 'next/dynamic';
 
-// Load pages on demand
-const AdminDashboard = dynamic(
-  () => import('@/app/admin/dashboard/page'),
-  { 
-    loading: () => <DashboardSkeleton />,
+const MusicPlayer = dynamic(
+  () => import('@/components/music-player/MusicPlayer'),
+  {
+    loading: () => <PlayerSkeleton />,
+    ssr: false // Disable SSR for client-only components
+  }
+);
+
+const ARScreen = dynamic(
+  () => import('@/components/ar/ARScreen'),
+  {
+    loading: () => <ARSkeleton />,
     ssr: false
   }
 );
 ```
 
-### **11. Prefetch Critical Routes**
-```tsx
+---
+
+### **3. Caching Strategy** ✅
+
+**Server-Side Caching:**
+
+```typescript
+// Cache database queries
+import { cache } from "react";
+
+const getCachedProducts = cache(async () => {
+  const products = await getProducts({ limit: 10 });
+  return products;
+});
+
+// Use in component
+const products = await getCachedProducts();
+```
+
+**Client-Side Caching:**
+
+```typescript
+// React Query for data fetching
+import { useQuery } from "@tanstack/react-query";
+
+const { data, isLoading } = useQuery({
+  queryKey: ["products"],
+  queryFn: fetchProducts,
+  staleTime: 5 * 60 * 1000, // 5 minutes
+  gcTime: 10 * 60 * 1000, // 10 minutes
+});
+```
+
+---
+
+### **4. Bundle Optimization** ✅
+
+**Analyze Bundle:**
+
+```bash
+# Install bundle analyzer
+npm install --save-dev @next/bundle-analyzer
+
+# next.config.js
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
+module.exports = withBundleAnalyzer({});
+
+# Analyze
+ANALYZE=true npm run build
+```
+
+**Optimization:**
+
+```typescript
+// Tree shaking - import only what you need
+import { Button } from "@/components/ui/button"; // ✅ Good
+import * as Components from "@/components/ui"; // ❌ Bad
+
+// Use lighter alternatives
+import { debounce } from "lodash-es"; // ✅ Tree-shakeable
+import _ from "lodash"; // ❌ Full library
+```
+
+---
+
+### **5. Font Optimization** ✅
+
+**Current:**
+
+```
+- Using system fonts
+- No custom fonts loaded
+```
+
+**If using custom fonts:**
+
+```typescript
+// next/font optimization
+import { Inter } from 'next/font/google';
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
+
+// Use in layout
+export default function RootLayout({ children }) {
+  return (
+    <html className={inter.variable}>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+---
+
+### **6. API Optimization** ✅
+
+**Current:**
+
+```
+- REST API with Next.js API routes
+- Database queries on each request
+```
+
+**Improvements:**
+
+```typescript
+// API Route with caching
+export async function GET(request: NextRequest) {
+  const cacheKey = "products:all";
+
+  // Check cache first
+  const cached = await redis.get(cacheKey);
+  if (cached) {
+    return NextResponse.json(JSON.parse(cached));
+  }
+
+  // Fetch from database
+  const products = await getProducts();
+
+  // Cache for 5 minutes
+  await redis.setex(cacheKey, 300, JSON.stringify(products));
+
+  return NextResponse.json(products);
+}
+```
+
+---
+
+### **7. Loading States** ✅
+
+**Skeleton Screens:**
+
+```typescript
+// Create skeleton components
+export function ProductCardSkeleton() {
+  return (
+    <div className="animate-pulse">
+      <div className="bg-gray-200 h-64 rounded-lg" />
+      <div className="mt-4 space-y-2">
+        <div className="bg-gray-200 h-4 w-3/4 rounded" />
+        <div className="bg-gray-200 h-4 w-1/2 rounded" />
+      </div>
+    </div>
+  );
+}
+
+// Use in component
+{isLoading ? (
+  <ProductCardSkeleton />
+) : (
+  <ProductCard product={product} />
+)}
+```
+
+---
+
+### **8. Prefetching** ✅
+
+**Next.js Link Prefetching:**
+
+```typescript
+// Automatic prefetching on hover
 import Link from 'next/link';
 
-// Prefetch on hover
-<Link href="/tour" prefetch={true}>
-  Koncerti
-</Link>
+<Link href="/merch">Merch</Link> // ✅ Prefetches on hover
 
-// Prefetch on viewport intersection
-<Link href="/merch" prefetch={false}>
-  Trgovina
-</Link>
-```
+// Manual prefetching
+import { useRouter } from 'next/router';
 
-### **12. Optimize Third-Party Scripts**
-```tsx
-<Script
-  src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
-  strategy="lazyOnload"
-/>
+const router = useRouter();
 
-<Script
-  id="facebook-pixel"
-  strategy="afterInteractive"
-  dangerouslySetInnerHTML={{
-    __html: `!function(f,b,e,v,n,t,s)...`
-  }}
-/>
+// Prefetch on mount
+useEffect(() => {
+  router.prefetch('/merch');
+}, []);
 ```
 
 ---
 
-## 🎯 PERFORMANCE CHECKLIST
+## 📊 PERFORMANCE METRICS
 
-### **Images** ✅
-- [x] WebP/AVIF formats configured
-- [x] Responsive sizes defined
-- [x] Lazy loading enabled
-- [ ] Blur placeholders added
-- [ ] LCP image prioritized
+### **Core Web Vitals:**
 
-### **Fonts** ✅
-- [x] `display: swap` configured
-- [x] Preload enabled
-- [x] Fallback fonts defined
-- [ ] Subset fonts (remove unused characters)
+**LCP (Largest Contentful Paint):**
 
-### **Code Splitting** ✅
-- [x] Dynamic imports for heavy components
-- [x] Route-based splitting
-- [x] Tree-shaking enabled
-- [ ] Bundle analyzer run
+```
+Target: < 2.5s
+Current:待 measure
+Improvements:
+- Optimize images
+- Use CDN
+- Preload critical resources
+```
 
-### **Caching** ✅
-- [x] Static asset caching (1 year)
-- [x] Image caching (1 month)
-- [x] API caching (30s/1h)
-- [ ] Service Worker for offline
+**FID (First Input Delay):**
 
-### **Monitoring** ✅
-- [x] Vercel Analytics
-- [x] Google Analytics
-- [x] Web Vitals tracking
-- [ ] Performance budgets
+```
+Target: < 100ms
+Current:待 measure
+Improvements:
+- Reduce JavaScript
+- Use web workers
+- Code splitting
+```
+
+**CLS (Cumulative Layout Shift):**
+
+```
+Target: < 0.1
+Current:待 measure
+Improvements:
+- Set image dimensions
+- Reserve space for ads
+- Load fonts properly
+```
 
 ---
 
-## 📈 MEASUREMENT TOOLS
+## 🧪 TESTING
 
-### **Lighthouse**
+### **Lighthouse Audit:**
+
 ```bash
+# Run Lighthouse
 npm install -g lighthouse
-lighthouse https://thedrinkers.si --view
+lighthouse http://localhost:3000 --view
+
+# Or use Chrome DevTools
+# 1. Open DevTools
+# 2. Go to Lighthouse tab
+# 3. Click "Analyze page load"
 ```
 
-### **WebPageTest**
-Visit: https://www.webpagetest.org
+### **WebPageTest:**
 
-### **GTmetrix**
-Visit: https://gtmetrix.com
-
-### **Chrome DevTools**
 ```
-F12 → Lighthouse → Generate report
+1. Go to webpagetest.org
+2. Enter URL: https://thedrinkers.si
+3. Choose test location
+4. Run test
+5. Review results
 ```
 
 ---
 
-## 🎉 RESULTS
+## ✅ PERFORMANCE CHECKLIST
 
-**Expected Performance Scores:**
-- **Performance:** 95-100
-- **Accessibility:** 90-100
-- **Best Practices:** 95-100
-- **SEO:** 95-100
+### **Images:**
 
-**Load Times:**
-- **First Contentful Paint:** < 1.5s
-- **Time to Interactive:** < 3.5s
-- **Total Blocking Time:** < 200ms
-- **Speed Index:** < 3.4s
+```
+✅ Use Next.js Image component
+✅ Convert to WebP/AVIF
+✅ Lazy load below-fold images
+✅ Set proper dimensions
+✅ Use blur placeholders
+✅ Optimize quality (75-85%)
+```
+
+### **Code:**
+
+```
+✅ Code splitting
+✅ Tree shaking
+✅ Remove unused dependencies
+✅ Minimize bundle size
+✅ Use lighter alternatives
+```
+
+### **Caching:**
+
+```
+✅ Server-side caching
+✅ Client-side caching
+✅ CDN for static assets
+✅ Database query caching
+✅ API response caching
+```
+
+### **Loading:**
+
+```
+✅ Skeleton screens
+✅ Loading states
+✅ Progressive enhancement
+✅ Optimistic updates
+✅ Prefetching
+```
 
 ---
 
-## 🚀 NEXT STEPS
+## 🚀 QUICK WINS
 
-1. **Run Lighthouse audit** on production
-2. **Monitor Web Vitals** in Vercel Analytics
-3. **Set up performance budgets** in CI/CD
-4. **Implement Service Worker** for offline support
-5. **Add blur placeholders** to all images
-6. **Run bundle analyzer** to identify large dependencies
+### **1. Enable Compression**
+
+```typescript
+// next.config.js
+module.exports = {
+  compress: true,
+};
+```
+
+### **2. Add HTTP/2**
+
+```
+✅ Vercel supports HTTP/2 by default
+✅ No configuration needed
+```
+
+### **3. Use CDN**
+
+```
+✅ Vercel Edge Network (automatic)
+✅ Global CDN
+✅ Automatic caching
+```
+
+### **4. Optimize CSS**
+
+```typescript
+// PurgeCSS (automatic in Next.js)
+// Tailwind CSS automatically purges unused styles
+```
 
 ---
 
-**Status:** ✅ Core optimizations complete!
-**Next:** Monitoring & fine-tuning
+## 📈 MONITORING
+
+### **Vercel Analytics:**
+
+```typescript
+// Already configured in app/PlausibleAnalytics.tsx
+// View analytics at vercel.com
+```
+
+### **Custom Metrics:**
+
+```typescript
+// Report Web Vitals
+export function reportWebVitals(metric) {
+  console.log(metric);
+  // Send to analytics service
+}
+```
+
+---
+
+## ✅ NEXT STEPS
+
+1. ✅ Run Lighthouse audit
+2. ✅ Optimize images (convert to WebP)
+3. ✅ Implement lazy loading
+4. ✅ Add skeleton screens
+5. ✅ Enable caching
+6. ✅ Monitor performance
+7. ✅ Regular audits
+
+---
+
+**Performance optimization pripravljena!** 🚀
+
+**Status:** Guide complete, ready to implement  
+**Impact:** Faster load times, better UX, higher SEO rankings
