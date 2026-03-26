@@ -1,32 +1,81 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingBag, Bell, Clock, TrendingUp, Crown } from "lucide-react";
-import DropCard from "@/components/drops/DropCard";
 
-interface Drop {
-  id: string;
-  name: string;
-  description: string | null;
-  productId: string;
-  quantity: number;
-  quantityRemaining: number;
-  price: string;
-  originalPrice: string | null;
-  startDate: string;
-  endDate: string;
-  vipEarlyAccess: boolean;
-  vipEarlyAccessHours: number | null;
-  isActive: boolean;
-  isSoldOut: boolean;
-  percentSold: number;
-  isVipEarlyAccess: boolean;
-  timeRemaining: number;
+// Simplified DropCard for faster loading
+function SimpleDropCard({ drop, onPurchase, onJoinWaitlist }: any) {
+  const isSoldOut = drop.isSoldOut || drop.quantityRemaining <= 0;
+  const percentSold = drop.percentSold || 0;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 rounded-3xl shadow-2xl overflow-hidden border-2 border-purple-500/30"
+    >
+      {/* Image Placeholder */}
+      <div className="relative aspect-square bg-gray-800">
+        <div className="absolute inset-0 flex items-center justify-center text-gray-600">
+          <ShoppingBag className="w-24 h-24" />
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="p-6 space-y-4">
+        <h3 className="text-2xl font-bold text-white">{drop.name}</h3>
+
+        <div className="flex items-center gap-3">
+          <span className="text-4xl font-bold text-white">€{drop.price}</span>
+          {drop.originalPrice && (
+            <span className="text-xl text-gray-500 line-through">
+              €{drop.originalPrice}
+            </span>
+          )}
+        </div>
+
+        {/* Progress */}
+        <div className="space-y-2">
+          <div className="flex justify-between text-sm text-gray-400">
+            <span>{drop.quantityRemaining} remaining</span>
+            <span>{percentSold}% sold</span>
+          </div>
+          <div className="h-3 bg-gray-800 rounded-full overflow-hidden">
+            <div
+              className={`h-full ${percentSold > 80 ? "bg-red-600" : percentSold > 50 ? "bg-amber-600" : "bg-purple-600"}`}
+              style={{ width: `${percentSold}%` }}
+            />
+          </div>
+        </div>
+
+        {/* Button */}
+        <button
+          onClick={() =>
+            isSoldOut ? onJoinWaitlist(drop.id) : onPurchase(drop.id, 1)
+          }
+          disabled={isSoldOut && !drop.isVipEarlyAccess}
+          className={`w-full font-bold py-4 px-8 rounded-xl transition-all ${
+            isSoldOut
+              ? "bg-gray-700 cursor-not-allowed"
+              : drop.isVipEarlyAccess
+                ? "bg-gradient-to-r from-amber-600 to-yellow-600"
+                : "bg-gradient-to-r from-purple-600 to-pink-600"
+          } text-white`}
+        >
+          {isSoldOut
+            ? "Sold Out"
+            : drop.isVipEarlyAccess
+              ? "VIP Access Only"
+              : "Get Yours Now"}
+        </button>
+      </div>
+    </motion.div>
+  );
 }
 
 export default function DropsPage() {
-  const [drops, setDrops] = useState<Drop[]>([]);
+  const [drops, setDrops] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | "active" | "vip" | "ending">(
     "all",
@@ -86,7 +135,7 @@ export default function DropsPage() {
       const data = await response.json();
 
       if (data.success) {
-        alert("Added to waitlist! We'll notify you when available.");
+        alert("Added to waitlist!");
       } else {
         alert(data.error || "Failed to join waitlist");
       }
@@ -167,46 +216,19 @@ export default function DropsPage() {
           transition={{ delay: 0.3 }}
           className="flex flex-wrap justify-center gap-4 mb-12"
         >
-          <button
-            onClick={() => setFilter("all")}
-            className={`px-6 py-3 rounded-xl font-bold transition-all ${
-              filter === "all"
-                ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white"
-                : "bg-gray-800 text-gray-400 hover:bg-gray-700"
-            }`}
-          >
-            All Drops
-          </button>
-          <button
-            onClick={() => setFilter("active")}
-            className={`px-6 py-3 rounded-xl font-bold transition-all ${
-              filter === "active"
-                ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white"
-                : "bg-gray-800 text-gray-400 hover:bg-gray-700"
-            }`}
-          >
-            Available
-          </button>
-          <button
-            onClick={() => setFilter("vip")}
-            className={`px-6 py-3 rounded-xl font-bold transition-all ${
-              filter === "vip"
-                ? "bg-gradient-to-r from-amber-600 to-yellow-600 text-white"
-                : "bg-gray-800 text-gray-400 hover:bg-gray-700"
-            }`}
-          >
-            VIP Only
-          </button>
-          <button
-            onClick={() => setFilter("ending")}
-            className={`px-6 py-3 rounded-xl font-bold transition-all ${
-              filter === "ending"
-                ? "bg-gradient-to-r from-red-600 to-pink-600 text-white"
-                : "bg-gray-800 text-gray-400 hover:bg-gray-700"
-            }`}
-          >
-            Ending Soon
-          </button>
+          {["all", "active", "vip", "ending"].map((f) => (
+            <button
+              key={f}
+              onClick={() => setFilter(f as any)}
+              className={`px-6 py-3 rounded-xl font-bold transition-all capitalize ${
+                filter === f
+                  ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white"
+                  : "bg-gray-800 text-gray-400 hover:bg-gray-700"
+              }`}
+            >
+              {f}
+            </button>
+          ))}
         </motion.div>
 
         {/* Drops Grid */}
@@ -242,7 +264,7 @@ export default function DropsPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <DropCard
+                <SimpleDropCard
                   drop={drop}
                   onPurchase={handlePurchase}
                   onJoinWaitlist={handleJoinWaitlist}
@@ -251,32 +273,6 @@ export default function DropsPage() {
             ))}
           </div>
         )}
-
-        {/* Newsletter Signup */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="mt-20 bg-gradient-to-r from-purple-900 to-pink-900 rounded-3xl p-12 text-center"
-        >
-          <Bell className="w-16 h-16 text-purple-400 mx-auto mb-6" />
-          <h2 className="text-4xl font-bold text-white mb-4">
-            Never Miss a Drop
-          </h2>
-          <p className="text-xl text-purple-200 mb-8">
-            Get notified when new limited edition drops are released
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-6 py-4 rounded-xl bg-gray-800 text-white border border-gray-700 focus:border-purple-500 focus:outline-none"
-            />
-            <button className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-xl hover:from-purple-700 hover:to-pink-700 transition-all">
-              Notify Me
-            </button>
-          </div>
-        </motion.div>
       </div>
     </div>
   );
