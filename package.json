@@ -25,7 +25,7 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:check": "drizzle-kit check",
-    "db:seed": "node seed-minimal.js",
+    "db:seed": "node seed-database.js",
     "db:seed:full": "node do-seed.js",
     "db:verify": "node check-if-seed-needed.js",
     "postbuild": "next-sitemap",
