@@ -53,7 +53,7 @@ const albums: Album[] = [
     id: "2",
     title: "30 Let Rocka",
     year: "2019",
-    coverArt: "/images/album-30let.jpg",
+    coverArt: "/images/album-30let.svg",
     tracks: [
       "Uvertura",
       "30 Let",
@@ -68,7 +68,7 @@ const albums: Album[] = [
     id: "3",
     title: "Življenje Je Rock",
     year: "2010",
-    coverArt: "/images/album-zivljenje.jpg",
+    coverArt: "/images/album-zivljenje.svg",
     tracks: [
       "Življenje Je Rock",
       "Novi Časi",

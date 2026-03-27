@@ -41,7 +41,7 @@ const vipContents: VIPContent[] = [
     description: "Ekskluzivni posnetki iz zaodrja naših koncertov",
     type: "video",
     locked: true,
-    image: "/images/backstage.jpg",
+    image: "/images/backstage.svg",
   },
   {
     id: "2",

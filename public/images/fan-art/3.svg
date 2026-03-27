@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad-fan-art/3.svg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f3460;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#533483;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="512" height="512" fill="url(#grad-fan-art/3.svg)"/>
+  <text x="256" y="296" font-family="Arial, sans-serif" font-size="120" text-anchor="middle">
+    🎨
+  </text>
+</svg>

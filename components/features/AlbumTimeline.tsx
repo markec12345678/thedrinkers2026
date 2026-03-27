@@ -33,7 +33,7 @@ const albums: Album[] = [
     title: "Prvi Album",
     description: "Debitantski album ki je začel rock revolucijo",
     tracks: 10,
-    cover: "/images/album-1995.jpg",
+    cover: "/images/album-1995.svg",
     spotifyUrl: "https://open.spotify.com/artist/thedrinkers",
   },
   {
@@ -42,7 +42,7 @@ const albums: Album[] = [
     title: "Rock'n'Roll",
     description: "Drugi album z največčimi hiti",
     tracks: 12,
-    cover: "/images/album-1998.jpg",
+    cover: "/images/album-1998.svg",
     spotifyUrl: "https://open.spotify.com/artist/thedrinkers",
   },
   {
@@ -51,7 +51,7 @@ const albums: Album[] = [
     title: "Nočni Voz",
     description: "Konceptualni album o nočnem življenju",
     tracks: 11,
-    cover: "/images/album-2001.jpg",
+    cover: "/images/album-2001.svg",
     spotifyUrl: "https://open.spotify.com/artist/thedrinkers",
   },
   {
@@ -60,7 +60,7 @@ const albums: Album[] = [
     title: "Življenje Je Rock",
     description: "Šesti studijski album z energičnimi rock skladbami",
     tracks: 12,
-    cover: "/images/album-2010.jpg",
+    cover: "/images/album-2010.svg",
     spotifyUrl: "https://open.spotify.com/artist/thedrinkers",
   },
   {
@@ -69,7 +69,7 @@ const albums: Album[] = [
     title: "30 Let Rocka",
     description: "Jubilni album ob 30-letnici delovanja",
     tracks: 15,
-    cover: "/images/album-2019.jpg",
+    cover: "/images/album-2019.svg",
     spotifyUrl: "https://open.spotify.com/artist/thedrinkers",
   },
   {

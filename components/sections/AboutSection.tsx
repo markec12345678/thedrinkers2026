@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { Section } from '@/components/ui/Section';
-import { bandMembers, STATS } from '@/lib/constants';
+import { motion } from "framer-motion";
+import { Section } from "@/components/ui/Section";
+import { bandMembers, STATS } from "@/lib/constants";
 
 export function AboutSection() {
   return (
@@ -25,7 +25,7 @@ export function AboutSection() {
             viewport={{ once: true }}
           >
             <img
-              src="/images/band-photo.jpg"
+              src="/images/band-photo.svg"
               alt="The Drinkers Band"
               className="w-full rounded-lg shadow-2xl glow-red"
             />
@@ -39,15 +39,18 @@ export function AboutSection() {
             viewport={{ once: true }}
           >
             <p className="text-lg text-text-gray leading-relaxed">
-              The Drinkers so rock skupina, ki je nastala nekega soparnega julijskega večera leta 1993 
-              v Litiji. Pet prijateljev, vseh nekdanjih glasbenikov, je ob hladnem pivu dobilo idejo za 
-              skupino. Nastopili so na festivalu &quot;Rusty Trumpets&quot;, presenetljivo zmagali in odločili so 
-              se ostati skupaj.
+              The Drinkers so rock skupina, ki je nastala nekega soparnega
+              julijskega večera leta 1993 v Litiji. Pet prijateljev, vseh
+              nekdanjih glasbenikov, je ob hladnem pivu dobilo idejo za skupino.
+              Nastopili so na festivalu &quot;Rusty Trumpets&quot;,
+              presenetljivo zmagali in odločili so se ostati skupaj.
             </p>
             <p className="text-lg text-text-gray leading-relaxed">
-              Danes, po 33 letih, še vedno rockamo po odrih Slovenije in tujine. Z našim prvim albumom 
-              &quot;Lepi in trezni&quot; (1995) smo osvojili srca poslušalcev. Sledili so &quot;Žeja&quot; (1997), &quot;Pivolucija&quot; 
-              (1999), &quot;Prohibicija&quot; (2003), &quot;Hajdi&quot; (2007) in &quot;Recidiv&quot; (2014).
+              Danes, po 33 letih, še vedno rockamo po odrih Slovenije in tujine.
+              Z našim prvim albumom &quot;Lepi in trezni&quot; (1995) smo
+              osvojili srca poslušalcev. Sledili so &quot;Žeja&quot; (1997),
+              &quot;Pivolucija&quot; (1999), &quot;Prohibicija&quot; (2003),
+              &quot;Hajdi&quot; (2007) in &quot;Recidiv&quot; (2014).
             </p>
 
             {/* Stats */}
@@ -61,8 +64,12 @@ export function AboutSection() {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
                 >
-                  <div className="text-4xl font-bold text-crimson mb-2">{stat.value}</div>
-                  <div className="text-text-gray font-bold uppercase tracking-wider text-sm">{stat.label}</div>
+                  <div className="text-4xl font-bold text-crimson mb-2">
+                    {stat.value}
+                  </div>
+                  <div className="text-text-gray font-bold uppercase tracking-wider text-sm">
+                    {stat.label}
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -75,7 +82,9 @@ export function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h3 className="text-3xl font-bold text-crimson text-center mb-8">ČLANI SKUPINE</h3>
+          <h3 className="text-3xl font-bold text-crimson text-center mb-8">
+            ČLANI SKUPINE
+          </h3>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {bandMembers.map((member, index) => (
               <motion.div
@@ -93,7 +102,9 @@ export function AboutSection() {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <h4 className="text-xl font-bold text-white mb-2">{member.name}</h4>
+                <h4 className="text-xl font-bold text-white mb-2">
+                  {member.name}
+                </h4>
                 <p className="text-crimson font-bold">{member.role}</p>
               </motion.div>
             ))}

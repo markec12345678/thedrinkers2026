@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Section } from '@/components/ui/Section';
-import { Button } from '@/components/ui/Button';
-import { GlassCard } from '@/components/ui/GlassCard';
-import { signIn, signUp, signOut, useSession } from '@/lib/auth-client';
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Section } from "@/components/ui/Section";
+import { Button } from "@/components/ui/Button";
+import { GlassCard } from "@/components/ui/GlassCard";
+import { signIn, signUp, signOut, useSession } from "@/lib/auth-client";
 
 // ⚠️ TEMPORARY: Bar closed during launch
 const BAR_TEMPORARILY_CLOSED = true;
@@ -13,16 +13,16 @@ const BAR_TEMPORARILY_CLOSED = true;
 export function DrinkersBar() {
   const { data: session, isPending } = useSession();
   const [isLogin, setIsLogin] = useState(true);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
       if (isLogin) {
@@ -30,11 +30,11 @@ export function DrinkersBar() {
         const result = await signIn.email({
           email,
           password,
-          callbackURL: '/bar',
+          callbackURL: "/bar",
         });
 
         if (result.error) {
-          setError('Login failed');
+          setError("Login failed");
         }
       } else {
         // Register
@@ -42,15 +42,15 @@ export function DrinkersBar() {
           email,
           password,
           name,
-          callbackURL: '/bar',
+          callbackURL: "/bar",
         });
 
         if (result.error) {
-          setError('Registration failed');
+          setError("Registration failed");
         }
       }
     } catch (err) {
-      setError('Something went wrong. Please try again.');
+      setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -87,9 +87,7 @@ export function DrinkersBar() {
               DRINKERS&apos; BAR
             </h1>
             <div className="space-y-6">
-              <p className="text-2xl text-white font-bold">
-                TRENUTNO ZAPRTO
-              </p>
+              <p className="text-2xl text-white font-bold">TRENUTNO ZAPRTO</p>
               <p className="text-xl text-text-gray">
                 VIP Bar je trenutno zaprt zaradi priprave na velik launch!
               </p>
@@ -108,11 +106,12 @@ export function DrinkersBar() {
                 </ul>
               </div>
               <p className="text-lg text-text-gray">
-                📧 <strong>Prijavi se na newsletter</strong> in obvestili te bomo ko odpremo!
+                📧 <strong>Prijavi se na newsletter</strong> in obvestili te
+                bomo ko odpremo!
               </p>
-              <Button 
-                onClick={() => window.location.href = '/#newsletter'}
-                size="lg" 
+              <Button
+                onClick={() => (window.location.href = "/#newsletter")}
+                size="lg"
                 className="mt-6"
               >
                 OBAVESTI ME OB ODPRTJU
@@ -142,14 +141,12 @@ export function DrinkersBar() {
               <h1 className="text-4xl font-bold text-crimson mb-2">
                 DRINKERS&apos; BAR
               </h1>
-              <p className="text-text-gray">
-                Ekskluzivni dostop samo za člane
-              </p>
+              <p className="text-text-gray">Ekskluzivni dostop samo za člane</p>
             </div>
 
             <AnimatePresence mode="wait">
               <motion.form
-                key={isLogin ? 'login' : 'register'}
+                key={isLogin ? "login" : "register"}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
@@ -201,18 +198,20 @@ export function DrinkersBar() {
                   />
                 </div>
 
-                {error && (
-                  <div className="text-red-500 text-sm">{error}</div>
-                )}
+                {error && <div className="text-red-500 text-sm">{error}</div>}
 
                 <Button type="submit" className="w-full" disabled={loading}>
-                  {loading ? 'Prosimo počakaj...' : isLogin ? 'PRIJAVI SE' : 'REGISTRIRAJ SE'}
+                  {loading
+                    ? "Prosimo počakaj..."
+                    : isLogin
+                      ? "PRIJAVI SE"
+                      : "REGISTRIRAJ SE"}
                 </Button>
 
                 <div className="text-center text-text-gray text-sm">
                   {isLogin ? (
                     <>
-                      Še nimaš računa?{' '}
+                      Še nimaš računa?{" "}
                       <button
                         type="button"
                         onClick={() => setIsLogin(false)}
@@ -223,7 +222,7 @@ export function DrinkersBar() {
                     </>
                   ) : (
                     <>
-                      Že imaš račun?{' '}
+                      Že imaš račun?{" "}
                       <button
                         type="button"
                         onClick={() => setIsLogin(true)}
@@ -249,7 +248,7 @@ export function DrinkersBar() {
                   <Button
                     type="button"
                     variant="secondary"
-                    onClick={() => signIn.social({ provider: 'google' })}
+                    onClick={() => signIn.social({ provider: "google" })}
                     className="w-full"
                   >
                     <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
@@ -275,11 +274,15 @@ export function DrinkersBar() {
                   <Button
                     type="button"
                     variant="secondary"
-                    onClick={() => signIn.social({ provider: 'discord' })}
+                    onClick={() => signIn.social({ provider: "discord" })}
                     className="w-full"
                   >
-                    <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                    <svg
+                      className="w-5 h-5 mr-2"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
                     </svg>
                     Discord
                   </Button>
@@ -289,7 +292,8 @@ export function DrinkersBar() {
 
             <div className="mt-8 pt-8 border-t border-white/10">
               <p className="text-text-gray text-sm text-center">
-                Dostop do Drinkers&apos; Bar je na voljo samo imetnikom VIP vstopnic in članom fan kluba.
+                Dostop do Drinkers&apos; Bar je na voljo samo imetnikom VIP
+                vstopnic in članom fan kluba.
               </p>
             </div>
           </motion.div>
@@ -299,7 +303,7 @@ export function DrinkersBar() {
   }
 
   // Get user tier
-  const userTier = (session.user as any)?.membershipTier || 'free';
+  const userTier = (session.user as any)?.membershipTier || "free";
 
   // Authenticated View
   return (
@@ -308,7 +312,7 @@ export function DrinkersBar() {
       <section className="relative h-[40vh] flex items-center justify-center bg-rock-dark">
         <div className="absolute inset-0">
           <img
-            src="/images/bar-hero.jpg"
+            src="/images/bar-hero.svg"
             alt="Drinkers Bar"
             className="w-full h-full object-cover opacity-30"
           />
@@ -316,7 +320,9 @@ export function DrinkersBar() {
         </div>
         <div className="relative z-10 text-center">
           <div className="text-6xl mb-4">🍺</div>
-          <h1 className="text-5xl md:text-7xl font-bold text-gradient mb-4">DRINKERS&apos; BAR</h1>
+          <h1 className="text-5xl md:text-7xl font-bold text-gradient mb-4">
+            DRINKERS&apos; BAR
+          </h1>
           <p className="text-xl text-text-gray">Ekskluzivni fan lounge</p>
         </div>
       </section>
@@ -328,7 +334,9 @@ export function DrinkersBar() {
             {/* Chat */}
             <div className="lg:col-span-2">
               <div className="card p-6">
-                <h2 className="text-2xl font-bold text-crimson mb-4">FAN CHAT</h2>
+                <h2 className="text-2xl font-bold text-crimson mb-4">
+                  FAN CHAT
+                </h2>
                 <div className="h-96 bg-rock-black/50 rounded-lg p-4 mb-4 overflow-y-auto">
                   {/* Chat messages would go here */}
                   <div className="text-text-gray text-center mt-20">
@@ -349,7 +357,9 @@ export function DrinkersBar() {
             {/* Exclusive Content */}
             <div>
               <div className="card p-6 mb-6">
-                <h3 className="text-xl font-bold text-white mb-4">EKSKLUZIVNO</h3>
+                <h3 className="text-xl font-bold text-white mb-4">
+                  EKSKLUZIVNO
+                </h3>
                 <ul className="space-y-3">
                   <li className="flex items-center gap-3 text-text-gray">
                     <i className="fas fa-music text-crimson" />
@@ -371,7 +381,9 @@ export function DrinkersBar() {
               </div>
 
               <div className="card p-6">
-                <h3 className="text-xl font-bold text-white mb-4">NADGRADI ČLANSTVO</h3>
+                <h3 className="text-xl font-bold text-white mb-4">
+                  NADGRADI ČLANSTVO
+                </h3>
                 <p className="text-text-gray text-sm mb-4">
                   Pridobi dostop do še več ekskluzivnih vsebin z VIP članstvom.
                 </p>
@@ -395,7 +407,9 @@ export function DrinkersBar() {
               <div key={item} className="card p-6 flex gap-4">
                 <div className="w-32 h-32 bg-rock-gray rounded-lg flex-shrink-0" />
                 <div>
-                  <h3 className="text-xl font-bold text-white mb-2">Meet & Greet</h3>
+                  <h3 className="text-xl font-bold text-white mb-2">
+                    Meet & Greet
+                  </h3>
                   <p className="text-text-gray text-sm mb-2">
                     Ekskluzivno srečanje s skupino po koncertu
                   </p>

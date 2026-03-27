@@ -120,7 +120,7 @@ const TESTIMONIALS: Testimonial[] = [
     tier: "Premium Member",
     quote:
       "The meet & greet experience was absolutely incredible! Worth every euro. The band was so down to earth and the signed poster is now the centerpiece of my room.",
-    avatar: "/images/testimonials/marko.jpg",
+    avatar: "/images/testimonials/marko.svg",
   },
   {
     id: "2",
@@ -128,7 +128,7 @@ const TESTIMONIALS: Testimonial[] = [
     tier: "VIP Elite",
     quote:
       "VIP Elite is not just a membership, it's a lifestyle. Backstage access, free drinks, and the personal concierge made me feel like royalty. Best decision ever!",
-    avatar: "/images/testimonials/ana.jpg",
+    avatar: "/images/testimonials/ana.svg",
   },
   {
     id: "3",
@@ -136,7 +136,7 @@ const TESTIMONIALS: Testimonial[] = [
     tier: "Basic Member",
     quote:
       "Started with Basic and already got my money's worth with early ticket access and the merch discount. Already planning to upgrade to Premium!",
-    avatar: "/images/testimonials/luka.jpg",
+    avatar: "/images/testimonials/luka.svg",
   },
 ];
 
