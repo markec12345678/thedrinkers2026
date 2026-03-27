@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1080" height="1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad-coming-soon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a1a2e;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1080" height="1080" fill="url(#grad-coming-soon)"/>
+  
+  <text x="540" y="480" font-family="Arial, sans-serif" font-size="72" fill="white" text-anchor="middle" font-weight="bold">
+    COMING SOON
+  </text>
+  
+  <text x="540" y="580" font-family="Arial, sans-serif" font-size="36" fill="rgba(255,255,255,0.8)" text-anchor="middle">
+    Something big is coming...
+  </text>
+  
+  <text x="540" y="980" font-family="Arial, sans-serif" font-size="28" fill="rgba(255,255,255,0.6)" text-anchor="middle">
+    thedrinkers.si
+  </text>
+</svg>
