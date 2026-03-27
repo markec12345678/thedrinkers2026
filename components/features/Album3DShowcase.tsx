@@ -38,7 +38,7 @@ const albums: Album[] = [
     id: "1",
     title: "Na Zdravje",
     year: "2023",
-    coverArt: "/images/album-na-zdravje.jpg",
+    coverArt: "/images/album-na-zdravje.svg",
     tracks: [
       "Na Zdravje",
       "Rock'n'Roll Življenje",

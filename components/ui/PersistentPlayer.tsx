@@ -44,7 +44,7 @@ const defaultTracks: Track[] = [
     title: "Na Zdravje",
     artist: "The Drinkers",
     album: "Na Zdravje (2023)",
-    coverArt: "/images/album-na-zdravje.jpg",
+    coverArt: "/images/album-na-zdravje.svg",
     duration: 225, // 3:45
     spotifyUrl: "https://open.spotify.com/artist/thedrinkers",
     appleMusicUrl: "https://music.apple.com",
@@ -55,7 +55,7 @@ const defaultTracks: Track[] = [
     title: "Rock'n'Roll Življenje",
     artist: "The Drinkers",
     album: "Na Zdravje (2023)",
-    coverArt: "/images/album-na-zdravje.jpg",
+    coverArt: "/images/album-na-zdravje.svg",
     duration: 252, // 4:12
   },
   {

@@ -78,7 +78,7 @@ const albums: Album[] = [
     title: "Na Zdravje",
     description: "Novejši album z 12 energičnimi rock skladbami",
     tracks: 12,
-    cover: "/images/album-na-zdravje.jpg",
+    cover: "/images/album-na-zdravje.svg",
     spotifyUrl: "https://open.spotify.com/artist/thedrinkers",
   },
 ];
