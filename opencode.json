@@ -1,0 +1,59 @@
+{
+  "mcp": {
+    "gmail": {
+      "type": "local",
+      "command": ["npx", "-y", "mcp-remote", "Gmail"],
+      "environment": {}
+    },
+    "googlecalendar": {
+      "type": "local",
+      "command": ["npx", "-y", "mcp-remote", "Google Calendar"],
+      "environment": {}
+    },
+    "notion": {
+      "type": "local",
+      "command": ["npx", "-y", "mcp-remote", "Notion"],
+      "environment": {}
+    },
+    "linear": {
+      "type": "local",
+      "command": ["npx", "-y", "mcp-remote", "Linear"],
+      "environment": {}
+    },
+    "airtable": {
+      "type": "local",
+      "command": ["npx", "-y", "mcp-remote", "Airtable"],
+      "environment": {}
+    },
+    "youtube": {
+      "type": "local",
+      "command": ["npx", "-y", "mcp-remote", "YouTube"],
+      "environment": {}
+    },
+    "sentry": {
+      "type": "local",
+      "command": ["npx", "-y", "mcp-remote", "Sentry"],
+      "environment": {}
+    },
+    "microsoft_teams": {
+      "type": "local",
+      "command": ["npx", "-y", "mcp-remote", "Microsoft Teams"],
+      "environment": {}
+    },
+    "asana": {
+      "type": "local",
+      "command": ["npx", "-y", "mcp-remote", "Asana"],
+      "environment": {}
+    },
+    "linkedin": {
+      "type": "local",
+      "command": ["npx", "-y", "mcp-remote", "LinkedIn"],
+      "environment": {}
+    },
+    "google_maps": {
+      "type": "local",
+      "command": ["npx", "-y", "mcp-remote", "Google Maps"],
+      "environment": {}
+    }
+  }
+}

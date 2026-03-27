@@ -1,0 +1,43 @@
+[mcp_servers.gmail]
+command = "npx"
+args = [ "-y", "mcp-remote", "Gmail" ]
+
+[mcp_servers.googlecalendar]
+command = "npx"
+args = [ "-y", "mcp-remote", "Google Calendar" ]
+
+[mcp_servers.notion]
+command = "npx"
+args = [ "-y", "mcp-remote", "Notion" ]
+
+[mcp_servers.linear]
+command = "npx"
+args = [ "-y", "mcp-remote", "Linear" ]
+
+[mcp_servers.airtable]
+command = "npx"
+args = [ "-y", "mcp-remote", "Airtable" ]
+
+[mcp_servers.youtube]
+command = "npx"
+args = [ "-y", "mcp-remote", "YouTube" ]
+
+[mcp_servers.sentry]
+command = "npx"
+args = [ "-y", "mcp-remote", "Sentry" ]
+
+[mcp_servers.microsoft_teams]
+command = "npx"
+args = [ "-y", "mcp-remote", "Microsoft Teams" ]
+
+[mcp_servers.asana]
+command = "npx"
+args = [ "-y", "mcp-remote", "Asana" ]
+
+[mcp_servers.linkedin]
+command = "npx"
+args = [ "-y", "mcp-remote", "LinkedIn" ]
+
+[mcp_servers.google_maps]
+command = "npx"
+args = [ "-y", "mcp-remote", "Google Maps" ]

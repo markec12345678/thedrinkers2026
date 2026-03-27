@@ -1,0 +1,70 @@
+{
+  "mcpServers": {
+    "gmail": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "Gmail"],
+      "env": {}
+    },
+    "googlecalendar": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "Google Calendar"],
+      "env": {}
+    },
+    "notion": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "Notion"],
+      "env": {}
+    },
+    "linear": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "Linear"],
+      "env": {}
+    },
+    "airtable": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "Airtable"],
+      "env": {}
+    },
+    "youtube": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "YouTube"],
+      "env": {}
+    },
+    "sentry": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "Sentry"],
+      "env": {}
+    },
+    "microsoft_teams": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "Microsoft Teams"],
+      "env": {}
+    },
+    "asana": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "Asana"],
+      "env": {}
+    },
+    "linkedin": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "LinkedIn"],
+      "env": {}
+    },
+    "google_maps": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "Google Maps"],
+      "env": {}
+    }
+  }
+}
