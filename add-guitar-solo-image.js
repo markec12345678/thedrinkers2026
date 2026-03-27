@@ -1,4 +1,26 @@
-<?xml version="1.0" encoding="UTF-8"?>
+#!/usr/bin/env node
+
+/**
+ * 🎸 ADD GUITAR SOLO PRODUCT IMAGE
+ * Creates professional product mockup for Guitar Solo product
+ */
+
+const fs = require("fs");
+const path = require("path");
+
+console.log("🎸 Adding Guitar Solo Product Image...\n");
+
+// Guitar Solo product ID (6th product - index 5)
+const productId = "41f0dfcf-eb65-49d1-b11f-f4f9c7697df5";
+
+const imagesPath = path.join(__dirname, "public", "images", "drops");
+
+if (!fs.existsSync(imagesPath)) {
+  fs.mkdirSync(imagesPath, { recursive: true });
+}
+
+// Create professional guitar/pin mockup SVG
+const svg = `<?xml version="1.0" encoding="UTF-8"?>
 <svg width="1000" height="1000" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -61,4 +83,26 @@
   <text x="800" y="350" font-family="Arial, sans-serif" font-size="50" fill="rgba(255,255,255,0.15)">
     ♪
   </text>
-</svg>
+</svg>`;
+
+const filePath = path.join(imagesPath, `${productId}.svg`);
+fs.writeFileSync(filePath, svg);
+
+console.log("✅ Guitar Solo image created!\n");
+console.log("📍 Saved to: " + filePath + "\n");
+console.log("🎸 Product Details:\n");
+console.log("   Name: Guitar Solo");
+console.log("   Type: Pin Set / Accessory");
+console.log("   Price: €25.00");
+console.log("   Style: Professional mockup with guitar icon\n");
+
+console.log("✨ Image features:\n");
+console.log("   ✓ Guitar emoji icon (🎸)");
+console.log("   ✓ Professional gradient background");
+console.log("   ✓ Product name and branding");
+console.log("   ✓ Price tag (€25.00)");
+console.log("   ✓ Limited edition badge");
+console.log("   ✓ Music notes decorations");
+console.log("   ✓ Brand watermark\n");
+
+console.log("🎉 Ready to use! Refresh /drops page to see it!\n");
