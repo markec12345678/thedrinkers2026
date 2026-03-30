@@ -4,15 +4,22 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Section } from '@/components/ui/Section';
 import { Button } from '@/components/ui/Button';
-import { merchItems } from '@/lib/constants';
-import { formatPrice } from '@/lib/utils';
+
+// Merch items with placeholder colors since images don't exist
+const merchItems = [
+  { id: 'merch-001', name: 'Pijemo ga radi T-Shirt', price: 25, color: 'from-gray-800 to-gray-900', icon: 'T', limited: false, inStock: true, featured: true },
+  { id: 'merch-002', name: 'Alkohol je moj idol Hoodie', price: 55, color: 'from-crimson-800 to-crimson-900', icon: 'H', limited: false, inStock: true, featured: true },
+  { id: 'merch-003', name: 'The Drinkers Pivski Vrcek', price: 15, color: 'from-amber-700 to-amber-900', icon: 'P', limited: true, inStock: true, featured: true },
+  { id: 'merch-004', name: 'Lepi in trezni Cap', price: 20, color: 'from-slate-700 to-slate-900', icon: 'C', limited: false, inStock: true, featured: true },
+];
+
+const formatPrice = (price: number) => `${price} EUR`;
 
 export function MerchCarousel() {
   const [addedToCart, setAddedToCart] = useState<string | null>(null);
 
   const handleAddToCart = (itemId: string, itemName: string) => {
     setAddedToCart(itemId);
-    // Show notification (you can implement a toast system here)
     console.log(`${itemName} added to cart`);
     setTimeout(() => setAddedToCart(null), 2000);
   };
@@ -41,13 +48,9 @@ export function MerchCarousel() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
             >
-              {/* Image */}
-              <div className="relative aspect-square overflow-hidden">
-                <img
-                  src={item.images[0]}
-                  alt={item.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                />
+              {/* Placeholder Image */}
+              <div className={`relative aspect-square overflow-hidden bg-gradient-to-br ${item.color} flex items-center justify-center`}>
+                <span className="text-6xl font-black text-white/30">{item.icon}</span>
                 {item.limited && (
                   <div className="absolute top-3 right-3 bg-crimson text-white px-3 py-1 rounded text-xs font-bold uppercase">
                     Limited

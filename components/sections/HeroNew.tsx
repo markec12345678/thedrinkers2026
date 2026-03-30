@@ -90,28 +90,17 @@ export default function HeroNew() {
       </video>
       */}
 
-      {/* Video Background */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover"
-      >
-        <source src="/videos/live-concert-hero.mp4" type="video/mp4" />
-        <source src="/videos/live-concert-hero.webm" type="video/webm" />
-      </video>
-
-      {/* Background Image Fallback */}
+      {/* Background with YouTube thumbnail as fallback */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/images/hero/hero-bg.webp"
+          src="https://img.youtube.com/vi/5bYFArOho7U/maxresdefault.jpg"
           alt="The Drinkers Live"
           fill
           priority
           quality={90}
           className="object-cover object-center"
           sizes="100vw"
+          unoptimized
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-crimson-900/70 to-black/90" />
       </div>

@@ -5,10 +5,13 @@ import { Section } from '@/components/ui/Section';
 import { Button } from '@/components/ui/Button';
 import { VideoPlayer } from '@/components/ui/VideoPlayer';
 import { albums, videos } from '@/lib/constants';
-import { getSpotifyEmbedUrl } from '@/lib/utils';
 
 export function MusicGrid() {
-  const latestAlbum = albums[0];
+  const latestAlbum = {
+    ...albums[0],
+    // Use YouTube thumbnail as album artwork fallback
+    artwork: 'https://img.youtube.com/vi/5bYFArOho7U/maxresdefault.jpg',
+  };
 
   return (
     <Section id="music" background="gradient">

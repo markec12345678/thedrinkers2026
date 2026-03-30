@@ -2,7 +2,16 @@
 
 import { motion } from 'framer-motion';
 import { Section } from '@/components/ui/Section';
-import { bandMembers, STATS } from '@/lib/constants';
+import { STATS } from '@/lib/constants';
+
+// Band members with placeholder initials since photos don't exist
+const bandMembers = [
+  { id: 'member-001', name: 'Matjaz Zivkovic - Mati', role: 'Lead Vocals', initials: 'MZ' },
+  { id: 'member-002', name: 'Simon Kavsek - Sima', role: 'Lead Guitar', initials: 'SK' },
+  { id: 'member-003', name: 'Robert Likar - Robi', role: 'Guitar', initials: 'RL' },
+  { id: 'member-004', name: 'Miro Mutvar - Miro', role: 'Bass Guitar', initials: 'MM' },
+  { id: 'member-005', name: 'Roman Milavec - Romi', role: 'Drums', initials: 'RM' },
+];
 
 export function AboutSection() {
   return (
@@ -25,7 +34,7 @@ export function AboutSection() {
             viewport={{ once: true }}
           >
             <img
-              src="/images/band-photo.jpg"
+              src="https://img.youtube.com/vi/hkHHvb2eDb4/maxresdefault.jpg"
               alt="The Drinkers Band"
               className="w-full rounded-lg shadow-2xl glow-red"
             />
@@ -86,12 +95,8 @@ export function AboutSection() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
               >
-                <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-crimson group-hover:border-crimson-light transition-colors">
-                  <img
-                    src={member.photo}
-                    alt={member.name}
-                    className="w-full h-full object-cover"
-                  />
+                <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-crimson group-hover:border-crimson-light transition-colors bg-gradient-to-br from-crimson-600 to-crimson-900 flex items-center justify-center">
+                  <span className="text-4xl font-bold text-white">{member.initials}</span>
                 </div>
                 <h4 className="text-xl font-bold text-white mb-2">{member.name}</h4>
                 <p className="text-crimson font-bold">{member.role}</p>

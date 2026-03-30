@@ -3,7 +3,18 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Section } from '@/components/ui/Section';
-import { galleryImages } from '@/lib/constants';
+
+// Use YouTube thumbnails as gallery images since local images don't exist
+const galleryImages = [
+  { id: 'img-001', src: 'https://img.youtube.com/vi/5bYFArOho7U/maxresdefault.jpg', alt: 'Deset majhnih jagrov', category: 'live' },
+  { id: 'img-002', src: 'https://img.youtube.com/vi/hkHHvb2eDb4/maxresdefault.jpg', alt: 'Pijemo ga radi', category: 'live' },
+  { id: 'img-003', src: 'https://img.youtube.com/vi/7HHx9c3YnMQ/maxresdefault.jpg', alt: 'Ko Tamo Peva', category: 'live' },
+  { id: 'img-004', src: 'https://img.youtube.com/vi/oKa8Y_rwhD0/maxresdefault.jpg', alt: 'Bosten', category: 'live' },
+  { id: 'img-005', src: 'https://img.youtube.com/vi/FFKtFXLONR0/maxresdefault.jpg', alt: 'Slovenac', category: 'live' },
+  { id: 'img-006', src: 'https://img.youtube.com/vi/d3ygw0J_VgQ/maxresdefault.jpg', alt: 'Lepi In Trezni', category: 'live' },
+  { id: 'img-007', src: 'https://img.youtube.com/vi/aU32hb58g4E/maxresdefault.jpg', alt: 'Recidiv', category: 'live' },
+  { id: 'img-008', src: 'https://img.youtube.com/vi/xwL-SFI5DTI/maxresdefault.jpg', alt: 'Zeja', category: 'live' },
+];
 
 export function GalleryGrid() {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
