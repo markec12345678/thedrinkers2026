@@ -14,3 +14,6 @@ export async function register() {
     // Edge-side initialization
   }
 }
+
+// Required hook for Next.js 15 - captures errors from nested React Server Components
+export const onRequestError = Sentry.captureRequestError;
