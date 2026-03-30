@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { vipMembership } from "@/lib/db/schema";
+import { vipMembership, vipTier } from "@/lib/db/schema";
+import { eq } from "drizzle-orm";
+import { requireAdminApiAccess } from "@/lib/auth-utils";
 
 /**
  * POST /api/vip-memberships
@@ -8,6 +10,11 @@ import { vipMembership } from "@/lib/db/schema";
  */
 export async function POST(request: NextRequest) {
   try {
+    const adminAccess = await requireAdminApiAccess(request.headers);
+    if ("response" in adminAccess) {
+      return adminAccess.response;
+    }
+
     const body = await request.json();
 
     // Validate required fields
@@ -48,24 +55,20 @@ export async function POST(request: NextRequest) {
     const [newMembership] = await db
       .insert(vipMembership)
       .values({
-        id: crypto.randomUUID(),
         userId: body.user_id,
         tier: body.tier,
         status: "active",
-        startDate: startDate.toISOString().split("T")[0],
-        expiresAt: expiresAt.toISOString().split("T")[0],
-        billingCycle: body.billing_cycle,
-        price: tier.price,
-        priceYearly: tier.price_yearly,
-        benefits: JSON.stringify(tier.benefits),
-        discountPercentage: tier.discount_percentage,
-        earlyAccess: tier.early_access,
-        exclusiveContent: tier.exclusive_content,
-        meetAndGreet: tier.meet_and_greet,
-        stripeCustomerId: body.stripe_customer_id || null,
-        stripeSubscriptionId: body.stripe_subscription_id || null,
-        stripePriceId: body.stripe_price_id || null,
-      })
+        startDate: new Date(),
+        expiresAt: expiresAt,
+        benefits: tier.benefits,
+        discountPercentage: tier.discountPercentage,
+        earlyAccess: true,
+        exclusiveContent: true,
+        meetAndGreet: false,
+        stripeCustomerId: body.stripe_customer_id,
+        stripeSubscriptionId: body.stripe_subscription_id,
+        stripePriceId: body.stripe_price_id,
+      } as any)
       .returning();
 
     return NextResponse.json({

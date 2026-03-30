@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { bundle, bundlePurchase } from "@/lib/db/schema";
+import { bundle, product } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2023-10-16",
+  apiVersion: "2026-02-25.clover",
 });
 
 /**
@@ -14,12 +15,35 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
  */
 export async function POST(request: NextRequest) {
   try {
-    const { bundleId, userId } = await request.json();
+    const authSession = await auth.api.getSession({
+      headers: request.headers,
+    });
+
+    if (!authSession?.user?.id) {
+      return NextResponse.json(
+        { success: false, error: "Sign in required to purchase bundles" },
+        { status: 401 },
+      );
+    }
+
+    const { bundleId } = await request.json();
+    const origin =
+      request.headers.get("origin") ||
+      process.env.NEXT_PUBLIC_APP_URL ||
+      process.env.BETTER_AUTH_URL ||
+      "";
 
     if (!bundleId) {
       return NextResponse.json(
         { success: false, error: "Bundle ID required" },
         { status: 400 },
+      );
+    }
+
+    if (!origin) {
+      return NextResponse.json(
+        { success: false, error: "Application URL is not configured" },
+        { status: 500 },
       );
     }
 
@@ -37,20 +61,64 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if bundle is active
-    if (!bundleData.isActive) {
+    if (!bundleData.active) {
       return NextResponse.json(
         { success: false, error: "Bundle is not active" },
         { status: 400 },
       );
     }
 
-    // Check if limited and sold out
-    if (bundleData.isLimited && bundleData.quantityRemaining! <= 0) {
+    // Check if products exist
+    if (!bundleData.products || bundleData.products.length === 0) {
       return NextResponse.json(
         { success: false, error: "Bundle sold out" },
         { status: 400 },
       );
     }
+
+    const bundleProductIds = bundleData.products.filter(Boolean);
+    const bundleProducts = await Promise.all(
+      bundleProductIds.map(async (productId) => {
+        const [productData] = await db
+          .select({
+            id: product.id,
+            name: product.name,
+            stock: product.stock,
+            active: product.active,
+            images: product.images,
+          })
+          .from(product)
+          .where(eq(product.id, productId))
+          .limit(1);
+
+        return productData;
+      }),
+    );
+
+    const unavailableProduct = bundleProducts.find(
+      (productData) =>
+        !productData || !productData.active || productData.stock < 1,
+    );
+
+    if (
+      unavailableProduct ||
+      bundleProducts.length !== bundleProductIds.length
+    ) {
+      return NextResponse.json(
+        { success: false, error: "Bundle is currently unavailable" },
+        { status: 409 },
+      );
+    }
+
+    const primaryBundleImage = bundleProducts
+      .flatMap((productData) => productData?.images || [])
+      .find(Boolean);
+    const bundleImageUrl =
+      primaryBundleImage && primaryBundleImage.startsWith("/")
+        ? `${origin}${primaryBundleImage}`
+        : primaryBundleImage?.startsWith("http")
+          ? primaryBundleImage
+          : undefined;
 
     // Create Stripe checkout session
     const lineItems = [
@@ -60,32 +128,33 @@ export async function POST(request: NextRequest) {
           product_data: {
             name: `Bundle: ${bundleData.name}`,
             description: bundleData.description || undefined,
-            images: [], // TODO: Add bundle images
+            images: bundleImageUrl ? [bundleImageUrl] : [],
           },
-          unit_amount: Math.round(parseFloat(bundleData.bundlePrice) * 100),
+          unit_amount: Math.round(parseFloat(bundleData.price) * 100),
         },
         quantity: 1,
       },
     ];
 
-    const session = await stripe.checkout.sessions.create({
+    const checkoutSession = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
-      success_url: `${request.headers.get("origin")}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${request.headers.get("origin")}/bundles`,
+      success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/bundles`,
+      client_reference_id: authSession.user.id,
       metadata: {
         bundleId,
-        userId: userId || "guest",
+        userId: authSession.user.id,
         type: "bundle",
-        items: JSON.stringify(bundleData.items),
+        products: JSON.stringify(bundleData.products),
       },
     });
 
     return NextResponse.json({
       success: true,
-      url: session.url,
-      sessionId: session.id,
+      url: checkoutSession.url,
+      sessionId: checkoutSession.id,
     });
   } catch (error) {
     console.error("Error purchasing bundle:", error);

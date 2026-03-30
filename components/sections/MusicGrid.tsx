@@ -1,11 +1,10 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { Section } from '@/components/ui/Section';
-import { Button } from '@/components/ui/Button';
-import { VideoPlayer } from '@/components/ui/VideoPlayer';
-import { albums, videos } from '@/lib/constants';
-import { getSpotifyEmbedUrl } from '@/lib/utils';
+import { motion } from "framer-motion";
+import { Section } from "@/components/ui/Section";
+import { Button } from "@/components/ui/Button";
+import { VideoPlayer } from "@/components/ui/VideoPlayer";
+import { albums, videos } from "@/lib/constants";
 
 export function MusicGrid() {
   const latestAlbum = albums[0];
@@ -51,7 +50,9 @@ export function MusicGrid() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-4xl font-bold text-crimson mb-2">{latestAlbum.title}</h3>
+            <h3 className="text-4xl font-bold text-crimson mb-2">
+              {latestAlbum.title}
+            </h3>
             <p className="text-text-gray text-lg mb-6">{latestAlbum.year}</p>
 
             {/* Track List */}
@@ -61,9 +62,13 @@ export function MusicGrid() {
                   key={track.id}
                   className="flex items-center py-3 border-b border-white/10 hover:bg-crimson/10 hover:pl-4 transition-all duration-300 cursor-pointer"
                 >
-                  <span className="text-crimson font-bold w-8">{index + 1}</span>
+                  <span className="text-crimson font-bold w-8">
+                    {index + 1}
+                  </span>
                   <span className="flex-1 font-bold">{track.title}</span>
-                  <span className="text-text-gray text-sm">{track.duration}</span>
+                  <span className="text-text-gray text-sm">
+                    {track.duration}
+                  </span>
                 </div>
               ))}
             </div>
@@ -71,19 +76,31 @@ export function MusicGrid() {
             {/* Streaming Links */}
             <div className="flex flex-wrap gap-3">
               <Button variant="outline" size="sm" asChild>
-                <a href={latestAlbum.spotifyUrl} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={latestAlbum.spotifyUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <i className="fab fa-spotify mr-2" />
                   Spotify
                 </a>
               </Button>
               <Button variant="outline" size="sm" asChild>
-                <a href={latestAlbum.appleMusicUrl} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={latestAlbum.appleMusicUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <i className="fab fa-apple mr-2" />
                   Apple Music
                 </a>
               </Button>
               <Button variant="outline" size="sm" asChild>
-                <a href={latestAlbum.youtubeUrl} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={latestAlbum.youtubeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <i className="fab fa-youtube mr-2" />
                   YouTube
                 </a>
@@ -98,7 +115,9 @@ export function MusicGrid() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h3 className="text-3xl font-bold text-crimson text-center mb-8">VIDEO POSNETKI</h3>
+          <h3 className="text-3xl font-bold text-crimson text-center mb-8">
+            VIDEO POSNETKI
+          </h3>
           <div className="grid md:grid-cols-3 gap-6">
             {videos.map((video, index) => (
               <motion.div
@@ -109,13 +128,19 @@ export function MusicGrid() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
               >
-                <VideoPlayer videoId={video.youtubeId} title={video.title} thumbnail={video.thumbnail} />
+                <VideoPlayer
+                  videoId={video.youtubeId}
+                  title={video.title}
+                  thumbnail={video.thumbnail}
+                />
                 <div className="p-4">
-                  <h4 className="text-xl font-bold text-crimson mb-1">{video.title}</h4>
+                  <h4 className="text-xl font-bold text-crimson mb-1">
+                    {video.title}
+                  </h4>
                   <p className="text-text-gray text-sm">
-                    {video.type === 'official' && 'Official Video'}
-                    {video.type === 'live' && 'Live Performance'}
-                    {video.type === 'behind-scenes' && 'Behind the Scenes'}
+                    {video.type === "official" && "Official Video"}
+                    {video.type === "live" && "Live Performance"}
+                    {video.type === "behind-scenes" && "Behind the Scenes"}
                   </p>
                 </div>
               </motion.div>

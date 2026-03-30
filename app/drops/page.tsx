@@ -4,10 +4,30 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingBag, Bell, Clock, TrendingUp, Crown } from "lucide-react";
 
+// Types
+interface Drop {
+  id: string;
+  name: string;
+  price: number;
+  isSoldOut?: boolean;
+  quantityRemaining: number;
+  percentSold?: number;
+  releaseDate?: string;
+  description?: string;
+  images?: string[] | null;
+}
+
+interface DropCardProps {
+  drop: Drop;
+  onPurchase: (drop: Drop) => void;
+  onJoinWaitlist: (drop: Drop) => void;
+}
+
 // Simplified DropCard for faster loading
-function SimpleDropCard({ drop, onPurchase, onJoinWaitlist }: any) {
+function SimpleDropCard({ drop, onPurchase, onJoinWaitlist }: DropCardProps) {
   const isSoldOut = drop.isSoldOut || drop.quantityRemaining <= 0;
   const percentSold = drop.percentSold || 0;
+  const primaryImage = drop.images?.[0] || "/images/tour/tour-2026-poster.jpg";
 
   return (
     <motion.div
@@ -15,10 +35,15 @@ function SimpleDropCard({ drop, onPurchase, onJoinWaitlist }: any) {
       animate={{ opacity: 1, y: 0 }}
       className="bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 rounded-3xl shadow-2xl overflow-hidden border-2 border-purple-500/30"
     >
-      {/* Image Placeholder */}
       <div className="relative aspect-square bg-gray-800">
-        <div className="absolute inset-0 flex items-center justify-center text-gray-600">
-          <ShoppingBag className="w-24 h-24" />
+        <img
+          src={primaryImage}
+          alt={drop.name}
+          className="h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+        <div className="absolute right-4 top-4 rounded-full bg-black/60 p-3 text-white backdrop-blur-sm">
+          <ShoppingBag className="h-6 w-6" />
         </div>
       </div>
 
@@ -28,11 +53,6 @@ function SimpleDropCard({ drop, onPurchase, onJoinWaitlist }: any) {
 
         <div className="flex items-center gap-3">
           <span className="text-4xl font-bold text-white">€{drop.price}</span>
-          {drop.originalPrice && (
-            <span className="text-xl text-gray-500 line-through">
-              €{drop.originalPrice}
-            </span>
-          )}
         </div>
 
         {/* Progress */}
@@ -51,23 +71,15 @@ function SimpleDropCard({ drop, onPurchase, onJoinWaitlist }: any) {
 
         {/* Button */}
         <button
-          onClick={() =>
-            isSoldOut ? onJoinWaitlist(drop.id) : onPurchase(drop.id, 1)
-          }
-          disabled={isSoldOut && !drop.isVipEarlyAccess}
+          onClick={() => (isSoldOut ? onJoinWaitlist(drop) : onPurchase(drop))}
+          disabled={isSoldOut}
           className={`w-full font-bold py-4 px-8 rounded-xl transition-all ${
             isSoldOut
               ? "bg-gray-700 cursor-not-allowed"
-              : drop.isVipEarlyAccess
-                ? "bg-gradient-to-r from-amber-600 to-yellow-600"
-                : "bg-gradient-to-r from-purple-600 to-pink-600"
-          } text-white`}
+              : "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+          }`}
         >
-          {isSoldOut
-            ? "Sold Out"
-            : drop.isVipEarlyAccess
-              ? "VIP Access Only"
-              : "Get Yours Now"}
+          {isSoldOut ? "Sold Out" : "Get Yours Now"}
         </button>
       </div>
     </motion.div>
@@ -100,12 +112,12 @@ export default function DropsPage() {
     }
   };
 
-  const handlePurchase = async (dropId: string, quantity: number) => {
+  const handlePurchase = async (drop: Drop) => {
     try {
       const response = await fetch("/api/drops/purchase", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ dropId, quantity }),
+        body: JSON.stringify({ dropId: drop.id, quantity: 1 }),
       });
 
       const data = await response.json();
@@ -121,7 +133,7 @@ export default function DropsPage() {
     }
   };
 
-  const handleJoinWaitlist = async (dropId: string) => {
+  const handleJoinWaitlist = async (drop: Drop) => {
     const email = prompt("Enter your email to join waitlist:");
     if (!email) return;
 
@@ -129,7 +141,7 @@ export default function DropsPage() {
       const response = await fetch("/api/drops/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ dropId, email }),
+        body: JSON.stringify({ dropId: drop.id, email }),
       });
 
       const data = await response.json();

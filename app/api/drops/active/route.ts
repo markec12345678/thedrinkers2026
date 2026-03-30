@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { limitedDrop, dropEntry, dropWaitlist } from "@/lib/db/schema";
-import { eq, and, gte, lte, desc, sql } from "drizzle-orm";
+import { eq, and, gte, lte, desc, or, isNull } from "drizzle-orm";
 
 /**
  * GET /api/drops/active
@@ -16,22 +16,41 @@ export async function GET() {
       .from(limitedDrop)
       .where(
         and(
-          eq(limitedDrop.isActive, true),
-          eq(limitedDrop.isSoldOut, false),
-          gte(limitedDrop.endDate, now),
-          gte(limitedDrop.startDate, now),
+          eq(limitedDrop.active, true),
+          eq(limitedDrop.soldOut, false),
+          or(isNull(limitedDrop.endDate), gte(limitedDrop.endDate, now)),
+          or(
+            lte(limitedDrop.releaseDate, now),
+            and(
+              eq(limitedDrop.vipEarlyAccess, true),
+              lte(limitedDrop.vipEarlyAccessDate, now),
+            ),
+          ),
         ),
       )
-      .orderBy(desc(limitedDrop.startDate));
+      .orderBy(desc(limitedDrop.releaseDate));
 
     // Calculate additional data for each drop
     const dropsWithDetails = drops.map((drop) => ({
       ...drop,
+      vipEarlyAccessDate:
+        drop.vipEarlyAccessDate ||
+        (drop.vipEarlyAccess
+          ? new Date(drop.releaseDate.getTime() - 24 * 60 * 60 * 1000)
+          : null),
       percentSold: Math.round(
-        ((drop.quantity - drop.quantityRemaining) / drop.quantity) * 100,
+        ((drop.quantityTotal - drop.quantityRemaining) / drop.quantityTotal) *
+          100,
       ),
-      isVipEarlyAccess: drop.vipEarlyAccess && drop.startDate > now,
-      timeRemaining: drop.endDate.getTime() - now.getTime(),
+      isVipEarlyAccess:
+        drop.vipEarlyAccess &&
+        now < drop.releaseDate &&
+        now >=
+          (drop.vipEarlyAccessDate ||
+            new Date(drop.releaseDate.getTime() - 24 * 60 * 60 * 1000)),
+      timeRemaining: drop.endDate
+        ? drop.endDate.getTime() - now.getTime()
+        : null,
     }));
 
     return NextResponse.json({

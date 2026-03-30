@@ -12,13 +12,13 @@ export async function GET() {
     const bundles = await db
       .select()
       .from(bundle)
-      .where(and(eq(bundle.isActive, true), eq(bundle.isSoldOut, false)));
+      .where(and(eq(bundle.active, true), eq(bundle.featured, false)));
 
     // Calculate additional data for each bundle
     const bundlesWithDetails = bundles.map((b) => ({
       ...b,
-      isLimited: b.is_limited,
-      isSoldOut: b.quantity !== -1 && b.quantityRemaining! <= 0,
+      isLimited: false,
+      isSoldOut: b.products && b.products.length === 0,
     }));
 
     return NextResponse.json({

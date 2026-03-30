@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { dropWaitlist } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 
 /**
  * POST /api/drops/waitlist
@@ -50,7 +50,8 @@ export async function POST(request: NextRequest) {
         dropId,
         email,
         userId: userId || null,
-        notifiedAt: null,
+        notified: false,
+        addedToCart: false,
       })
       .returning();
 

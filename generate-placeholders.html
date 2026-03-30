@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate Placeholders</title>
+</head>
+<body>
+  <h1>Click buttons to download placeholder images</h1>
+  <div id="images"></div>
+  
+  <script>
+    const albums = [
+      { name: 'lepi-in-trezni', year: '1995', color: 'dc143c' },
+      { name: 'zeja', year: '1997', color: '8b4513' },
+      { name: 'pivolucija', year: '1999', color: 'f4a460' },
+      { name: 'de-best-od', year: '2001', color: '4169e1' },
+      { name: 'prohibicija', year: '2003', color: '8b0000' },
+      { name: 'hajdi', year: '2007', color: '2e8b57' },
+      { name: 'recidiv', year: '2014', color: '4b0082' }
+    ];
+    
+    const container = document.getElementById('images');
+    
+    albums.forEach(album => {
+      const div = document.createElement('div');
+      div.innerHTML = `
+        <h2>${album.name} (${album.year})</h2>
+        <a href="https://via.placeholder.com/400x400/${album.color}/ffffff?text=The+Drinkers%0A${encodeURIComponent(album.name)}%0A${album.year}" 
+           download="${album.name}.jpg" target="_blank">
+          Download Placeholder
+        </a>
+        <br><br>
+        <img src="https://via.placeholder.com/400x400/${album.color}/ffffff?text=The+Drinkers%0A${encodeURIComponent(album.name)}%0A${album.year}" 
+             alt="${album.name}" style="max-width: 200px;">
+      `;
+      container.appendChild(div);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+
+> the-drinkers-site@1.0.0 build
+> next build
+
+ ⚠ You are using a non-standard "NODE_ENV" value in your environment. This creates inconsistencies in the project and is strongly advised against. Read more: https://nextjs.org/docs/messages/non-standard-node-env
+[@sentry/nextjs] DEPRECATION WARNING: disableLogger is deprecated and will be removed in a future version. Use webpack.treeshake.removeDebugLogging instead.
+  ▲ Next.js 15.0.0
+  - Environments: .env.local, .env
+  - Experiments (use with caution):
+    · staleTimes
+    · optimizeCss
+    · clientTraceMetadata
+
+   Creating an optimized production build ...
+[@sentry/nextjs] Could not find `onRequestError` hook in instrumentation file. This indicates outdated configuration of the Sentry SDK. Use `Sentry.captureRequestError` to instrument the `onRequestError` hook: https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#errors-from-nested-react-server-components
+ ⚠ Compiled with warnings
+
+./components/merch/ShoppingCartSidebar.tsx
+Attempted import error: 'ContinueShopping' is not exported from '__barrel_optimize__?names=ArrowRight,ContinueShopping,Minus,Plus,ShoppingBag,Tag,Trash2,Truck,X!=!lucide-react' (imported as 'ContinueShopping').
+
+Import trace for requested module:
+./components/merch/ShoppingCartSidebar.tsx
+./components/merch/index.ts
+./app/merch/page.tsx
+
+./components/ui/Button.tsx
+There are multiple modules with names that only differ in casing.
+This can lead to unexpected behavior when compiling on a filesystem with other case-semantic.
+Use equal casing. Compare these module identifiers:
+* javascript/auto|f:\thedrinkers\the\node_modules\next\dist\build\webpack\loaders\next-flight-client-module-loader.js!f:\thedrinkers\the\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js??ruleSet[1].rules[15].oneOf[5].use[1]!f:\thedrinkers\the\components\ui\Button.tsx|app-pages-browser
+    Used by 19 module(s), i. e.
+    javascript/auto|f:\thedrinkers\the\node_modules\next\dist\build\webpack\loaders\next-flight-client-module-loader.js!f:\thedrinkers\the\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js??ruleSet[1].rules[15].oneOf[5].use[1]!f:\thedrinkers\the\app\bar\tracks\page.tsx|app-pages-browser
+* javascript/auto|f:\thedrinkers\the\node_modules\next\dist\build\webpack\loaders\next-flight-client-module-loader.js!f:\thedrinkers\the\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js??ruleSet[1].rules[15].oneOf[5].use[1]!f:\thedrinkers\the\components\ui\button.tsx|app-pages-browser
+    Used by 3 module(s), i. e.
+    javascript/auto|f:\thedrinkers\the\node_modules\next\dist\build\webpack\loaders\next-flight-client-module-loader.js!f:\thedrinkers\the\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js??ruleSet[1].rules[15].oneOf[5].use[1]!f:\thedrinkers\the\components\fan-club\FanClubContent.tsx|app-pages-browser
+
+Import trace for requested module:
+./components/ui/Button.tsx
+./app/bar/tracks/page.tsx
+
+./components/merch/ShoppingCartSidebar.tsx
+Attempted import error: 'ContinueShopping' is not exported from '__barrel_optimize__?names=ArrowRight,ContinueShopping,Minus,Plus,ShoppingBag,Tag,Trash2,Truck,X!=!lucide-react' (imported as 'ContinueShopping').
+
+Import trace for requested module:
+./components/merch/ShoppingCartSidebar.tsx
+./components/merch/index.ts
+./app/merch/page.tsx
+
+./components/ui/Button.tsx
+There are multiple modules with names that only differ in casing.
+This can lead to unexpected behavior when compiling on a filesystem with other case-semantic.
+Use equal casing. Compare these module identifiers:
+* javascript/auto|f:\thedrinkers\the\node_modules\next\dist\build\webpack\loaders\next-flight-client-module-loader.js!f:\thedrinkers\the\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js??ruleSet[1].rules[21].oneOf[6].use[1]!f:\thedrinkers\the\components\ui\Button.tsx|ssr
+    Used by 19 module(s), i. e.
+    javascript/auto|f:\thedrinkers\the\node_modules\@sentry\nextjs\build\cjs\config\loaders\wrappingLoader.js??ruleSet[1].rules[1].use[0]!f:\thedrinkers\the\node_modules\next\dist\build\webpack\loaders\next-flight-client-module-loader.js!f:\thedrinkers\the\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js??ruleSet[1].rules[21].oneOf[6].use[1]!f:\thedrinkers\the\app\bar\tracks\page.tsx|ssr
+* javascript/auto|f:\thedrinkers\the\node_modules\next\dist\build\webpack\loaders\next-flight-client-module-loader.js!f:\thedrinkers\the\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js??ruleSet[1].rules[21].oneOf[6].use[1]!f:\thedrinkers\the\components\ui\button.tsx|ssr
+    Used by 3 module(s), i. e.
+    javascript/auto|f:\thedrinkers\the\node_modules\next\dist\build\webpack\loaders\next-flight-client-module-loader.js!f:\thedrinkers\the\node_modules\next\dist\build\webpack\loaders\next-swc-loader.js??ruleSet[1].rules[21].oneOf[6].use[1]!f:\thedrinkers\the\components\fan-club\FanClubContent.tsx|ssr
+
+Import trace for requested module:
+./components/ui/Button.tsx
+./app/bar/tracks/page.tsx
+
+   Linting and checking validity of types ...
+
+./components/features/FanArtGallery.tsx
+230:25  Warning: Image elements must have an alt prop, either with meaningful text, or an empty string for decorative images.  jsx-a11y/alt-text
+
+./components/features/FanArtUpload.tsx
+276:19  Warning: Image elements must have an alt prop, either with meaningful text, or an empty string for decorative images.  jsx-a11y/alt-text
+
+./components/music-player/MusicPlayer.tsx
+100:6  Warning: React Hook useEffect has a missing dependency: 'handleTrackEnd'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+118:6  Warning: React Hook useCallback has a missing dependency: 'handleNext'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules
+Failed to compile.
+
+./app/api/checkout/route.ts:118:7
+Type error: Type 'string | null' is not assignable to type 'string | undefined'.
+  Type 'null' is not assignable to type 'string | undefined'.
+
+[0m [90m 116 |[39m     [36mreturn[39m [33mNextResponse[39m[33m.[39mjson[33m<[39m[33mCheckoutResponse[39m[33m>[39m({[0m
+[0m [90m 117 |[39m       success[33m:[39m [36mtrue[39m[33m,[39m[0m
+[0m[31m[1m>[22m[39m[90m 118 |[39m       url[33m:[39m session[33m.[39murl[33m,[39m[0m
+[0m [90m     |[39m       [31m[1m^[22m[39m[0m
+[0m [90m 119 |[39m       sessionId[33m:[39m session[33m.[39mid[33m,[39m[0m
+[0m [90m 120 |[39m     })[33m;[39m[0m
+[0m [90m 121 |[39m   } [36mcatch[39m (error) {[0m

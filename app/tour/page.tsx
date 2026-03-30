@@ -1,8 +1,6 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { Section } from "@/components/ui/Section";
-import InteractiveTourMap from "@/components/features/InteractiveTourMap";
 
 // Lazy load heavy components
 const TourCalendar = dynamic(
@@ -23,16 +21,7 @@ const TourCalendar = dynamic(
   },
 );
 
-const SloveniaMap = dynamic(
-  () =>
-    import("@/components/features/SloveniaMap").then((mod) => mod.SloveniaMap),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="w-full h-[500px] bg-rock-gray rounded-lg animate-pulse" />
-    ),
-  },
-);
+import dynamic from "next/dynamic";
 
 export default function TourPage() {
   return (
@@ -41,7 +30,7 @@ export default function TourPage() {
       <section className="relative h-[60vh] flex items-center justify-center bg-rock-dark">
         <div className="absolute inset-0">
           <img
-            src="/images/tour-hero.jpg"
+            src="/images/tour-hero.svg"
             alt="Tour"
             className="w-full h-full object-cover opacity-30"
           />
@@ -55,21 +44,8 @@ export default function TourPage() {
         </div>
       </section>
 
-      {/* Interactive Tour Map - NEW! */}
-      <InteractiveTourMap />
-
       {/* Tour Dates */}
       <TourCalendar />
-
-      {/* Interactive Map */}
-      <Section background="darker">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-crimson text-center mb-8">
-            ZEMLJEVID KONCERTOV
-          </h2>
-          <SloveniaMap />
-        </div>
-      </Section>
     </>
   );
 }

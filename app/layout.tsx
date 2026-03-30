@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
+import { env } from "@/lib/env";
 import { SITE_CONFIG } from "@/lib/constants";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -10,9 +10,10 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import { Suspense } from "react";
 import { VercelAnalytics } from "./VercelAnalytics";
 import { PlausibleAnalytics } from "./PlausibleAnalytics";
-import PersistentPlayer from "@/components/ui/PersistentPlayer";
 
-const inter = Inter({ subsets: ["latin"] });
+// Validate environment variables at runtime
+// This will throw an error if any required variable is missing
+env;
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -104,14 +105,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="sl" className="scroll-smooth">
-      <body
-        className={`${inter.className} bg-rock-black text-white antialiased`}
-      >
+      <body className="bg-rock-black text-white antialiased">
         <CartProvider>
           <Header />
           <main className="min-h-screen">{children}</main>
           <Footer />
-          <PersistentPlayer />
         </CartProvider>
 
         {/* Plausible Analytics (Privacy-Friendly) */}

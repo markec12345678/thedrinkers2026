@@ -18,7 +18,7 @@ export default function MusicPage() {
       <section className="relative h-[60vh] flex items-center justify-center bg-rock-dark">
         <div className="absolute inset-0">
           <img
-            src="/images/music-hero.jpg"
+            src="/images/music-hero.svg"
             alt="Music"
             className="w-full h-full object-cover opacity-30"
           />

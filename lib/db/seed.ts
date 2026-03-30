@@ -1058,7 +1058,12 @@ async function seed() {
 
     // 6. Seed Fan Art
     console.log("🎨  Seeding fan art...");
-    await db.insert(fanArt).values(fanArtData);
+    await db.insert(fanArt).values(
+      fanArtData.map((item) => ({
+        ...item,
+        userId: "seed-user-id",
+      })) as any,
+    );
     console.log(`✅ ${fanArtData.length} fan art pieces seeded\n`);
 
     console.log("\n🎉 Seed completed successfully!");

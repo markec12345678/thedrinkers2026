@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { tourDate } from "@/lib/db/schema";
+import { requireAdminApiAccess } from "@/lib/auth-utils";
 
 /**
  * POST /api/tour-dates
@@ -8,6 +9,11 @@ import { tourDate } from "@/lib/db/schema";
  */
 export async function POST(request: NextRequest) {
   try {
+    const adminAccess = await requireAdminApiAccess(request.headers);
+    if ("response" in adminAccess) {
+      return adminAccess.response;
+    }
+
     const body = await request.json();
 
     // Validate required fields
@@ -25,7 +31,6 @@ export async function POST(request: NextRequest) {
     const [newTourDate] = await db
       .insert(tourDate)
       .values({
-        id: crypto.randomUUID(),
         tourName: body.tour_name || null,
         venue: body.venue,
         city: body.city,
@@ -42,9 +47,7 @@ export async function POST(request: NextRequest) {
         status: body.status || "announced",
         capacity: body.capacity || null,
         soldTickets: body.sold_tickets || 0,
-        supportActs: body.support_acts
-          ? JSON.stringify(body.support_acts)
-          : null,
+        supportActs: body.support_acts,
         ageRestriction: body.age_restriction || null,
         vipAvailable: body.vip_available || false,
         vipDescription: body.vip_description || null,

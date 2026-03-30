@@ -50,6 +50,24 @@ export async function getUserMembershipHistory(userId: string) {
   return memberships;
 }
 
+export async function getMembershipByDiscountCode(discountCode: string) {
+  const normalizedCode = discountCode.trim().toUpperCase();
+
+  const [membership] = await db
+    .select()
+    .from(vipMembership)
+    .where(
+      and(
+        eq(vipMembership.discountCode, normalizedCode),
+        eq(vipMembership.status, "active"),
+      ),
+    )
+    .orderBy(desc(vipMembership.startDate))
+    .limit(1);
+
+  return membership;
+}
+
 export async function createVipMembership(data: {
   userId: string;
   tier: string;
@@ -63,9 +81,9 @@ export async function createVipMembership(data: {
     .values({
       ...data,
       status: "active",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    })
+      expiresAt: data.expiresAt.toISOString(),
+      startDate: data.startDate.toISOString(),
+    } as any)
     .returning();
 
   return membership;

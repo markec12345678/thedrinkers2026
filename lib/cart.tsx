@@ -1,14 +1,22 @@
-'use client';
+"use client";
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
 export interface CartItem {
   id: string;
+  productId: string;
   name: string;
   price: number;
   quantity: number;
   size?: string;
   image?: string;
+  maxStock?: number;
 }
 
 interface CartContextType {
@@ -29,12 +37,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   // Load cart from localStorage on mount
   useEffect(() => {
-    const savedCart = localStorage.getItem('drinkers-cart');
+    const savedCart = localStorage.getItem("drinkers-cart");
     if (savedCart) {
       try {
         setItems(JSON.parse(savedCart));
       } catch (e) {
-        console.error('Failed to load cart:', e);
+        console.error("Failed to load cart:", e);
       }
     }
     setIsLoaded(true);
@@ -43,18 +51,24 @@ export function CartProvider({ children }: { children: ReactNode }) {
   // Save cart to localStorage whenever it changes
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem('drinkers-cart', JSON.stringify(items));
+      localStorage.setItem("drinkers-cart", JSON.stringify(items));
     }
   }, [items, isLoaded]);
 
   const addToCart = (item: CartItem) => {
-    setItems(current => {
-      const existing = current.find(i => i.id === item.id && i.size === item.size);
+    setItems((current) => {
+      const existing = current.find(
+        (i) => i.productId === item.productId && i.size === item.size,
+      );
       if (existing) {
-        return current.map(i =>
-          i.id === item.id && i.size === item.size
-            ? { ...i, quantity: i.quantity + item.quantity }
-            : i
+        return current.map((i) =>
+          i.productId === item.productId && i.size === item.size
+            ? {
+                ...i,
+                quantity: i.quantity + item.quantity,
+                maxStock: item.maxStock ?? i.maxStock,
+              }
+            : i,
         );
       }
       return [...current, item];
@@ -62,7 +76,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const removeFromCart = (itemId: string) => {
-    setItems(current => current.filter(i => i.id !== itemId));
+    setItems((current) => current.filter((i) => i.id !== itemId));
   };
 
   const updateQuantity = (itemId: string, quantity: number) => {
@@ -70,8 +84,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
       removeFromCart(itemId);
       return;
     }
-    setItems(current =>
-      current.map(i => (i.id === itemId ? { ...i, quantity } : i))
+    setItems((current) =>
+      current.map((i) => (i.id === itemId ? { ...i, quantity } : i)),
     );
   };
 
@@ -79,12 +93,23 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setItems([]);
   };
 
-  const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const total = items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  );
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <CartContext.Provider
-      value={{ items, addToCart, removeFromCart, updateQuantity, clearCart, total, itemCount }}
+      value={{
+        items,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        clearCart,
+        total,
+        itemCount,
+      }}
     >
       {children}
     </CartContext.Provider>
@@ -94,7 +119,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 export function useCart() {
   const context = useContext(CartContext);
   if (context === undefined) {
-    throw new Error('useCart must be used within a CartProvider');
+    throw new Error("useCart must be used within a CartProvider");
   }
   return context;
 }

@@ -1,0 +1,52 @@
+{
+  "timestamp": "2026-03-30T05:00:40.146Z",
+  "flows": [
+    {
+      "name": "First Impression",
+      "status": "PASS",
+      "details": {
+        "hasHero": true,
+        "hasH1": true,
+        "h1Text": "THE DRINKERS",
+        "hasCTA": true,
+        "ctaText": "",
+        "heroVisible": true
+      }
+    },
+    {
+      "name": "Navigation",
+      "status": "PASS",
+      "itemCount": 7
+    },
+    {
+      "name": "Add to Cart",
+      "status": "WARN"
+    },
+    {
+      "name": "Newsletter Form",
+      "status": "PASS"
+    },
+    {
+      "name": "Mobile Menu",
+      "status": "PASS"
+    },
+    {
+      "name": "Media Elements",
+      "status": "PASS",
+      "videoCount": 1,
+      "imageCount": 5
+    },
+    {
+      "name": "Scroll & Animations",
+      "status": "PASS",
+      "pageHeight": 11101,
+      "animatedElements": 0
+    }
+  ],
+  "summary": {
+    "totalFlows": 7,
+    "passed": 6,
+    "warnings": 1,
+    "failed": 0
+  }
+}

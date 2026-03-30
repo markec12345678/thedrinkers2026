@@ -11,24 +11,12 @@ import {
   Truck,
   Tag,
   ArrowRight,
-  ContinueShopping,
 } from "lucide-react";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
-
-// Types
-interface CartItem {
-  id: string;
-  productId: string;
-  name: string;
-  price: string;
-  image: string;
-  size: string;
-  quantity: number;
-  maxStock: number;
-}
+import type { CartItem } from "@/lib/cart";
 
 interface CartSidebarProps {
   isOpen: boolean;
@@ -57,6 +45,9 @@ export const ShoppingCartSidebar: React.FC<CartSidebarProps> = ({
 }) => {
   const [discountCode, setDiscountCode] = useState("");
   const [appliedDiscount, setAppliedDiscount] = useState<number | null>(null);
+  const [appliedDiscountCode, setAppliedDiscountCode] = useState<string | null>(
+    null,
+  );
   const [isApplyingDiscount, setIsApplyingDiscount] = useState(false);
   const [discountError, setDiscountError] = useState("");
 
@@ -87,7 +78,7 @@ export const ShoppingCartSidebar: React.FC<CartSidebarProps> = ({
 
   // Calculations
   const subtotal = items.reduce((sum, item) => {
-    return sum + parseFloat(item.price) * item.quantity;
+    return sum + item.price * item.quantity;
   }, 0);
 
   const discountAmount = appliedDiscount
@@ -118,7 +109,7 @@ export const ShoppingCartSidebar: React.FC<CartSidebarProps> = ({
 
       if (result?.success && result.discount) {
         setAppliedDiscount(result.discount);
-        setDiscountCode("");
+        setAppliedDiscountCode(discountCode.trim().toUpperCase());
       } else {
         setDiscountError("Invalid discount code");
       }
@@ -145,8 +136,8 @@ export const ShoppingCartSidebar: React.FC<CartSidebarProps> = ({
   );
 
   const handleCheckout = useCallback(() => {
-    onCheckout?.(items, appliedDiscount ? discountCode : undefined);
-  }, [items, onCheckout, appliedDiscount, discountCode]);
+    onCheckout?.(items, appliedDiscountCode ?? undefined);
+  }, [items, onCheckout, appliedDiscountCode]);
 
   const isEmpty = items.length === 0;
 
@@ -343,7 +334,12 @@ const CartItemCard: React.FC<{
     >
       {/* Image */}
       <div className="relative w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
-        <Image src={item.image} alt={item.name} fill className="object-cover" />
+        <Image
+          src={item.image || "/images/merch/pijemo-ga-radi-tshirt.jpg"}
+          alt={item.name}
+          fill
+          className="object-cover"
+        />
       </div>
 
       {/* Details */}
@@ -375,7 +371,10 @@ const CartItemCard: React.FC<{
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => onQuantityChange(item.id, item.quantity + 1)}
-              disabled={item.quantity >= item.maxStock}
+              disabled={
+                typeof item.maxStock === "number" &&
+                item.quantity >= item.maxStock
+              }
               className="w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
             >
               <Plus className="w-4 h-4" />
@@ -384,7 +383,7 @@ const CartItemCard: React.FC<{
 
           <div className="text-right">
             <p className="font-bold text-gray-900 dark:text-gray-100">
-              €{(parseFloat(item.price) * item.quantity).toFixed(2)}
+              €{(item.price * item.quantity).toFixed(2)}
             </p>
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -430,7 +429,7 @@ const EmptyCartState: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           size="lg"
           className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
         >
-          <ContinueShopping className="w-4 h-4 mr-2" />
+          <ShoppingBag className="w-4 h-4 mr-2" />
           Continue Shopping
         </Button>
       </motion.div>

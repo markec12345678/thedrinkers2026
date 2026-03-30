@@ -1,3 +1,8 @@
 {
-    "python.languageServer": "None"
+    "python.languageServer": "None",
+    "builder.serverUrl": "",
+    "builder.command": "npm run dev",
+    "builder.runDevServer": false,
+    "builder.autoDetectDevServer": true,
+    "builder.launchType": "editor"
 }

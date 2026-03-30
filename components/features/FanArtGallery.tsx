@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { GlassCard } from "@/components/ui/GlassCard";
 import {
-  Image,
+  Image as ImageIcon,
   Upload,
   Heart,
   Eye,
@@ -152,8 +152,7 @@ export default function FanArtGallery() {
                 : "bg-rock-gray/50 text-rock-muted hover:bg-rock-gray"
             }`}
           >
-            {/* eslint-disable-next-line jsx-a11y/alt-text */}
-            <Image className="w-5 h-5 inline mr-2" aria-hidden="true" />
+            <ImageIcon className="w-5 h-5 inline mr-2" aria-hidden="true" />
             Galerija
           </button>
           <button
@@ -227,7 +226,7 @@ export default function FanArtGallery() {
                     <GlassCard variant="dark" className="p-4 h-full">
                       {/* Image */}
                       <div className="relative aspect-square mb-4 rounded-lg overflow-hidden bg-rock-gray flex items-center justify-center">
-                        <Image
+                        <ImageIcon
                           className="w-16 h-16 opacity-50 text-gray-600"
                           aria-hidden="true"
                         />

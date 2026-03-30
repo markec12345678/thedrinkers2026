@@ -8,15 +8,17 @@ import { NextRequest, NextResponse } from "next/server";
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { userId: string } },
+  { params }: { params: Promise<{ userId: string }> },
 ) {
   try {
+    const { userId } = await params;
+
     // TODO: Implement database query
-    // const profile = await db.select().from(userProfile).where(eq(userProfile.userId, params.userId));
+    // const profile = await db.select().from(userProfile).where(eq(userProfile.userId, userId));
 
     // Mock data for now
     const profile = {
-      id: params.userId,
+      id: userId,
       username: "FanUser123",
       joinDate: "2026-01-15",
       postCount: 47,
@@ -59,9 +61,10 @@ export async function GET(
  */
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { userId: string } },
+  { params }: { params: Promise<{ userId: string }> },
 ) {
   try {
+    const { userId } = await params;
     const body = await request.json();
     const { username, favoriteAlbum, favoriteSong } = body;
 
@@ -73,7 +76,7 @@ export async function PUT(
     //   username,
     //   favoriteAlbum,
     //   favoriteSong,
-    // }).where(eq(userProfile.userId, params.userId)).returning();
+    // }).where(eq(userProfile.userId, userId)).returning();
 
     return NextResponse.json({
       success: true,

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import {
   MerchProductCard,
   MerchProductCardSkeleton,
@@ -9,7 +10,8 @@ import {
 } from "@/components/merch";
 import { QuickViewModal } from "@/components/merch";
 import { ShoppingBag, Filter } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
+import { useCart, type CartItem } from "@/lib/cart";
 
 interface Product {
   id: string;
@@ -27,37 +29,37 @@ interface Product {
   updatedAt: Date;
 }
 
-interface CartItem {
-  id: string;
-  productId: string;
-  name: string;
-  price: string;
-  image: string;
-  size: string;
-  quantity: number;
-  maxStock: number;
-}
-
 export default function MerchPage() {
+  const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(
     null,
   );
+
+  // Use cart context - correct destructuring
+  const { addToCart, items, updateQuantity, removeFromCart } = useCart();
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => {
     // Fetch products from API
     fetch("/api/products")
       .then((res) => res.json())
       .then((data) => {
-        setProducts(data);
+        // API returns { success: true, data: [...] }
+        if (data.success && Array.isArray(data.data)) {
+          setProducts(data.data);
+        } else {
+          console.error("Invalid response format:", data);
+          setProducts([]);
+        }
         setLoading(false);
       })
       .catch((err) => {
         console.error("Error fetching products:", err);
+        // Fallback to empty array if API fails
+        setProducts([]);
         setLoading(false);
       });
   }, []);
@@ -68,33 +70,59 @@ export default function MerchPage() {
     quantity: number,
   ) => {
     const cartItem: CartItem = {
-      id: `cart_${Date.now()}`,
+      id: `${product.id}:${size}`,
       productId: product.id,
       name: product.name,
-      price: product.price,
-      image: product.images[0],
+      price: parseFloat(product.price) || 0,
+      image: product.images[0] || "",
       size,
       quantity,
       maxStock: product.stock,
     };
 
-    setCartItems((prev) => [...prev, cartItem]);
+    addToCart(cartItem);
     setIsCartOpen(true);
   };
 
   const handleQuantityChange = (itemId: string, quantity: number) => {
-    setCartItems((prev) =>
-      prev.map((item) => (item.id === itemId ? { ...item, quantity } : item)),
-    );
+    updateQuantity(itemId, quantity);
   };
 
   const handleRemoveItem = (itemId: string) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== itemId));
+    removeFromCart(itemId);
   };
 
-  const handleCheckout = (items: CartItem[], discountCode?: string) => {
-    // Redirect to Stripe checkout
-    console.log("Checkout:", items, discountCode);
+  const handleCheckout = async (
+    cartItems: CartItem[],
+    discountCode?: string,
+  ) => {
+    try {
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          items: cartItems.map((item) => ({
+            productId: item.productId,
+            size: item.size,
+            quantity: item.quantity,
+          })),
+          discountCode,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.url) {
+        throw new Error(data.error || "Failed to create checkout session");
+      }
+
+      router.push(data.url);
+    } catch (error) {
+      console.error("Checkout error:", error);
+      alert("Checkout ni uspel. Poskusite znova.");
+    }
   };
 
   const filteredProducts =
@@ -131,9 +159,9 @@ export default function MerchPage() {
         >
           <ShoppingBag className="w-5 h-5 mr-2" />
           Cart
-          {cartItems.length > 0 && (
+          {items.length > 0 && (
             <span className="absolute -top-2 -right-2 w-6 h-6 bg-white text-purple-600 rounded-full text-xs font-bold flex items-center justify-center">
-              {cartItems.length}
+              {items.length}
             </span>
           )}
         </Button>
@@ -144,7 +172,7 @@ export default function MerchPage() {
         {categories.map((category) => (
           <Button
             key={category}
-            onClick={() => setSelectedCategory(category)}
+            onClick={() => setSelectedCategory(category || "all")}
             variant={selectedCategory === category ? "default" : "outline"}
             className="capitalize"
           >
@@ -181,7 +209,7 @@ export default function MerchPage() {
           product={quickViewProduct}
           isOpen={!!quickViewProduct}
           onClose={() => setQuickViewProduct(null)}
-          onAddToCart={handleAddToCart}
+          onAddToCart={handleAddToCart as any}
         />
       )}
 
@@ -189,7 +217,7 @@ export default function MerchPage() {
       <ShoppingCartSidebar
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
-        items={cartItems}
+        items={items}
         onQuantityChange={handleQuantityChange}
         onRemoveItem={handleRemoveItem}
         onCheckout={handleCheckout}

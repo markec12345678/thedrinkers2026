@@ -1,8 +1,8 @@
-import { Metadata } from 'next';
-import { Section } from '@/components/ui/Section';
-import { GlassCard } from '@/components/ui/GlassCard';
-import { Play } from 'lucide-react';
-import { videos } from '@/lib/constants';
+import { Metadata } from "next";
+import { Section } from "@/components/ui/Section";
+import { GlassCard } from "@/components/ui/GlassCard";
+import { Play } from "lucide-react";
+import { videos } from "@/lib/constants";
 
 // Inline function to avoid import issues
 function getYouTubeEmbedUrl(youtubeId: string): string {
@@ -10,12 +10,13 @@ function getYouTubeEmbedUrl(youtubeId: string): string {
 }
 
 export const metadata: Metadata = {
-  title: 'Videi | The Drinkers',
-  description: 'Uradni videospoti The Drinkers - Pijemo ga radi, Deset majhnih jagrov, Mafalda in drugi',
+  title: "Videi | The Drinkers",
+  description:
+    "Uradni videospoti The Drinkers - Pijemo ga radi, Deset majhnih jagrov, Mafalda in drugi",
 };
 
 // Use real videos from lib/constants
-const musicVideos = videos.map(video => ({
+const musicVideos = videos.map((video) => ({
   ...video,
   embedUrl: getYouTubeEmbedUrl(video.youtubeId),
   watchUrl: `https://www.youtube.com/watch?v=${video.youtubeId}`,
@@ -38,7 +39,9 @@ export default function MediaPage() {
           <h1 className="text-5xl md:text-7xl font-bold text-gradient mb-4">
             URADNI VIDEOPOSNETKI
           </h1>
-          <p className="text-xl text-text-gray">Vsi uradni videospoti The Drinkers</p>
+          <p className="text-xl text-text-gray">
+            Vsi uradni videospoti The Drinkers
+          </p>
         </div>
       </section>
 
@@ -49,7 +52,8 @@ export default function MediaPage() {
             🎬 Glasbena Videospota
           </h2>
           <p className="text-xl text-text-gray text-center mb-12 max-w-3xl mx-auto">
-            Uradni videospoti z albumov Lepi in trezni, Žeja, Pivolucija, Prohibicija, Hajdi in Recidiv
+            Uradni videospoti z albumov Lepi in trezni, Žeja, Pivolucija,
+            Prohibicija, Hajdi in Recidiv
           </p>
 
           {/* Featured Video - Pijemo ga radi (837K views) */}
@@ -58,11 +62,16 @@ export default function MediaPage() {
               <h3 className="text-3xl font-bold text-crimson mb-2">
                 🎵 Pijemo ga radi
               </h3>
-              <p className="text-text-gray">Lepi in trezni (1995) • 837K+ ogledov</p>
+              <p className="text-text-gray">
+                Lepi in trezni (1995) • 837K+ ogledov
+              </p>
             </div>
             <div className="relative aspect-video rounded-xl overflow-hidden shadow-2xl shadow-crimson/20">
               <iframe
-                src={musicVideos.find(v => v.title === 'Pijemo ga radi')?.embedUrl || ''}
+                src={
+                  musicVideos.find((v) => v.title === "Pijemo ga radi")
+                    ?.embedUrl || ""
+                }
                 title="Pijemo ga radi"
                 className="absolute inset-0 w-full h-full"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -78,7 +87,7 @@ export default function MediaPage() {
                 {/* Video Thumbnail with YouTube Embed Preview */}
                 <div className="relative aspect-video mb-4 rounded-lg overflow-hidden bg-rock-gray">
                   <img
-                    src={`https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`}
+                    src={`https://i.ytimg.com/vi/${video.youtubeId}/hqdefault.jpg`}
                     alt={video.title}
                     className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                   />

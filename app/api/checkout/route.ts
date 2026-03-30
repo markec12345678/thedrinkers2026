@@ -1,9 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
+import { getProductById } from "@/lib/db/queries/products";
+import { getMembershipByDiscountCode } from "@/lib/db/queries/memberships";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2023-10-16",
+  apiVersion: "2026-02-25.clover",
 });
+
+// Types
+interface CartItem {
+  productId: string;
+  size: string;
+  quantity: number;
+}
+
+interface CheckoutRequest {
+  items: CartItem[];
+  discountCode?: string;
+}
+
+interface CheckoutResponse {
+  success: boolean;
+  url?: string;
+  sessionId?: string;
+  error?: string;
+}
 
 /**
  * POST /api/checkout
@@ -13,9 +34,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
  * Body:
  * - items: Array<{
  *     productId: string,
- *     name: string,
- *     price: string,
- *     image: string,
  *     size: string,
  *     quantity: number
  *   }>
@@ -23,50 +41,132 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
  */
 export async function POST(request: NextRequest) {
   try {
-    const { items, discountCode } = await request.json();
+    const body = await request.json();
+    const { items, discountCode } = body as CheckoutRequest;
+    const origin =
+      request.headers.get("origin") ||
+      process.env.NEXT_PUBLIC_APP_URL ||
+      process.env.BETTER_AUTH_URL ||
+      "";
+
+    if (!origin) {
+      return NextResponse.json<CheckoutResponse>(
+        { success: false, error: "Application URL is not configured" },
+        { status: 500 },
+      );
+    }
 
     // Validate items
     if (!items || !Array.isArray(items) || items.length === 0) {
-      return NextResponse.json(
+      return NextResponse.json<CheckoutResponse>(
         { success: false, error: "No items in cart" },
         { status: 400 },
       );
     }
 
-    // Create line items for Stripe
-    const lineItems = items.map((item: any) => ({
+    const validatedItems = await Promise.all(
+      items.map(async (item) => {
+        if (
+          !item.productId ||
+          !item.size ||
+          !Number.isInteger(item.quantity) ||
+          item.quantity < 1
+        ) {
+          throw new Error("Invalid cart item");
+        }
+
+        const product = await getProductById(item.productId);
+        if (!product || !product.active) {
+          throw new Error(`Product ${item.productId} is unavailable`);
+        }
+
+        if (product.stock < item.quantity) {
+          throw new Error(`${product.name} does not have enough stock`);
+        }
+
+        const primaryImage = Array.isArray(product.images)
+          ? product.images[0]
+          : undefined;
+        const imageUrl =
+          primaryImage && primaryImage.startsWith("/") && origin
+            ? `${origin}${primaryImage}`
+            : primaryImage?.startsWith("http")
+              ? primaryImage
+              : undefined;
+
+        return {
+          productId: product.id,
+          name: product.name,
+          description: product.description,
+          imageUrl,
+          size: item.size,
+          quantity: item.quantity,
+          unitAmount: Math.round(parseFloat(product.price) * 100),
+        };
+      }),
+    );
+
+    let discountPercentage = 0;
+    let normalizedDiscountCode: string | undefined;
+
+    if (discountCode?.trim()) {
+      normalizedDiscountCode = discountCode.trim().toUpperCase();
+      const membership = await getMembershipByDiscountCode(
+        normalizedDiscountCode,
+      );
+
+      if (
+        !membership ||
+        !membership.discountPercentage ||
+        membership.discountPercentage <= 0
+      ) {
+        return NextResponse.json<CheckoutResponse>(
+          { success: false, error: "Invalid discount code" },
+          { status: 400 },
+        );
+      }
+
+      discountPercentage = membership.discountPercentage;
+    }
+
+    // Create line items for Stripe from server-side data
+    const lineItems = validatedItems.map((item) => ({
       price_data: {
         currency: "eur",
         product_data: {
           name: `${item.name} (Size: ${item.size})`,
           description: item.description || undefined,
-          images: item.image ? [item.image] : [],
+          images: item.imageUrl ? [item.imageUrl] : [],
           metadata: {
             productId: item.productId,
             size: item.size,
           },
         },
-        unit_amount: Math.round(parseFloat(item.price) * 100), // Convert to cents
+        unit_amount:
+          discountPercentage > 0
+            ? Math.round((item.unitAmount * (100 - discountPercentage)) / 100)
+            : item.unitAmount,
       },
       quantity: item.quantity,
     }));
-
-    // Create discounts if discount code provided
-    let discounts = [];
-    if (discountCode) {
-      discounts = [{ coupon_code: discountCode }];
-    }
 
     // Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: lineItems,
-      discounts,
       mode: "payment",
-      success_url: `${request.headers.get("origin")}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${request.headers.get("origin")}/cart?abandoned=1`,
+      success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/cart?abandoned=1`,
       metadata: {
-        items: JSON.stringify(items),
+        items: JSON.stringify(
+          validatedItems.map(({ productId, size, quantity }) => ({
+            productId,
+            size,
+            quantity,
+          })),
+        ),
+        discountCode: normalizedDiscountCode || "",
+        discountPercentage: discountPercentage.toString(),
       },
       shipping_address_collection: {
         allowed_countries: [
@@ -89,18 +189,19 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json({
+    return NextResponse.json<CheckoutResponse>({
       success: true,
-      url: session.url,
+      url: session.url || undefined,
       sessionId: session.id,
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error("Stripe checkout error:", error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: error.message || "Failed to create checkout session",
-      },
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : "Failed to create checkout session";
+    return NextResponse.json<CheckoutResponse>(
+      { success: false, error: errorMessage },
       { status: 500 },
     );
   }

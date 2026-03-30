@@ -23,6 +23,25 @@
     },
     "types": ["vitest/globals"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "mobile", "the-drinkers-app", "my-ai-agent"]
+  "include": ["**/*.ts", "**/*.tsx", "next-env.d.ts", ".next/types/**/*.ts"],
+  "exclude": [
+    "node_modules",
+    "mobile",
+    "the-drinkers-app",
+    "my-ai-agent",
+    "my-glow-app",
+    "memorix-avids2",
+    "memory-bank-mcp-alioshr",
+    "codebase-memory-mcp-deusdata",
+    "cursorpool-backup",
+    "claude-skills-alirezarezvani",
+    "awesome-agent-skills-itgoyo",
+    "awesome-skills-gmh",
+    "magic-mcp-21st",
+    "Site-Sn33k",
+    "thedrinkers",
+    "thedrinkers20",
+    "Cursor_ODAM",
+    "venv-devin"
+  ]
 }

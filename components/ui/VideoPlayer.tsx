@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 // YouTube Video Props
 interface YouTubeVideoPlayerProps {
@@ -60,7 +60,7 @@ export function VideoPlayer(props: VideoPlayerProps) {
     return (
       <YouTubeVideoPlayer
         videoId={props.videoId}
-        title={props.title || ''}
+        title={props.title || ""}
         thumbnail={props.thumbnail}
         autoplay={props.autoplay}
       />
@@ -77,14 +77,14 @@ function LocalVideoPlayer({
   loop = true,
   muted = true,
   playsInline = true,
-  className = '',
+  className = "",
 }: LocalVideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     if (videoRef.current && autoPlay) {
       videoRef.current.play().catch((err) => {
-        console.warn('Video autoplay was prevented:', err);
+        console.warn("Video autoplay was prevented:", err);
       });
     }
   }, [autoPlay]);
@@ -105,7 +105,12 @@ function LocalVideoPlayer({
   );
 }
 
-function YouTubeVideoPlayer({ videoId, title, thumbnail, autoplay = false }: YouTubeVideoPlayerProps) {
+function YouTubeVideoPlayer({
+  videoId,
+  title,
+  thumbnail,
+  autoplay = false,
+}: YouTubeVideoPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(autoplay);
   const [showModal, setShowModal] = useState(false);
 
@@ -125,7 +130,7 @@ function YouTubeVideoPlayer({ videoId, title, thumbnail, autoplay = false }: You
           />
         ) : (
           <img
-            src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
+            src={`https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`}
             alt={title}
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
           />

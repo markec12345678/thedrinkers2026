@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { limitedDrop } from "@/lib/db/schema";
-import { auth } from "@/lib/auth";
+import { requireAdminApiAccess } from "@/lib/auth-utils";
 
 /**
  * POST /api/drops/create
@@ -9,19 +9,10 @@ import { auth } from "@/lib/auth";
  */
 export async function POST(request: NextRequest) {
   try {
-    // Check admin authentication
-    const session = await auth.api.getSession({ headers: request.headers });
-    if (!session?.user) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 403 },
-      );
+    const adminAccess = await requireAdminApiAccess(request.headers);
+    if ("response" in adminAccess) {
+      return adminAccess.response;
     }
-
-    // TODO: Check if user is admin
-    // if (!session.user.isAdmin) {
-    //   return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
-    // }
 
     const body = await request.json();
     const {
@@ -55,23 +46,29 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const vipEarlyAccessWindowHours =
+      typeof vipEarlyAccessHours === "number" && vipEarlyAccessHours > 0
+        ? vipEarlyAccessHours
+        : 24;
+    const vipEarlyAccessDate = vipEarlyAccess
+      ? new Date(start.getTime() - vipEarlyAccessWindowHours * 60 * 60 * 1000)
+      : null;
+
     // Create drop
     const [newDrop] = await db
       .insert(limitedDrop)
       .values({
         name,
         description: description || null,
-        productId,
-        quantity,
+        quantityTotal: quantity,
         quantityRemaining: quantity,
         price,
-        originalPrice: originalPrice || null,
-        startDate: start,
+        releaseDate: start,
         endDate: end,
         vipEarlyAccess: vipEarlyAccess || false,
-        vipEarlyAccessHours: vipEarlyAccessHours || 24,
-        isActive: true,
-        isSoldOut: false,
+        vipEarlyAccessDate,
+        active: true,
+        soldOut: false,
       })
       .returning();
 

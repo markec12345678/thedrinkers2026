@@ -12,7 +12,7 @@ import {
   Award,
   Mic2,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 
 export function PressKitContent() {
   const bandMembers = [

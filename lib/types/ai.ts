@@ -2,10 +2,11 @@
 
 export interface AIImageGenerationRequest {
   prompt: string;
-  category: 'album' | 'band' | 'social' | 'merch' | 'poster' | 'fan-art';
-  aspect?: '1:1' | '16:9' | '9:16' | '4:3' | '3:4' | '2:3' | '3:2';
-  model?: 'pollinations-free' | 'flux' | 'seedream' | 'gemini';
-  style?: 'realistic' | 'artistic' | 'minimalist' | 'vintage' | 'modern';
+  category: "album" | "band" | "social" | "merch" | "poster" | "fan-art";
+  aspect?: "1:1" | "16:9" | "9:16" | "4:3" | "3:4" | "2:3" | "3:2";
+  model?: "pollinations-free" | "flux" | "seedream" | "gemini" | "huggingface";
+  style?: "realistic" | "artistic" | "minimalist" | "vintage" | "modern";
+  mood?: string;
 }
 
 export interface AIImageGenerationResponse {
@@ -26,7 +27,7 @@ export interface AIUserGeneratedImage {
   prompt: string;
   imageUrl: string;
   thumbnailUrl?: string;
-  category: 'album' | 'band' | 'social' | 'merch' | 'poster' | 'fan-art';
+  category: "album" | "band" | "social" | "merch" | "poster" | "fan-art";
   aspect: string;
   model: string;
   likes: number;
@@ -36,8 +37,8 @@ export interface AIUserGeneratedImage {
 }
 
 export interface AISocialPostRequest {
-  type: 'concert' | 'album' | 'merch' | 'tour' | 'announcement';
-  platform: 'instagram' | 'twitter' | 'facebook' | 'tiktok';
+  type: "concert" | "album" | "merch" | "tour" | "announcement";
+  platform: "instagram" | "twitter" | "facebook" | "tiktok";
   content?: {
     title?: string;
     description?: string;
@@ -45,7 +46,7 @@ export interface AISocialPostRequest {
     eventDate?: string;
     venue?: string;
   };
-  tone?: 'energetic' | 'professional' | 'fun' | 'nostalgic';
+  tone?: "energetic" | "professional" | "fun" | "nostalgic";
 }
 
 export interface AISocialPostResponse {
@@ -68,7 +69,7 @@ export interface AISEOOptimizeRequest {
   page: string;
   content: string;
   targetKeywords?: string[];
-  pageType: 'event' | 'music' | 'merch' | 'about' | 'home' | 'tour';
+  pageType: "event" | "music" | "merch" | "about" | "home" | "tour";
 }
 
 export interface AISEOOptimizeResponse {
@@ -101,7 +102,7 @@ export interface AISEOOptimizeResponse {
 
 export interface AIBeerSongRequest {
   theme?: string;
-  mood?: 'fun' | 'energetic' | 'nostalgic' | 'celebratory';
+  mood?: "fun" | "energetic" | "nostalgic" | "celebratory";
   includeBandName?: boolean;
 }
 

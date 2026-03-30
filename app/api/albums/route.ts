@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { album } from "@/lib/db/schema";
+import { requireAdminApiAccess } from "@/lib/auth-utils";
 
 /**
  * POST /api/albums
@@ -8,6 +9,11 @@ import { album } from "@/lib/db/schema";
  */
 export async function POST(request: NextRequest) {
   try {
+    const adminAccess = await requireAdminApiAccess(request.headers);
+    if ("response" in adminAccess) {
+      return adminAccess.response;
+    }
+
     const body = await request.json();
 
     // Validate required fields
@@ -22,7 +28,6 @@ export async function POST(request: NextRequest) {
     const [newAlbum] = await db
       .insert(album)
       .values({
-        id: crypto.randomUUID(),
         title: body.title,
         artist: body.artist || null,
         artistId: body.artist_id || null,
@@ -31,10 +36,10 @@ export async function POST(request: NextRequest) {
         coverImageThumbnail: body.cover_image_thumbnail || null,
         description: body.description || null,
         label: body.label || null,
-        genre: body.genre ? JSON.stringify(body.genre) : null,
+        genre: body.genre,
         totalTracks: body.total_tracks || 0,
         duration: body.duration || 0,
-        tracks: body.tracks ? JSON.stringify(body.tracks) : null,
+        tracks: body.tracks,
         spotifyUrl: body.spotify_url || null,
         spotifyId: body.spotify_id || null,
         appleMusicUrl: body.apple_music_url || null,
@@ -52,10 +57,10 @@ export async function POST(request: NextRequest) {
         upc: body.upc || null,
         catalogNumber: body.catalog_number || null,
         copyright: body.copyright || null,
-        producers: body.producers ? JSON.stringify(body.producers) : null,
-        engineers: body.engineers ? JSON.stringify(body.engineers) : null,
-        studios: body.studios ? JSON.stringify(body.studios) : null,
-        metadata: body.metadata ? JSON.stringify(body.metadata) : null,
+        producers: body.producers || null,
+        engineers: body.engineers || null,
+        studios: body.studios || null,
+        metadata: body.metadata || null,
       })
       .returning();
 

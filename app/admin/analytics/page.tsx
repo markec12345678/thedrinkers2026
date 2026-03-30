@@ -1,20 +1,21 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { GlassCard } from '@/components/ui/GlassCard';
-import { 
-  TrendingUp, 
-  Users, 
-  Eye, 
-  MousePointer2, 
-  ShoppingCart, 
-  Ticket, 
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { GlassCard } from "@/components/ui/GlassCard";
+import {
+  TrendingUp,
+  Users,
+  Eye,
+  MousePointer2,
+  ShoppingCart,
+  Ticket,
   Mail,
   Smartphone,
   Monitor,
-  Tablet
-} from 'lucide-react';
+  Tablet,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 interface AnalyticsData {
   period: string;
@@ -38,14 +39,14 @@ export default function AnalyticsDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/analytics?period=24h')
-      .then(res => res.json())
-      .then(data => {
+    fetch("/api/analytics?period=24h")
+      .then((res) => res.json())
+      .then((data) => {
         setData(data);
         setLoading(false);
       })
-      .catch(err => {
-        console.error('Failed to fetch analytics:', err);
+      .catch((err) => {
+        console.error("Failed to fetch analytics:", err);
         setLoading(false);
       });
   }, []);
@@ -83,9 +84,7 @@ export default function AnalyticsDashboard() {
           <h1 className="text-4xl font-bold text-white mb-2">
             Analytics Dashboard
           </h1>
-          <p className="text-rock-muted">
-            Real-time insights for The Drinkers
-          </p>
+          <p className="text-rock-muted">Real-time insights for The Drinkers</p>
         </motion.div>
 
         {/* Key Metrics */}
@@ -134,9 +133,7 @@ export default function AnalyticsDashboard() {
 
         {/* Top Pages */}
         <GlassCard variant="dark" className="p-6 mb-8">
-          <h2 className="text-2xl font-bold text-white mb-6">
-            Top Pages
-          </h2>
+          <h2 className="text-2xl font-bold text-white mb-6">Top Pages</h2>
           <div className="space-y-4">
             {data.topPages.map((page, index) => (
               <div
@@ -148,7 +145,9 @@ export default function AnalyticsDashboard() {
                   <p className="text-sm text-rock-muted">{page.path}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-2xl font-bold text-crimson">{page.views}</p>
+                  <p className="text-2xl font-bold text-crimson">
+                    {page.views}
+                  </p>
                   <p className="text-sm text-rock-muted">views</p>
                 </div>
               </div>
@@ -211,7 +210,7 @@ function MetricCard({
   value,
   trend,
 }: {
-  icon: any;
+  icon: LucideIcon;
   label: string;
   value: number | string;
   trend: string;
@@ -234,7 +233,7 @@ function DeviceCard({
   value,
   color,
 }: {
-  icon: any;
+  icon: LucideIcon;
   label: string;
   value: number;
   color: string;

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { product } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
+import { requireAdminApiAccess } from "@/lib/auth-utils";
 
 /**
  * PUT /api/products/[id]
@@ -9,10 +10,16 @@ import { eq } from "drizzle-orm";
  */
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
+    const adminAccess = await requireAdminApiAccess(request.headers);
+    if ("response" in adminAccess) {
+      return adminAccess.response;
+    }
+
     const body = await request.json();
+    const { id } = await params;
 
     // Validate required fields
     if (!body.name && !body.price) {
@@ -29,7 +36,7 @@ export async function PUT(
     const existing = await db
       .select()
       .from(product)
-      .where(eq(product.id, params.id))
+      .where(eq(product.id, id))
       .limit(1);
 
     if (existing.length === 0) {
@@ -46,7 +53,7 @@ export async function PUT(
         ...body,
         updatedAt: new Date(),
       })
-      .where(eq(product.id, params.id))
+      .where(eq(product.id, id))
       .returning();
 
     return NextResponse.json({
@@ -69,14 +76,21 @@ export async function PUT(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
+    const adminAccess = await requireAdminApiAccess(request.headers);
+    if ("response" in adminAccess) {
+      return adminAccess.response;
+    }
+
+    const { id } = await params;
+
     // Check if product exists
     const existing = await db
       .select()
       .from(product)
-      .where(eq(product.id, params.id))
+      .where(eq(product.id, id))
       .limit(1);
 
     if (existing.length === 0) {
@@ -87,7 +101,7 @@ export async function DELETE(
     }
 
     // Delete product
-    await db.delete(product).where(eq(product.id, params.id));
+    await db.delete(product).where(eq(product.id, id));
 
     return NextResponse.json({
       success: true,

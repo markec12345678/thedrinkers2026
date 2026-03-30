@@ -1,32 +1,12 @@
-# robots.txt for The Drinkers
-# https://thedrinkers.si/robots.txt
-
+# *
 User-agent: *
 Allow: /
-
-# Sitemap
-Sitemap: https://thedrinkers.si/sitemap.xml
-
-# Disallow admin and API routes
-Disallow: /admin/
 Disallow: /api/
-Disallow: /dashboard/
-Disallow: /virtual-bar/
+Disallow: /admin/
+Disallow: /vip-lounge/
 
-# Allow search engines to crawl all public pages
-Allow: /about
-Allow: /blog
-Allow: /contact
-Allow: /fan-art
-Allow: /fan-club
-Allow: /gallery
-Allow: /media
-Allow: /merch
-Allow: /music
-Allow: /press
-Allow: /tour
-Allow: /vip-lounge
-Allow: /ai-setlist
+# Host
+Host: https://thedrinkers.si
 
-# Crawl-delay for polite crawling
-Crawl-delay: 1
+# Sitemaps
+Sitemap: https://thedrinkers.si/sitemap.xml

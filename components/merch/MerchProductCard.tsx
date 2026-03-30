@@ -305,7 +305,10 @@ export const MerchProductCard: React.FC<MerchProductCardProps> = ({
           onClick={() => onQuickView?.(product)}
         >
           <Image
-            src={product.images[currentImageIndex] || "/placeholder.jpg"}
+            src={
+              product.images[currentImageIndex] ||
+              "/images/merch/pijemo-ga-radi-tshirt.jpg"
+            }
             alt={product.name}
             fill
             className="object-cover"

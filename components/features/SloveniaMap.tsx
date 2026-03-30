@@ -1,20 +1,21 @@
-'use client';
+"use client";
 
-import { useEffect, useState, useId, useCallback } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import { tourDates } from '@/lib/constants';
-import L from 'leaflet';
+import { useEffect, useState, useId, useCallback } from "react";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import { tourDates } from "@/lib/constants";
+import L from "leaflet";
 
 export function SloveniaMap() {
   const uniqueId = useId();
   const [isClient, setIsClient] = useState(false);
   const [crimsonIcon, setCrimsonIcon] = useState<L.Icon | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     // Only run on client
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     // Mark as mounted
     setMounted(true);
@@ -22,15 +23,20 @@ export function SloveniaMap() {
     // Fix for default marker icon in Next.js
     delete (L.Icon.Default.prototype as any)._getIconUrl;
     L.Icon.Default.mergeOptions({
-      iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
-      iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
-      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+      iconRetinaUrl:
+        "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
+      iconUrl:
+        "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
+      shadowUrl:
+        "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
     });
 
     // Custom crimson marker icon
     const icon = new L.Icon({
-      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-crimson.png',
-      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+      iconUrl:
+        "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-crimson.png",
+      shadowUrl:
+        "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
       iconSize: [25, 41],
       iconAnchor: [12, 41],
       popupAnchor: [1, -34],
@@ -38,16 +44,17 @@ export function SloveniaMap() {
     });
     setCrimsonIcon(icon);
     setIsClient(true);
-  }, []);
 
-  // Cleanup on unmount
-  useEffect(() => {
+    // Mark as ready after a short delay to prevent double init
+    const timer = setTimeout(() => setReady(true), 100);
+
     return () => {
-      setMounted(false);
+      clearTimeout(timer);
+      setReady(false);
     };
   }, []);
 
-  if (!isClient || !crimsonIcon || !mounted) {
+  if (!isClient || !crimsonIcon || !mounted || !ready) {
     return (
       <div className="w-full h-[500px] bg-rock-gray rounded-lg animate-pulse" />
     );
@@ -59,14 +66,15 @@ export function SloveniaMap() {
   return (
     <div className="w-full h-[500px] rounded-lg overflow-hidden border-2 border-crimson/30">
       <MapContainer
-        key={`map-${uniqueId}-${mounted ? 'ready' : 'loading'}`}
+        key={`map-${uniqueId}`}
         center={center}
         zoom={8}
         scrollWheelZoom={false}
         className="w-full h-full"
-        style={{ background: '#1a1a1a' }}
-        fadeAnimation={true}
-        zoomAnimation={true}
+        style={{ background: "#1a1a1a" }}
+        fadeAnimation={false}
+        zoomAnimation={false}
+        markerZoomAnimation={false}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -86,7 +94,7 @@ export function SloveniaMap() {
                   <br />
                   {show.city}
                   <br />
-                  {new Date(show.date).toLocaleDateString('sl-SI')}
+                  {new Date(show.date).toLocaleDateString("sl-SI")}
                 </div>
               </Popup>
             </Marker>

@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Section } from '@/components/ui/Section';
-import { Button } from '@/components/ui/Button';
-import { SITE_CONFIG } from '@/lib/constants';
-import { ContactFormData } from '@/lib/types';
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Section } from "@/components/ui/Section";
+import { Button } from "@/components/ui/Button";
+import { SITE_CONFIG } from "@/lib/constants";
+import { ContactFormData } from "@/lib/types";
 
 export function ContactSection() {
   const [formData, setFormData] = useState<ContactFormData>({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState('');
+  const [submitMessage, setSubmitMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,17 +24,21 @@ export function ContactSection() {
     try {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 2000));
-      setSubmitMessage('Sporočilo uspešno poslano! Odgovorili vam bomo v najkrajšem možnem času.');
-      setFormData({ name: '', email: '', subject: '', message: '' });
+      setSubmitMessage(
+        "Sporočilo uspešno poslano! Odgovorili vam bomo v najkrajšem možnem času.",
+      );
+      setFormData({ name: "", email: "", subject: "", message: "" });
     } catch (error) {
-      setSubmitMessage('Prišlo je do napake. Poskusite znova.');
+      setSubmitMessage("Prišlo je do napake. Poskusite znova.");
     } finally {
       setIsSubmitting(false);
-      setTimeout(() => setSubmitMessage(''), 5000);
+      setTimeout(() => setSubmitMessage(""), 5000);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
@@ -59,7 +63,9 @@ export function ContactSection() {
             viewport={{ once: true }}
           >
             <div>
-              <h3 className="text-2xl font-bold text-crimson mb-4">PIŠITE NAM</h3>
+              <h3 className="text-2xl font-bold text-crimson mb-4">
+                PIŠITE NAM
+              </h3>
               <p className="text-text-gray mb-6">
                 Za vse povpraševanja, booking ali sodelovanja.
               </p>
@@ -73,7 +79,10 @@ export function ContactSection() {
                 </div>
                 <div>
                   <div className="text-white font-bold">Email</div>
-                  <a href={`mailto:${SITE_CONFIG.contact.email}`} className="text-text-gray hover:text-crimson">
+                  <a
+                    href={`mailto:${SITE_CONFIG.contact.email}`}
+                    className="text-text-gray hover:text-crimson"
+                  >
                     {SITE_CONFIG.contact.email}
                   </a>
                 </div>
@@ -86,7 +95,10 @@ export function ContactSection() {
                   </div>
                   <div>
                     <div className="text-white font-bold">Telefon</div>
-                    <a href={`tel:${SITE_CONFIG.contact.phone}`} className="text-text-gray hover:text-crimson">
+                    <a
+                      href={`tel:${SITE_CONFIG.contact.phone}`}
+                      className="text-text-gray hover:text-crimson"
+                    >
                       {SITE_CONFIG.contact.phone}
                     </a>
                   </div>
@@ -99,14 +111,18 @@ export function ContactSection() {
                 </div>
                 <div>
                   <div className="text-white font-bold">Lokacija</div>
-                  <div className="text-text-gray">{SITE_CONFIG.contact.location}</div>
+                  <div className="text-text-gray">
+                    {SITE_CONFIG.contact.location}
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* Social Links */}
             <div>
-              <h4 className="text-xl font-bold text-crimson mb-4">SLEDITE NAM</h4>
+              <h4 className="text-xl font-bold text-crimson mb-4">
+                SLEDITE NAM
+              </h4>
               <div className="flex gap-4">
                 {SITE_CONFIG.social.spotify && (
                   <a
@@ -162,31 +178,49 @@ export function ContactSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <form onSubmit={handleSubmit} className="card p-8 space-y-6">
+            <form
+              onSubmit={handleSubmit}
+              className="card p-8 space-y-6"
+              aria-label="Contact form"
+            >
               <div>
+                <label htmlFor="contact-name" className="sr-only">
+                  Vaše ime
+                </label>
                 <input
+                  id="contact-name"
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="Vaše ime"
                   required
+                  aria-required="true"
                   className="input-field"
                 />
               </div>
               <div>
+                <label htmlFor="contact-email" className="sr-only">
+                  Vaš email
+                </label>
                 <input
+                  id="contact-email"
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="Vaš email"
                   required
+                  aria-required="true"
                   className="input-field"
                 />
               </div>
               <div>
+                <label htmlFor="contact-subject" className="sr-only">
+                  Zadeva
+                </label>
                 <input
+                  id="contact-subject"
                   type="text"
                   name="subject"
                   value={formData.subject}
@@ -196,7 +230,11 @@ export function ContactSection() {
                 />
               </div>
               <div>
+                <label htmlFor="contact-message" className="sr-only">
+                  Sporočilo
+                </label>
                 <textarea
+                  id="contact-message"
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
@@ -210,9 +248,9 @@ export function ContactSection() {
               {submitMessage && (
                 <div
                   className={`p-4 rounded ${
-                    submitMessage.includes('uspešno')
-                      ? 'bg-green-600/20 border border-green-600 text-green-400'
-                      : 'bg-red-600/20 border border-red-600 text-red-400'
+                    submitMessage.includes("uspešno")
+                      ? "bg-green-600/20 border border-green-600 text-green-400"
+                      : "bg-red-600/20 border border-red-600 text-red-400"
                   }`}
                 >
                   {submitMessage}
@@ -220,7 +258,7 @@ export function ContactSection() {
               )}
 
               <Button type="submit" className="w-full" disabled={isSubmitting}>
-                {isSubmitting ? 'POŠILJANJE...' : 'POŠLJI'}
+                {isSubmitting ? "POŠILJANJE..." : "POŠLJI"}
               </Button>
             </form>
           </motion.div>

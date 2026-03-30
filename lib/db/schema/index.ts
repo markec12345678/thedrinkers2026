@@ -18,6 +18,10 @@ import {
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
+// Import bundle and drops schemas
+import { bundle, bundlePurchase } from "./bundles";
+import { limitedDrop, dropEntry, dropWaitlist } from "./limited-drops";
+
 // ============================================
 // ✅ BETTER AUTH TABELE (OSNOVA)
 // ============================================
@@ -758,3 +762,19 @@ export type UserPoints = typeof userPoints.$inferSelect;
 export type NewUserPoints = typeof userPoints.$inferInsert;
 export type PointsTransaction = typeof pointsTransaction.$inferSelect;
 export type NewPointsTransaction = typeof pointsTransaction.$inferInsert;
+
+// Bundle Deals Types
+export { bundle, bundlePurchase } from "./bundles";
+export type Bundle = typeof bundle.$inferSelect;
+export type NewBundle = typeof bundle.$inferInsert;
+export type BundlePurchase = typeof bundlePurchase.$inferSelect;
+export type NewBundlePurchase = typeof bundlePurchase.$inferInsert;
+
+// Limited Drops Types
+export { limitedDrop, dropEntry, dropWaitlist } from "./limited-drops";
+export type LimitedDrop = typeof limitedDrop.$inferSelect;
+export type NewLimitedDrop = typeof limitedDrop.$inferInsert;
+export type DropEntry = typeof dropEntry.$inferSelect;
+export type NewDropEntry = typeof dropEntry.$inferInsert;
+export type DropWaitlist = typeof dropWaitlist.$inferSelect;
+export type NewDropWaitlist = typeof dropWaitlist.$inferInsert;

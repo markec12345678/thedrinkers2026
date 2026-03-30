@@ -33,6 +33,7 @@ interface Track {
   trackNumber: number;
   spotifyUrl?: string | null;
   appleMusicUrl?: string | null;
+  youtubeUrl?: string | null;
   lyrics?: string | null;
 }
 
@@ -74,52 +75,13 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
   const currentTrack = tracks[currentTrackIndex];
   const duration = currentTrack?.duration || 0;
 
-  // Playback simulation
-  useEffect(() => {
-    if (isPlaying) {
-      progressInterval.current = setInterval(() => {
-        setCurrentTime((prev) => {
-          if (prev >= duration) {
-            handleTrackEnd();
-            return 0;
-          }
-          return prev + 1;
-        });
-      }, 1000);
-    } else {
-      if (progressInterval.current) {
-        clearInterval(progressInterval.current);
-      }
-    }
-
-    return () => {
-      if (progressInterval.current) {
-        clearInterval(progressInterval.current);
-      }
-    };
-  }, [isPlaying, duration]);
-
-  // Notify parent of track change
-  useEffect(() => {
-    onTrackChange?.(currentTrack);
-  }, [currentTrack, onTrackChange]);
-
-  // Notify parent of play/pause
-  useEffect(() => {
-    onPlayPause?.(isPlaying);
-  }, [isPlaying, onPlayPause]);
-
-  const handleTrackEnd = useCallback(() => {
-    if (repeatMode === "one") {
-      setCurrentTime(0);
-    } else {
-      handleNext();
-    }
-  }, [repeatMode]);
-
   const handlePlayPause = useCallback(() => {
+    if (!isPlaying && currentTrack.youtubeUrl) {
+      // Open YouTube video in new tab
+      window.open(currentTrack.youtubeUrl, "_blank");
+    }
     setIsPlaying(!isPlaying);
-  }, [isPlaying]);
+  }, [isPlaying, currentTrack]);
 
   const handleNext = useCallback(() => {
     if (isShuffle) {
@@ -132,6 +94,14 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
     setIsPlaying(true);
     setIsRotating(true);
   }, [isShuffle, tracks.length]);
+
+  const handleTrackEnd = useCallback(() => {
+    if (repeatMode === "one") {
+      setCurrentTime(0);
+    } else {
+      handleNext();
+    }
+  }, [repeatMode, handleNext]);
 
   const handlePrevious = useCallback(() => {
     if (currentTime > 3) {
@@ -155,6 +125,39 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
     setVolume(newVolume);
     setIsMuted(newVolume === 0);
   }, []);
+
+  // Playback simulation
+  useEffect(() => {
+    if (isPlaying) {
+      progressInterval.current = setInterval(() => {
+        setCurrentTime((prev) => {
+          if (prev >= duration) {
+            handleTrackEnd();
+            return 0;
+          }
+          return prev + 1;
+        });
+      }, 1000);
+    } else if (progressInterval.current) {
+      clearInterval(progressInterval.current);
+    }
+
+    return () => {
+      if (progressInterval.current) {
+        clearInterval(progressInterval.current);
+      }
+    };
+  }, [isPlaying, duration, handleTrackEnd]);
+
+  // Notify parent of track change
+  useEffect(() => {
+    onTrackChange?.(currentTrack);
+  }, [currentTrack, onTrackChange]);
+
+  // Notify parent of play/pause
+  useEffect(() => {
+    onPlayPause?.(isPlaying);
+  }, [isPlaying, onPlayPause]);
 
   const toggleMute = useCallback(() => {
     if (isMuted) {
@@ -288,6 +291,19 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
                   <ExternalLink className="w-5 h-5 text-white" />
                 </motion.a>
               )}
+              {currentTrack.youtubeUrl && (
+                <motion.a
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  href={currentTrack.youtubeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 bg-red-500 rounded-full hover:bg-red-600 transition-colors"
+                  title="Watch on YouTube"
+                >
+                  <ExternalLink className="w-5 h-5 text-white" />
+                </motion.a>
+              )}
             </div>
           </div>
 
@@ -401,6 +417,20 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
                   <Play className="w-8 h-8 ml-1" />
                 )}
               </motion.button>
+
+              {currentTrack.youtubeUrl && (
+                <motion.a
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  href={currentTrack.youtubeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-4 bg-gradient-to-r from-red-600 to-red-500 rounded-full text-white shadow-lg shadow-red-500/30 hover:shadow-xl hover:shadow-red-500/40 transition-shadow"
+                  title="Watch on YouTube"
+                >
+                  <ExternalLink className="w-8 h-8" />
+                </motion.a>
+              )}
 
               <motion.button
                 whileHover={{ scale: 1.1 }}

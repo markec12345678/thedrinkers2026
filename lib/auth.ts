@@ -2,8 +2,28 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
 import { neon } from "@neondatabase/serverless";
 import * as schema from "./db/schema";
+import { env } from "./env";
 
-const client = neon(process.env.DATABASE_URL!);
+const client = neon(env.DATABASE_URL);
+
+const socialProviders = {
+  ...(env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET
+    ? {
+        google: {
+          clientId: env.GOOGLE_CLIENT_ID,
+          clientSecret: env.GOOGLE_CLIENT_SECRET,
+        },
+      }
+    : {}),
+  ...(env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET
+    ? {
+        github: {
+          clientId: env.GITHUB_CLIENT_ID,
+          clientSecret: env.GITHUB_CLIENT_SECRET,
+        },
+      }
+    : {}),
+};
 
 export const auth = betterAuth({
   database: drizzleAdapter(client, {
@@ -14,16 +34,7 @@ export const auth = betterAuth({
     enabled: true,
     requireEmailVerification: false, // Set to true in production with email provider
   },
-  socialProviders: {
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    },
-    github: {
-      clientId: process.env.GITHUB_CLIENT_ID!,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
-    },
-  },
+  socialProviders,
   session: {
     expiresIn: 60 * 60 * 24 * 7, // 7 days
     updateAge: 60 * 60 * 24, // 1 day

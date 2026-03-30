@@ -1,0 +1,1 @@
+# This file exists to suppress 404 warnings from browser extensions

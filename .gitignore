@@ -49,3 +49,33 @@ drizzle/meta
 # IDE
 .idea/
 .vscode/settings.json
+
+# Documentation (keep docs/ folder, ignore specific generated files)
+docs/01-arhitektura/
+docs/02-deployment/
+docs/03-baza-podatkov/
+docs/04-ai-funkcije/
+docs/05-api/
+docs/06-ecommerce/
+docs/07-marketing/
+docs/08-testiranje/
+docs/09-varnost/
+docs/10-prispevanje/
+!docs/README.md
+!docs/ENV_SETUP.md
+!docs/ENV_VALIDATION_IMPLEMENTATION.md
+
+# AI Agent Skills (these are auto-generated)
+.agents/
+.claude/
+.codex/
+.cursor/
+.gemini/
+.github/copilot/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+.vercel

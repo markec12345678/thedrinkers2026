@@ -87,7 +87,8 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                   <div className="relative aspect-square rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800">
                     <Image
                       src={
-                        product.images[currentImageIndex] || "/placeholder.jpg"
+                        product.images[currentImageIndex] ||
+                        "/images/merch/pijemo-ga-radi-tshirt.jpg"
                       }
                       alt={product.name}
                       fill

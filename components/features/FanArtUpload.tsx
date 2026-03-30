@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Section } from "@/components/ui/Section";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
-import { Upload, Image, X, Check, Loader2 } from "lucide-react";
+import { Upload, Image as ImageIcon, X, Check, Loader2 } from "lucide-react";
 
 export function FanArtUpload() {
   const [file, setFile] = useState<File | null>(null);
@@ -273,7 +273,7 @@ export function FanArtUpload() {
                 </span>
               ) : (
                 <span className="flex items-center gap-2">
-                  <Image className="w-6 h-6" />
+                  <ImageIcon className="w-6 h-6" aria-hidden="true" />
                   Objavi Umetnino
                 </span>
               )}

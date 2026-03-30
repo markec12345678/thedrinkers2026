@@ -55,3 +55,21 @@ docs/10-prispevanje/
 Thumbs.db
 *.exe
 *.dll
+
+# Large project folders (not part of main deployment)
+codebase-memory-mcp-deusdata/
+cursorpool-backup/
+Cursor_ODAM/
+device-shots/
+front-end-viri/
+image-scraper/
+magic-mcp-21st/
+memorix-avids2/
+memory-bank-mcp-alioshr/
+my-ai-agent/
+my-glow-app/
+Site-Sn33k/
+the-drinkers-app/
+thedrinkers/
+venv-devin/
+webpage-grabber/

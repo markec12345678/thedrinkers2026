@@ -10,6 +10,7 @@ const nextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "i.scdn.co" }, // Spotify
       { protocol: "https", hostname: "img.youtube.com" },
+      { protocol: "https", hostname: "i.ytimg.com" },
       { protocol: "https", hostname: "cdn.thedrinkers.si" },
       { protocol: "https", hostname: "image.pollinations.ai" }, // AI images
     ],
@@ -62,6 +63,33 @@ const nextConfig = {
         source: "/fonts/:path*",
         destination: "https://fonts.gstatic.com/:path*",
       },
+      // Suppress 404s from browser extensions requesting Vite/PWA files
+      {
+        source: "/sw.js",
+        destination: "/404-suppress.txt",
+      },
+    ];
+  },
+
+  // Ignore missing files to suppress 404 warnings
+  async redirects() {
+    return [
+      // Redirect Vite-specific requests to prevent 404 spam
+      {
+        source: "/@vite/:path*",
+        destination: "/",
+        permanent: false,
+      },
+      {
+        source: "/@react-refresh",
+        destination: "/",
+        permanent: false,
+      },
+      {
+        source: "/src/main.tsx",
+        destination: "/",
+        permanent: false,
+      },
     ];
   },
 
@@ -99,7 +127,11 @@ module.exports = withSentryConfig(nextConfig, {
   silent: true,
   widenClientFileUpload: true,
   hideSourceMaps: true,
-  disableLogger: true,
+  webpack: {
+    treeshake: {
+      removeDebugLogging: true,
+    },
+  },
   disableServerWebpackPlugin:
     !!process.env.SENTRY_DISABLE_SERVER_WEBPACK_PLUGIN,
   disableClientWebpackPlugin:

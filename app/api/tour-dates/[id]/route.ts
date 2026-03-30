@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { tourDate } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
+import { requireAdminApiAccess } from "@/lib/auth-utils";
 
 /**
  * PUT /api/tour-dates/[id]
@@ -9,16 +10,22 @@ import { eq } from "drizzle-orm";
  */
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
+    const adminAccess = await requireAdminApiAccess(request.headers);
+    if ("response" in adminAccess) {
+      return adminAccess.response;
+    }
+
     const body = await request.json();
+    const { id } = await params;
 
     // Check if tour date exists
     const existing = await db
       .select()
       .from(tourDate)
-      .where(eq(tourDate.id, params.id))
+      .where(eq(tourDate.id, id))
       .limit(1);
 
     if (existing.length === 0) {
@@ -35,7 +42,7 @@ export async function PUT(
         ...body,
         updatedAt: new Date(),
       })
-      .where(eq(tourDate.id, params.id))
+      .where(eq(tourDate.id, id))
       .returning();
 
     return NextResponse.json({
@@ -58,14 +65,21 @@ export async function PUT(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
+    const adminAccess = await requireAdminApiAccess(request.headers);
+    if ("response" in adminAccess) {
+      return adminAccess.response;
+    }
+
+    const { id } = await params;
+
     // Check if tour date exists
     const existing = await db
       .select()
       .from(tourDate)
-      .where(eq(tourDate.id, params.id))
+      .where(eq(tourDate.id, id))
       .limit(1);
 
     if (existing.length === 0) {
@@ -76,7 +90,7 @@ export async function DELETE(
     }
 
     // Delete tour date
-    await db.delete(tourDate).where(eq(tourDate.id, params.id));
+    await db.delete(tourDate).where(eq(tourDate.id, id));
 
     return NextResponse.json({
       success: true,

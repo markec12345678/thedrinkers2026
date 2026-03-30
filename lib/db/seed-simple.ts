@@ -226,8 +226,8 @@ async function seed() {
     console.log("🎨  Seeding fan art...");
     await db.insert(schema.fanArt).values([
       {
+        userId: "seed-user-id",
         imageUrl: "/images/fan-art/drawing-1.jpg",
-        thumbnailUrl: "/images/fan-art/thumbs/drawing-1.jpg",
         title: "The Drinkers Live",
         description: "Drawing from concert",
         approved: true,
@@ -235,8 +235,8 @@ async function seed() {
         likes: 234,
       },
       {
+        userId: "seed-user-id",
         imageUrl: "/images/fan-art/painting-1.jpg",
-        thumbnailUrl: "/images/fan-art/thumbs/painting-1.jpg",
         title: "Band Portrait",
         description: "Oil painting",
         approved: true,

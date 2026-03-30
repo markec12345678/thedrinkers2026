@@ -1,14 +1,14 @@
 // Core Data Types for The Drinkers Website
 
 // Export AI types
-export * from './types/ai';
+export * from "./types/ai";
 
 export interface TourDate {
   id: string;
   date: string; // ISO string
   city: string;
   venue: string;
-  country: 'SI' | 'AT' | 'HR' | 'IT' | 'EU';
+  country: "SI" | "AT" | "HR" | "IT" | "EU";
   ticketUrl?: string;
   soldOut?: boolean;
   coordinates?: [number, number]; // [lat, lng] for map
@@ -33,6 +33,7 @@ export interface Track {
   duration: string; // "3:45"
   lyrics?: string;
   story?: string; // Behind the song
+  youtubeUrl?: string; // YouTube video URL
 }
 
 export interface Member {
@@ -48,7 +49,7 @@ export interface MerchItem {
   id: string;
   name: string;
   price: number;
-  currency: 'EUR';
+  currency: "EUR";
   images: string[];
   variants: { size?: string; color?: string }[];
   limited?: boolean;
@@ -61,7 +62,7 @@ export interface Video {
   title: string;
   youtubeId: string;
   thumbnail?: string;
-  type: 'official' | 'live' | 'behind-scenes';
+  type: "official" | "live" | "behind-scenes";
 }
 
 export interface GalleryImage {
@@ -70,7 +71,7 @@ export interface GalleryImage {
   alt: string;
   title?: string;
   description?: string;
-  category: 'live' | 'backstage' | 'promo' | 'fan-art';
+  category: "live" | "backstage" | "promo" | "fan-art";
 }
 
 export interface BlogPost {

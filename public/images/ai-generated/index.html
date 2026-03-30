@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Generated Images - Preview</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: #fff;
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #e94560, #c70039);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .subtitle {
+      text-align: center;
+      color: #888;
+      margin-bottom: 3rem;
+      font-size: 1.1rem;
+    }
+    
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+      margin-bottom: 3rem;
+    }
+    
+    .image-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .image-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(233, 69, 96, 0.3);
+    }
+    
+    .image-card img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      display: block;
+    }
+    
+    .image-info {
+      padding: 20px;
+    }
+    
+    .image-name {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+    
+    .image-details {
+      color: #888;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    
+    .image-actions {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #e94560, #c70039);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4);
+    }
+    
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 3rem;
+    }
+    
+    .stat-card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #e94560, #c70039);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      color: #888;
+      font-size: 0.9rem;
+    }
+    
+    .instructions {
+      background: rgba(233, 69, 96, 0.1);
+      border: 1px solid rgba(233, 69, 96, 0.3);
+      border-radius: 12px;
+      padding: 30px;
+      margin-top: 3rem;
+    }
+    
+    .instructions h2 {
+      color: #e94560;
+      margin-bottom: 1rem;
+    }
+    
+    .instructions ol {
+      margin-left: 20px;
+      color: #ccc;
+      line-height: 1.8;
+    }
+    
+    .instructions code {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      color: #e94560;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎨 AI Generated Images</h1>
+    <p class="subtitle">Generated with Stable Diffusion - Preview Before Integration</p>
+    
+    <!-- Stats -->
+    <div class="stats" id="stats">
+      <!-- Will be populated by JavaScript -->
+    </div>
+    
+    <!-- Gallery -->
+    <div class="gallery" id="gallery">
+      <!-- Will be populated by JavaScript -->
+    </div>
+    
+    <!-- Instructions -->
+    <div class="instructions">
+      <h2>📋 Navodila</h2>
+      <ol>
+        <li><strong>Preglej slike:</strong> Klikni na slike za večji pogled</li>
+        <li><strong>Izberi najboljše:</strong> Označi katere slike ti je všeč</li>
+        <li><strong>Odloči se za uporabo:</strong>
+          <ul>
+            <li>Album covers → <code>/music</code> stran</li>
+            <li>Band photos → <code>/about</code> stran</li>
+            <li>Tour posters → <code>/tour</code> stran</li>
+            <li>Gallery images → <code>/gallery</code> stran</li>
+          </ul>
+        </li>
+        <li><strong>Povej mi:</strong> Katere slike želiš uporabiti in kam</li>
+      </ol>
+      <p style="margin-top: 20px; color: #e94560; font-weight: 600;">
+        ⚠️ Ne integriraj še nobene slike dokler ne pregledaš in odobriš!
+      </p>
+    </div>
+  </div>
+  
+  <script>
+    // List of generated images
+    const images = [
+      { name: 'album-cover-na-zdravje.png', category: 'Album Cover', size: '1000x1000' },
+      { name: 'album-cover-30let.png', category: 'Album Cover', size: '1000x1000' },
+      { name: 'band-photo-live.png', category: 'Band Photo', size: '1000x667' },
+      { name: 'band-photo-studio.png', category: 'Band Photo', size: '1000x667' },
+      { name: 'concert-poster.png', category: 'Tour Poster', size: '1080x1350' },
+    ];
+    
+    // Populate stats
+    const categories = {};
+    images.forEach(img => {
+      categories[img.category] = (categories[img.category] || 0) + 1;
+    });
+    
+    const statsHtml = `
+      <div class="stat-card">
+        <div class="stat-number">${images.length}</div>
+        <div class="stat-label">Total Images</div>
+      </div>
+      ${Object.entries(categories).map(([cat, count]) => `
+        <div class="stat-card">
+          <div class="stat-number">${count}</div>
+          <div class="stat-label">${cat}</div>
+        </div>
+      `).join('')}
+    `;
+    
+    document.getElementById('stats').innerHTML = statsHtml;
+    
+    // Populate gallery
+    const galleryHtml = images.map(img => `
+      <div class="image-card">
+        <img src="/images/ai-generated/${img.name}" alt="${img.name}" loading="lazy" />
+        <div class="image-info">
+          <div class="image-name">${img.name.replace('.png', '').replace(/-/g, ' ').toUpperCase()}</div>
+          <div class="image-details">${img.category} • ${img.size}</div>
+          <div class="image-actions">
+            <a href="/images/ai-generated/${img.name}" target="_blank" class="btn btn-primary">View Full</a>
+            <a href="/images/ai-generated/${img.name}" download class="btn btn-secondary">Download</a>
+          </div>
+        </div>
+      </div>
+    `).join('');
+    
+    document.getElementById('gallery').innerHTML = galleryHtml;
+  </script>
+</body>
+</html>
