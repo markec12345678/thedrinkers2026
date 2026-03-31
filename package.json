@@ -34,7 +34,8 @@
     "prepare": "node -e \"process.env.CI || require('child_process').execSync('husky', {stdio: 'inherit'})\"",
     "skills:load": "node master-skills-loader.js",
     "skills:auto": "node auto-load-skills.js",
-    "skills:scan": "node master-skills-loader.js"
+    "skills:scan": "node master-skills-loader.js",
+    "check-mcp": "node scripts/check-mcp-setup.js"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
