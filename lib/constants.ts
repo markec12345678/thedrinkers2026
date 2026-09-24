@@ -29,7 +29,6 @@ export const SITE_CONFIG = {
   },
   contact: {
     email: "info@thedrinkers.si",
-    phone: "+386 40 123 456",
     location: "Litija, Slovenija",
     booking: "booking@thedrinkers.si",
     management: "management@thedrinkers.si",
