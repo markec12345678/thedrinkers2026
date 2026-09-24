@@ -26,10 +26,13 @@ export async function GET(request: NextRequest) {
       whereClause = eq(product.featured, featured === "true");
     }
 
+    const activeClause = eq(product.active, true);
+    const finalWhereClause = whereClause ? and(activeClause, whereClause) : activeClause;
+
     const products = await db
       .select()
       .from(product)
-      .where(whereClause)
+      .where(finalWhereClause)
       .orderBy(product.createdAt);
 
     return NextResponse.json({
