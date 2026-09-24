@@ -1,36 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
 
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export async function POST(request: NextRequest) {
   try {
-    const { email, type, dropId } = await request.json();
+    const body = await request.json();
+    const email = typeof body?.email === "string" ? body.email.trim().toLowerCase() : "";
 
-    if (!email) {
+    if (!email || !EMAIL_PATTERN.test(email)) {
       return NextResponse.json(
-        { success: false, error: "Email required" },
+        { success: false, error: "Veljaven email je obvezen." },
         { status: 400 },
       );
     }
 
-    // TODO: Add to database
-    // For now, just log
-    console.log("Newsletter signup:", { email, type, dropId });
-
-    // TODO: Send confirmation email with Resend
-    // await resend.emails.send({
-    //   from: 'The Drinkers <noreply@thedrinkers.si>',
-    //   to: email,
-    //   subject: 'Welcome to The Drinkers!',
-    //   html: emailTemplate,
-    // });
-
-    return NextResponse.json({
-      success: true,
-      message: "Subscribed successfully",
-    });
+    // Newsletter storage/delivery is not wired to a persistent provider yet.
+    // Never report success while the subscription has not actually been stored.
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Prijava na newsletter trenutno ni na voljo.",
+      },
+      { status: 503 },
+    );
   } catch (error) {
     console.error("Error subscribing:", error);
     return NextResponse.json(
-      { success: false, error: "Failed to subscribe" },
+      { success: false, error: "Prijava ni uspela." },
       { status: 500 },
     );
   }
