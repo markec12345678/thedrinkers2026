@@ -4,7 +4,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Section } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
-import { NewsletterFormData } from "@/lib/types";
 
 export function NewsletterSection() {
   const [email, setEmail] = useState("");
@@ -14,24 +13,30 @@ export function NewsletterSection() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitMessage("");
 
     try {
-      // Call API
       const response = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
 
-      if (response.ok) {
+      const data = (await response.json()) as {
+        success?: boolean;
+        error?: string;
+      };
+
+      if (response.ok && data.success) {
         setSubmitMessage(
           "Uspešno ste se prijavili na naše novice! Preverite svoj email.",
         );
         setEmail("");
       } else {
-        setSubmitMessage("Prišlo je do napake. Poskusite znova.");
+        setSubmitMessage(data.error || "Prišlo je do napake. Poskusite znova.");
       }
     } catch (error) {
+      console.error("Newsletter request failed:", error);
       setSubmitMessage("Prišlo je do napake. Poskusite znova.");
     } finally {
       setIsSubmitting(false);
@@ -74,7 +79,7 @@ export function NewsletterSection() {
               className="flex-1 px-6 py-4 bg-white/10 border border-white/30 rounded text-white placeholder-text-gray focus:outline-none focus:border-crimson focus:bg-crimson/10 transition-all duration-300"
             />
             <Button type="submit" size="lg" disabled={isSubmitting}>
-              {isSubmitting ? "PRIJAVLJANJE..." : "PRIJAVI SE"}
+              {isSubmitting ? "PREVERJANJE..." : "PRIJAVI SE"}
             </Button>
           </form>
 
@@ -82,11 +87,9 @@ export function NewsletterSection() {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`mt-4 p-4 rounded max-w-xl mx-auto ${
-                submitMessage.includes("Uspešno")
-                  ? "bg-green-600/20 border border-green-600 text-green-400"
-                  : "bg-red-600/20 border border-red-600 text-red-400"
-              }`}
+              className="mt-4 p-4 rounded max-w-xl mx-auto bg-red-600/20 border border-red-600 text-red-400"
+              role="alert"
+              aria-live="polite"
             >
               {submitMessage}
             </motion.div>
