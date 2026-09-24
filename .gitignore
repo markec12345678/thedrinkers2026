@@ -21,6 +21,7 @@ dist
 # Misc
 .DS_Store
 *.pem
+*.service-account.json
 
 # Debug
 npm-debug.log*
@@ -42,6 +43,7 @@ next-env.d.ts
 
 # Nested projects
 thedrinkers20/
+the-drinkers-firebase-adminsdk-*.json
 
 # Drizzle
 drizzle/meta
@@ -77,5 +79,3 @@ docs/10-prispevanje/
 *.tmp
 *.temp
 .cache/
-
-.vercel
