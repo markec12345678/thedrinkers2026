@@ -84,10 +84,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: SITE_CONFIG.url,
   },
-  verification: {
-    google: "your-google-verification-code",
-    yandex: "your-yandex-verification-code",
-  },
 };
 
 export const viewport = {
@@ -95,7 +91,7 @@ export const viewport = {
   initialScale: 1,
   maximumScale: 5,
   userScalable: true,
-  themeColor: "#dc143c",
+  themeColor: "#030303",
 };
 
 export default function RootLayout({
@@ -165,7 +161,9 @@ export default function RootLayout({
               contactPoint: {
                 "@type": "ContactPoint",
                 email: SITE_CONFIG.contact.email,
-                telephone: SITE_CONFIG.contact.phone,
+                ...(SITE_CONFIG.contact.phone
+                  ? { telephone: SITE_CONFIG.contact.phone }
+                  : {}),
                 contactType: "booking",
               },
             }),
