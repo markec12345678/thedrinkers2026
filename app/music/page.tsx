@@ -1,9 +1,8 @@
 import { Metadata } from "next";
 import { Section } from "@/components/ui/Section";
-import { SpotifyEmbed } from "@/components/ui/SpotifyEmbed";
 import { VideoPlayer } from "@/components/ui/VideoPlayer";
 import { VideoGallery } from "@/components/sections/VideoGallery";
-import { albums } from "@/lib/constants";
+import { albums, videos } from "@/lib/constants";
 import Album3DShowcase from "@/components/features/Album3DShowcase";
 
 export const metadata: Metadata = {
@@ -14,7 +13,6 @@ export const metadata: Metadata = {
 export default function MusicPage() {
   return (
     <>
-      {/* Hero */}
       <section className="relative h-[60vh] flex items-center justify-center bg-rock-dark">
         <div className="absolute inset-0">
           <img
@@ -32,23 +30,16 @@ export default function MusicPage() {
         </div>
       </section>
 
-      {/* 3D Album Showcase - NEW! */}
       <Album3DShowcase />
 
-      {/* Albums */}
       <Section background="gradient">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl font-bold text-crimson text-center mb-12">
             DISKOGRAFIJA
           </h2>
-
           <div className="space-y-16">
-            {albums.map((album, index) => (
-              <div
-                key={album.id}
-                className="grid lg:grid-cols-2 gap-8 items-center"
-              >
-                {/* Album Cover */}
+            {albums.map((album) => (
+              <div key={album.id} className="grid lg:grid-cols-2 gap-8 items-center">
                 <div className="order-2 lg:order-1">
                   <img
                     src={album.artwork}
@@ -56,36 +47,24 @@ export default function MusicPage() {
                     className="w-full aspect-square object-cover rounded-lg shadow-2xl"
                   />
                 </div>
-
-                {/* Album Info */}
                 <div className="order-1 lg:order-2 space-y-6">
                   <div>
-                    <h3 className="text-4xl font-bold text-crimson mb-2">
-                      {album.title}
-                    </h3>
+                    <h3 className="text-4xl font-bold text-crimson mb-2">{album.title}</h3>
                     <p className="text-text-gray text-xl">{album.year}</p>
                   </div>
-
-                  {/* Track List */}
                   <div className="space-y-2">
                     {album.tracks.map((track, index) => (
                       <div
                         key={track.id}
                         className="flex items-center py-3 border-b border-white/10 hover:bg-crimson/10 transition-all duration-300"
                       >
-                        <span className="text-crimson font-bold w-8">
-                          {index + 1}
-                        </span>
+                        <span className="text-crimson font-bold w-8">{index + 1}</span>
                         <span className="flex-1 font-bold">{track.title}</span>
-                        <span className="text-text-gray text-sm">
-                          {track.duration}
-                        </span>
+                        <span className="text-text-gray text-sm">{track.duration}</span>
                       </div>
                     ))}
                   </div>
-
-                  {/* Streaming */}
-                  <div className="flex gap-4">
+                  <div className="flex flex-wrap gap-4">
                     {album.spotifyUrl && (
                       <a
                         href={album.spotifyUrl}
@@ -116,39 +95,29 @@ export default function MusicPage() {
         </div>
       </Section>
 
-      {/* Videos */}
       <Section background="darker">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl font-bold text-crimson text-center mb-12">
             VIDEO POSNETKI
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {albums.flatMap((album) =>
-              album.tracks.slice(0, 2).map((track, idx) => (
-                <div
-                  key={`${album.id}-${idx}`}
-                  className="card overflow-hidden"
-                >
-                  <VideoPlayer
-                    videoId="dQw4w9WgXcQ"
-                    title={`${album.title} - ${track.title}`}
-                  />
-                  <div className="p-4">
-                    <h4 className="text-lg font-bold text-white">
-                      {track.title}
-                    </h4>
-                    <p className="text-text-gray text-sm">
-                      {album.title} ({album.year})
-                    </p>
-                  </div>
+            {videos.map((video) => (
+              <div key={video.id} className="card overflow-hidden">
+                <VideoPlayer
+                  videoId={video.youtubeId}
+                  title={video.title}
+                  thumbnail={video.thumbnail}
+                />
+                <div className="p-4">
+                  <h4 className="text-lg font-bold text-white">{video.title}</h4>
+                  <p className="text-text-gray text-sm">Official Video</p>
                 </div>
-              )),
-            )}
+              </div>
+            ))}
           </div>
         </div>
       </Section>
 
-      {/* Video Gallery */}
       <VideoGallery />
     </>
   );
