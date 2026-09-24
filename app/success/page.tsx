@@ -25,7 +25,7 @@ export default function SuccessPage() {
 
           // Clear cart after successful purchase
           if (data.valid) {
-            localStorage.removeItem("cart");
+            localStorage.removeItem("drinkers-cart");
           }
         })
         .catch((error) => {
